@@ -1,6 +1,5 @@
 import 'package:familylost_faan/pages/animal_item_page.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
-import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -34,133 +33,109 @@ class _DashBoardPageState extends State<DashBoardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hola, Usuario!'),
-        scrolledUnderElevation: 4.0,
-        shadowColor: Theme.of(context).shadowColor,
-        leading: Center(
-          child: CircleAvatar(
-            radius: 16,
-            child: AppIcons.profileIcon,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+  backgroundColor: Colors.transparent, // Hace la AppBar transparente
+  title: const Text('Hola, Usuario!'),
+  leading: Center(
+    child: CircleAvatar(
+      radius: 16,
+      backgroundImage: AssetImage(AssetManager.exampleImage),                  
+    ),
+  ),
+  bottom: PreferredSize(
+    preferredSize: const Size.fromHeight(80.0),
+    child: Container(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              // TODO: Implement Filter action
+            },
+            child: Text(AppStrings.navigationLost),
           ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(140.0),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SegmentedButton(
-                  multiSelectionEnabled: false,
-                  showSelectedIcon: false,
-                  segments: [
-                    ButtonSegment(
-                        value: 'Perdidos',
-                        icon: AppIcons.lostIcon,
-                        label: Text(
-                          AppStrings.navigationLost,
-                          style: AppFonts.caption,
-                        ),
-                        enabled: true),
-                    ButtonSegment(
-                        value: 'Encontrados',
-                        icon: AppIcons.foundIcon,
-                        label: Text(
-                          AppStrings.navigationFound,
-                          style: AppFonts.caption,
-                        ),
-                        enabled: true),
-                    ButtonSegment(
-                      value: 'Adopción',
-                      icon: AppIcons.adoptionIcon,
-                      label: Text(
-                        AppStrings.navigationAdoption,
-                        style: AppFonts.caption,
-                      ),
-                      enabled: true,
-                    ),
-                  ],
-                  selected: Set.from(['Perdidos']),
-                  onSelectionChanged: (selected) {},
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    isDense: true,
-                    hintText: AppStrings.hintSearch,
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.surfaceVariant,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: AppIcons.searchIcon,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          const SizedBox(width: 8),
+          Spacer(),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: Implement Filter action
+            },
+            child: Text(AppStrings.navigationFound),
           ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            style:
-                enabledFilledButtonStyle(true, Theme.of(context).colorScheme),
-            icon: AppIcons.notificationIcon,
+          const SizedBox(width: 8),
+          Spacer(),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: Implement Filter action
+            },
+            child: Text(AppStrings.navigationAdoption),
           ),
         ],
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: 6,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          childAspectRatio: 20 / 15,
-        ),
-        itemBuilder: (context, index) {
-          final String image = AssetManager.exampleImage;
-          return Card(
-            child: InkWell(
-              onTap: () {},
-              child: AnimalItemPage(
-                image: image,
-              ),
+    ),
+  ),
+  actions: [
+    IconButton(
+      onPressed: () {},
+      icon: AppIcons.notificationIcon,
+    ),
+  ],
+  pinned: true, // Hace que el SliverAppBar permanezca fijo en la parte superior
+  floating: true, // Hace que el SliverAppBar se muestre nuevamente al desplazarse hacia arriba
+),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final String image = AssetManager.exampleImage;
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: InkWell(
+                      onTap: () {},
+                      child: AnimalItemPage(
+                        image: image,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              childCount: 6,
             ),
-          );
-        },
+          ),
+        ],
       ),
-      bottomNavigationBar: NavigationBar(
-        destinations: const <NavigationDestination>[
-          NavigationDestination(
-            icon: AppIcons.homeIcon,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
             label: AppStrings.navigationHome,
           ),
-          NavigationDestination(
-            //Needs to be replaced with lost icon
-            icon: AppIcons.lostIcon,
-            label: AppStrings.navigationLost,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: AppStrings.hintSearch,
           ),
-          NavigationDestination(
-            icon: AppIcons.addIcon,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
             label: AppStrings.navigationAdd,
           ),
-          NavigationDestination(
-            //Needs to be replaced with found icon
-            icon: AppIcons.foundIcon,
-            label: AppStrings.navigationFound,
-          ),
-          NavigationDestination(
-            icon: AppIcons.profileIcon,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
             label: AppStrings.navigationProfile,
           ),
         ],
-        selectedIndex: 0,
+        currentIndex: 0,
+        selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.grey[600],
+        onTap: (index) {
+          // TODO: Implement navigation action
+        },
       ),
     );
   }

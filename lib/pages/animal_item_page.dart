@@ -1,6 +1,7 @@
+import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
+import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AnimalItemPage extends StatefulWidget {
@@ -19,92 +20,84 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
   Widget build(BuildContext context) {
     return Hero(
       tag: widget.image,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(4),
-            topRight: Radius.circular(4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(4),
+                bottomLeft: Radius.circular(4),
+              ),
+              image: DecorationImage(
+                image: AssetImage(widget.image),
+                fit: BoxFit.cover,
+              ),
+            ),
+            width: 120, // Ajusta el ancho según tus necesidades
+            height: 150, // Ajusta la altura según tus necesidades
           ),
-          image: DecorationImage(
-            image: AssetImage(widget.image),
-            fit: BoxFit.contain,
-            alignment: Alignment.topLeft,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Nombre Animal',
-                    style: AppFonts.title,
+          const SizedBox(width: 16), // Espacio entre la imagen y el texto
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Nombre Animal',
+                  style: AppFonts.title,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Raza Animal',
+                  style: AppFonts.secondary,
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AppIcons.locationIcon,
+                    const SizedBox(width: 2),
+                    Text(
+                      AppStrings.labelLocation,
+                      style: AppFonts.secondary,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _isContactButtonPressed = !_isContactButtonPressed;
+                    });
+                    // TODO: Implement contact action
+                  },
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(0),
+                    backgroundColor: MaterialStateProperty.all(
+                        AppColors.transparentBackgroundColor),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Raza Animal',
-                    style: AppFonts.secondary,
-                  ),
-                  SizedBox(height: 4),
-                  Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
-                        CupertinoIcons.location_solid,
-                        size: 16,
+                        AppIcons.whatsAppIcon.icon,
+                        color: AppColors
+                            .whatsAppGreen, // Aplicando el color deseado al icono
                       ),
-                      SizedBox(width: 4),
-                      Text(AppStrings.labelLocation, style: AppFonts.secondary),
+                      const SizedBox(width: 4),
+                      Text(
+                        AppStrings.labelContact,
+                        style: AppFonts.contact.copyWith(
+                          color: AppColors.whatsAppGreen,
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 4),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isContactButtonPressed = !_isContactButtonPressed;
-                      });
-                      // TODO: Implement contact action
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          CupertinoIcons.phone,
-                          size: 16,
-                          color: _isContactButtonPressed
-                              ? Theme.of(context).colorScheme.onPrimary
-                              : Theme.of(context).colorScheme.primary,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          AppStrings.labelContact,
-                          style: AppFonts.secondary.copyWith(
-                            color: _isContactButtonPressed
-                                ? Theme.of(context).colorScheme.onPrimary
-                                : Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

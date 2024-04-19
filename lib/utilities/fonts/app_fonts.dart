@@ -3,9 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppFonts {
   static TextStyle get title => GoogleFonts.openSans(
-        fontSize: 30.0,
-        fontWeight: FontWeight.w500,
-        color: Colors.black,
+        fontSize: 25.0,
+        fontWeight: FontWeight.w200,
       );
 
   static TextStyle get primary => GoogleFonts.openSans(
@@ -31,5 +30,10 @@ class AppFonts {
   static TextStyle get caption => GoogleFonts.openSans(
         fontSize: 12.0,
         fontWeight: FontWeight.w300,
+      );
+
+  static TextStyle get contact => GoogleFonts.openSans(
+        fontSize: 15.0,
+        fontWeight: FontWeight.w500,
       );
 }

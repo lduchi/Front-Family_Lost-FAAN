@@ -19,4 +19,5 @@ class AppIcons {
   static const Icon adoptionIcon = Icon(CupertinoIcons.heart);
   static const Icon profileIcon = Icon(CupertinoIcons.person);
   static const Icon notificationIcon = Icon(CupertinoIcons.bell);
+  static const Icon whatsAppIcon = Icon(CupertinoIcons.arrow_turn_up_right);
 }
