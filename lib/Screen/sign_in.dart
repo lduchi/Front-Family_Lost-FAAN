@@ -40,13 +40,13 @@ class SignIn extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.04),
                 // for username and password
-                myTextField("Enter username", Colors.white),
-                myTextField("Password", Colors.black26),
+                myTextField("Ingresa tu usuario", Colors.white),
+                myTextField("Ingresa tu contraseña", Colors.black26),
                 const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    "Recovery Password               ",
+                    "Recuperar contraseña               ",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class SignIn extends StatelessWidget {
                         ),
                         child: const Center(
                           child: Text(
-                            "Sign In",
+                            "Iniciar Sesion",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -89,7 +89,7 @@ class SignIn extends StatelessWidget {
                             color: Colors.black12,
                           ),
                           Text(
-                            "  Or continue with   ",
+                            "  O continua con:  ",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: textColor2,
@@ -115,14 +115,14 @@ class SignIn extends StatelessWidget {
                       SizedBox(height: size.height * 0.07),
                       Text.rich(
                         TextSpan(
-                            text: "Not a member? ",
+                            text: "Aun no te unes? ",
                             style: TextStyle(
                               color: textColor2,
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
                             ),
                             children: const [ TextSpan(
-                              text: "Register now",
+                              text: "Registrate",
                               style: TextStyle(
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold,

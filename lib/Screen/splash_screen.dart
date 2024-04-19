@@ -95,7 +95,7 @@ class MySplashScreen extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    "Register",
+                                    "Registro",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
