@@ -24,7 +24,7 @@ class SignIn extends StatelessWidget {
               children: [
                 SizedBox(height: size.height * 0.03),
                 Text(
-                  "Hello Again!",
+                  "HOLA!",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -34,7 +34,7 @@ class SignIn extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  "Wellcome back vou've\nbeen missed!",
+                  "Es bueno verte nuevamente\nte extrañamos!",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 27, color: textColor2, height: 1.2),
                 ),

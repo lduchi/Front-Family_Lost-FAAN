@@ -42,7 +42,7 @@ class MySplashScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "Discover your\nDream job Here",
+                      "Descubre\n la felicidad",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -52,7 +52,7 @@ class MySplashScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 25),
                     Text(
-                      "Explore all the most exiting jobs roles\nbased on your interest And study major",
+                      "Rescata a una vida\nhazla feliz o algo asi jsjsj",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -115,7 +115,7 @@ class MySplashScreen extends StatelessWidget {
                                   );
                                 },
                                 child: Text(
-                                  "Sign In",
+                                  "Iniciar sesion",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
