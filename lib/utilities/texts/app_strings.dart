@@ -3,7 +3,7 @@ class AppStrings {
   static const String homeSubtitle = '¡Hola Mundo!';
   static const String buttonText = 'Presióname';
   static const String hintText = 'Ingresa algo aquí';
-  
+
   //Text for labels
   static const String labelEmail = 'Correo Electrónico';
   static const String labelPassword = 'Contraseña';
@@ -19,7 +19,6 @@ class AppStrings {
   static const String navigationProfile = 'Perfil';
   static const String navigationLost = 'Perdidos';
   static const String navigationFound = 'Encontrados';
-  static const String navigationAdd = 'Crear';
   static const String navigationAdoption = 'Adopción';
 
   //Text for hints
@@ -46,4 +45,33 @@ class AppStrings {
   static const String buttonSave = 'Guardar';
   static const String buttonDelete = 'Eliminar';
   static const String buttonEdit = 'Editar';
-}
+
+  //Text for labels in forms
+  static const String formTitle = 'Crear Publicación';
+  static const String formPhoto = 'Foto';
+  static const String formName = 'Nombre del animal';
+  static const String formType = 'Tipo de animal';
+  static const String formBreed = 'Raza';
+  static const String formColor = 'Color';
+  static const String formAge = 'Edad';
+  static const String formGender = 'Género';
+  static const String formAdress = 'Dirección';
+  static const String formLocation = 'Ubicación';
+  static const String formViewedDate = 'Fecha de avistamiento';
+  static const String formLostDate = 'Fecha de extravío';
+  static const String formDescription = 'Descripción';
+
+  //Text for errors
+  static const String errorEmail = 'Por favor ingrese un correo válido';
+  static const String errorPassword = 'Por favor ingrese una contraseña';
+  static const String errorName = 'Por favor ingrese un nombre';  
+  static const String errorLastName = 'Por favor ingrese un apellido';
+  static const String errorPhone = 'Por favor ingrese un teléfono';
+  static const String errorAddress = 'Por favor ingrese una dirección';
+  static const String errorDescription = 'Por favor ingrese una descripción';
+  static const String errorLocation = 'Por favor ingrese una ubicación';
+  static const String errorDate = 'Por favor ingrese una fecha';
+  static const String errorType = 'Por favor ingrese un tipo de animal';
+  static const String errorBreed = 'Por favor ingrese una raza';
+  static const String errorAge = 'Por favor ingrese una edad';
+  }

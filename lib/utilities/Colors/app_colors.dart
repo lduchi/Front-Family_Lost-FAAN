@@ -4,12 +4,18 @@ class AppColors {
   /*App Colors
    * Main Color ?
   */
-  static const Color mainColor = Color(0xFF5FD8E0);
+  static const Color mainColor = Color.fromRGBO(252, 255, 255, 1);
   /**
     * Secondary Color
     * Active Buttons 
   */
-  static const Color secondaryColor = Color(0xFF00B7B7);
+  static const Color secondaryColor = Color.fromARGB(255, 170, 238, 238);
+  /**
+   * Primary Color
+   * Active Buttons
+  */
+  static const Color activeButtonColor = Color.fromARGB(255, 12, 189, 189);
+
   /**
    * App Bar Color
   */
@@ -24,4 +30,6 @@ class AppColors {
    * WhatsApp Green Color
   */
   static const Color whatsAppGreen = Color(0xFF25D366);
-  }
+
+  
+}

@@ -1,5 +1,7 @@
-import 'package:familylost_faan/pages/dashboard_page.dart';
+import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
+import 'package:familylost_faan/widgets/main_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() => runApp(const LostFamilyApp());
 
@@ -13,15 +15,22 @@ class LostFamilyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       theme: ThemeData(
         useMaterial3: true,
-        brightness: Brightness.light,
-        colorSchemeSeed: Colors.pink[900],
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromRGBO(13, 71, 161, 1),
+          brightness: Brightness.light,
+        ),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
-        brightness: Brightness.dark,
-        colorSchemeSeed: Colors.pink[900],
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromRGBO(13, 71, 161, 1),
+          brightness: Brightness.dark,
+        ),
       ),
-      home: const DashBoardPage(),
+      home: BlocProvider(
+        create: (context) => BottomNavCubit(),
+        child: const MainWrapper(),
+      ),
     );
   }
 }
