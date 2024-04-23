@@ -68,11 +68,30 @@ class SignIn extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                               context,
-                            MaterialPageRoute(
-                                builder: (context) => const MainWrapper(),
-                            ),
+                            MaterialPageRoute(builder: (context) => BlocProvider(create:
+                            (context) => BottomNavCubit(),
+                            child: const MainWrapper(),))
                           );
                         },
+                        child: Container(
+                          width: size.width,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: buttonColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Iniciar Sesion",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 22
+                              ),
+                            ),
+                          ),
+                        ),
+
                       ),
                       SizedBox(height: size.height * 0.06),
                       Row(
