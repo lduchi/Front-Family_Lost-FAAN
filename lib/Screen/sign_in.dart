@@ -1,5 +1,8 @@
+import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Utils/colors.dart';
+import '../widgets/main_wrapper.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({super.key});
@@ -61,23 +64,34 @@ class SignIn extends StatelessWidget {
                   child: Column(
                     children: [
                       // for sign in button
-                      Container(
-                        width: size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: buttonColor,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Iniciar Sesion",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 22,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                            MaterialPageRoute(builder: (context) => BlocProvider(create:
+                            (context) => BottomNavCubit(),
+                            child: const MainWrapper(),))
+                          );
+                        },
+                        child: Container(
+                          width: size.width,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: buttonColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Iniciar Sesion",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 22
+                              ),
                             ),
                           ),
                         ),
+
                       ),
                       SizedBox(height: size.height * 0.06),
                       Row(

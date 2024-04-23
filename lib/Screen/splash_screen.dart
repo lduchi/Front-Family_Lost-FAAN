@@ -1,6 +1,7 @@
 import 'package:familylost_faan/Screen/sign_in.dart';
 import 'package:flutter/material.dart';
 import '../Utils/colors.dart';
+import 'Register.dart';
 
 class MySplashScreen extends StatelessWidget {
   const MySplashScreen({super.key});
@@ -86,24 +87,35 @@ class MySplashScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 5),
                           child: Row(
                             children: [
-                              Container(
-                                height: size.height * 0.08,
-                                width: size.width / 2.2,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Registro",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: textColor1,
+                              GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Register(),
+                                      ),
+                                    );
+                                  },
+                                child: Container(
+                                  height: size.height * 0.08,
+                                  width: size.width / 2.2,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Registro",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: textColor1,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
+
                               const Spacer(),
                               GestureDetector(
                                 onTap: () {
