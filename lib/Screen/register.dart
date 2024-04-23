@@ -27,7 +27,7 @@ class Register extends StatelessWidget {
               // Centered App Icon
               Center(
                 child: Image.asset(
-                  "images/app_icon.png", // Replace with your app icon image path
+                  "images/icon.jpg", // Replace with your app icon image path
                   height: size.height * 0.3,
                   width: size.height * 0.3,
                 ),
@@ -49,7 +49,7 @@ class Register extends StatelessWidget {
 
               // Registration Button (Middle 1/3)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Container(
                   width: size.width,
                   padding: const EdgeInsets.symmetric(vertical: 20),
