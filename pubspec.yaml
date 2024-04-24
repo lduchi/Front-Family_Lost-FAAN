@@ -40,6 +40,8 @@ dependencies:
   flutter_bloc: ^8.1.3
   provider: ^6.1.2
   iconly: ^1.0.1
+  curved_labeled_navigation_bar: ^2.0.2 #latest version
+  badges: ^3.1.1
 
 
 
