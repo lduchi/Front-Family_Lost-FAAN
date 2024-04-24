@@ -11,6 +11,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 
+import '../Utils/colors.dart';
+import '../Utils/colors.dart';
+
 class MainWrapper extends StatefulWidget {
   const MainWrapper({super.key});
 
@@ -66,7 +69,7 @@ class _MainWrapperState extends State<MainWrapper> {
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.transparent , //COLOR BACKGROUND
       title: const Text('Hola, Usuario!'),
       leading: Center(
         child: CircleAvatar(
