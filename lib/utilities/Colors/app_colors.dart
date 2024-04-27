@@ -4,17 +4,17 @@ class AppColors {
   /*App Colors
    * Main Color ?
   */
-  static const Color mainColor = Color.fromRGBO(252, 255, 255, 1);
+  static const Color mainColor = Color(0xFF009AB0);
   /**
     * Secondary Color
     * Active Buttons 
   */
-  static const Color secondaryColor = Color.fromARGB(255, 170, 238, 238);
+  static const Color secondaryColor = Color(0xFF707070);
   /**
    * Primary Color
    * Active Buttons
   */
-  static const Color activeButtonColor = Color.fromARGB(255, 12, 189, 189);
+  static const Color inactiveMainColor = Color.fromRGBO(144, 240, 255, 0.640);
 
   /**
    * App Bar Color

@@ -51,7 +51,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                   const SizedBox(height: 2),
                   Text(
                     'Raza Animal',
-                    style: AppFonts.secondary,
+                    style: AppFonts.primary,
                   ),
                   const SizedBox(height: 2),
                   Row(
@@ -61,7 +61,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                       const SizedBox(width: 2),
                       Text(
                         AppStrings.labelLocation,
-                        style: AppFonts.secondary,
+                        style: AppFonts.primary,
                       ),
                     ],
                   ),
@@ -89,7 +89,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                         const SizedBox(width: 4),
                         Text(
                           AppStrings.labelContact,
-                          style: AppFonts.contact.copyWith(
+                          style: AppFonts.caption.copyWith(
                             color: AppColors.whatsAppGreen,
                           ),
                         ),

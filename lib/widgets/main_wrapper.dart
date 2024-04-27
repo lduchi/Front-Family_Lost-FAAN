@@ -53,7 +53,7 @@ class _MainWrapperState extends State<MainWrapper> {
     return Scaffold(
       appBar: _mainWrapperAppBar(),
       body: CustomPaint(
-        painter: AppPainter(),
+        //painter: AppPainter(),
         child: _mainWrapperBody(),
       ),
       bottomNavigationBar: _mainWrapperBottomNavBar(context),
@@ -206,7 +206,7 @@ class _MainWrapperState extends State<MainWrapper> {
       );
     },
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-    backgroundColor: AppColors.activeButtonColor,
+    backgroundColor: AppColors.mainColor,
     child: const Icon(Icons.add),
   );
 }
