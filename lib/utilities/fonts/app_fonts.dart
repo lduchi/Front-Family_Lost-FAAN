@@ -26,7 +26,7 @@ class AppFonts {
 
   static TextStyle get primary => GoogleFonts.poppins(
         fontSize: 14.0,
-        fontWeight: FontWeight.w100,
+        fontWeight: FontWeight.w300,
       );
 
   // static TextStyle get secondary => GoogleFonts.openSans(
