@@ -38,10 +38,10 @@ class _MainWrapperState extends State<MainWrapper> {
 
   //List of Pages: Home, Search, Profile
   final List<Widget> pages = [
-    DashBoardPage(),
+    HomePage(),
     FavoritePage(),
-    DashBoardPage(),
-    DashBoardPage(),
+    HomePage(),
+    HomePage(),
   ];
 
   void onPageChanged(int page) {

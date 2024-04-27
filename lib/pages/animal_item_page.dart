@@ -28,8 +28,8 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(4),
-                  bottomLeft: Radius.circular(4),
+                  topLeft: Radius.circular(5),
+                  bottomLeft: Radius.circular(5),
                 ),
                 image: DecorationImage(
                   image: AssetImage(widget.image),

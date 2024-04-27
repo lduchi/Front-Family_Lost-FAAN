@@ -2,14 +2,14 @@ import 'package:familylost_faan/pages/animal_item_page.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:flutter/material.dart';
 
-class DashBoardPage extends StatefulWidget {
-  const DashBoardPage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<DashBoardPage> createState() => _DashBoardPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _DashBoardPageState extends State<DashBoardPage> {
+class _HomePageState extends State<HomePage> {
   ButtonStyle enabledFilledButtonStyle(bool selected, ColorScheme colors) {
     return IconButton.styleFrom(
       foregroundColor: selected ? colors.onPrimary : colors.primary,
