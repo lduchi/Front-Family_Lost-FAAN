@@ -42,6 +42,8 @@ dependencies:
   iconly: ^1.0.1
   curved_labeled_navigation_bar: ^2.0.2 #latest version
   badges: ^3.1.1
+  material_dialogs: ^1.1.4
+  lottie: ^2.3.2
 
 
 
@@ -52,9 +54,9 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 
 flutter_launcher_icons:
-  android: "ic_launcher"
+  android: true
   ios: true
-  image_path: "images/icon.jpg"
+  image_path: "images/icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   remove_alpha_ios: true
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -79,6 +81,7 @@ flutter:
   assets:
     - images/
     - assets/common/
+    - assets/lottie/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -36,5 +36,18 @@ class AppColors {
   */
   static const Color whatsAppGreen = Color(0xFF25D366);
 
-  
+  /**
+   * Error "Red" color
+   */
+  static const Color errorColor = Color(0xFFFF1A00);
+
+  /**
+   * Button Ac Color
+   */
+  static const Color warningColor = Color(0xFFFFCC00);
+
+  /**
+   * Button Ac Color
+   */
+  static const Color msgDialogColor = Color(0xFF808080);
 }

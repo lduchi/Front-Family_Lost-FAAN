@@ -1,8 +1,8 @@
+import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppFonts {
-
   /**
    * Font family: Roboto
    */
@@ -13,7 +13,7 @@ class AppFonts {
 
   static TextStyle get navigation => GoogleFonts.roboto(
         fontSize: 14.0,
-        fontWeight: FontWeight.w200,
+        fontWeight: FontWeight.w400,
       );
 
   /**
@@ -26,7 +26,32 @@ class AppFonts {
 
   static TextStyle get primary => GoogleFonts.poppins(
         fontSize: 14.0,
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w500,
+      );
+
+  /**
+       * Dialogs
+       */
+
+  static TextStyle get successTitle => GoogleFonts.poppins(
+        fontSize: 25.0,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.2,
+        color: AppColors.mainColor,
+      );
+
+  static TextStyle get errorTitle => GoogleFonts.poppins(
+        fontSize: 25.0,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.2,
+        color: AppColors.errorColor,
+      );
+
+  static TextStyle get warningTitle => GoogleFonts.poppins(
+        fontSize: 25.0,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.2,
+        color: AppColors.warningColor,
       );
 
   // static TextStyle get secondary => GoogleFonts.openSans(
@@ -48,5 +73,4 @@ class AppFonts {
         fontSize: 12.0,
         fontWeight: FontWeight.w300,
       );
-
 }

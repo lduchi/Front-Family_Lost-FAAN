@@ -64,7 +64,7 @@ class AppStrings {
   //Text for errors
   static const String errorEmail = 'Por favor ingrese un correo válido';
   static const String errorPassword = 'Por favor ingrese una contraseña';
-  static const String errorName = 'Por favor ingrese un nombre';  
+  static const String errorName = 'Por favor ingrese un nombre';
   static const String errorLastName = 'Por favor ingrese un apellido';
   static const String errorPhone = 'Por favor ingrese un teléfono';
   static const String errorAddress = 'Por favor ingrese una dirección';
@@ -74,4 +74,11 @@ class AppStrings {
   static const String errorType = 'Por favor ingrese un tipo de animal';
   static const String errorBreed = 'Por favor ingrese una raza';
   static const String errorAge = 'Por favor ingrese una edad';
-  }
+
+  //Text for loading dialog
+  static const String loadingTitle = 'Cargando...';
+  static const String loadingMessage = 'Por favor espere un momento';
+  static const String titleOptions = 'Opciones';
+  static const String messageOptions = 'Selecciona el tipo de publicación:';
+  static const String textRadioOptions = 'Publicar como';
+}
