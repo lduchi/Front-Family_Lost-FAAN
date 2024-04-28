@@ -1,6 +1,7 @@
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/app_painter.dart';
+import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
@@ -22,6 +23,8 @@ class MainWrapper extends StatefulWidget {
 }
 
 class _MainWrapperState extends State<MainWrapper> {
+  var _deviceHeight;
+  var _deviceWidth;
   late PageController pageController;
 
   @override
@@ -63,13 +66,15 @@ class _MainWrapperState extends State<MainWrapper> {
   }
 
   AppBar _mainWrapperAppBar() {
+    _deviceHeight = MediaQuery.of(context).size.height;
+    _deviceWidth = MediaQuery.of(context).size.width;
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: Brightness.light,
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
       ),
-      backgroundColor: Colors.transparent , //COLOR BACKGROUND
+      backgroundColor: Colors.transparent, //COLOR BACKGROUND
       title: const Text('Hola, Usuario!'),
       leading: Center(
         child: CircleAvatar(
@@ -78,32 +83,32 @@ class _MainWrapperState extends State<MainWrapper> {
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0),
+        preferredSize: Size.fromHeight(_deviceHeight * 0.1),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(_deviceWidth * 0.04),
           child: Row(
             children: [
-              OutlinedButton(
-                onPressed: () {
-                  // TODO: Implement Filter action
+              _buildOutlinedButton(
+                AppStrings.navigationLost,
+                () {
+                  //TODO: Implement Lost Filter
                 },
-                child: Text(AppStrings.navigationLost),
               ),
               const SizedBox(width: 8),
-              Spacer(),
-              OutlinedButton(
-                onPressed: () {
-                  // TODO: Implement Filter action
+              const Spacer(),
+              _buildOutlinedButton(
+                AppStrings.navigationFound,
+                () {
+                  //TODO: Implement Found Filter
                 },
-                child: Text(AppStrings.navigationFound),
               ),
               const SizedBox(width: 8),
-              Spacer(),
-              OutlinedButton(
-                onPressed: () {
-                  // TODO: Implement Filter action
+              const Spacer(),
+              _buildOutlinedButton(
+                AppStrings.navigationAdoption,
+                () {
+                  //TODO: Implement Adoption Filter
                 },
-                child: Text(AppStrings.navigationAdoption),
               ),
             ],
           ),
@@ -115,6 +120,20 @@ class _MainWrapperState extends State<MainWrapper> {
           icon: AppIcons.notificationIcon,
         ),
       ],
+    );
+  }
+
+  OutlinedButton _buildOutlinedButton(String text, VoidCallback onPressed) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      child: Text(text),
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+      ),
     );
   }
 
@@ -149,10 +168,10 @@ class _MainWrapperState extends State<MainWrapper> {
               children: [
                 _bottomAppBarItem(
                   context,
-                  defaultIcon: IconlyLight.heart,
+                  defaultIcon: IconlyLight.search,
                   page: 1,
                   label: "Search",
-                  filledIcon: IconlyBold.heart,
+                  filledIcon: IconlyBold.search,
                 ),
               ],
             ),
@@ -193,23 +212,23 @@ class _MainWrapperState extends State<MainWrapper> {
   }
 
   FloatingActionButton _mainWrapperFab() {
-  return FloatingActionButton(
-    onPressed: () {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            insetPadding: EdgeInsets.zero,
-            child: CreatePublicationPage(),
-          );
-        },
-      );
-    },
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-    backgroundColor: AppColors.mainColor,
-    child: const Icon(Icons.add),
-  );
-}
+    return FloatingActionButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              insetPadding: EdgeInsets.zero,
+              child: CreatePublicationPage(),
+            );
+          },
+        );
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      backgroundColor: AppColors.mainColor,
+      child: const Icon(Icons.add),
+    );
+  }
 
   // Body - MainWrapper Widget
   PageView _mainWrapperBody() {
@@ -249,7 +268,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   ? filledIcon
                   : defaultIcon,
               color: context.watch<BottomNavCubit>().state == page
-                  ? AppColors.whatsAppGreen
+                  ? AppColors.mainColor
                   : Colors.grey,
               size: 26,
             ),
@@ -258,11 +277,10 @@ class _MainWrapperState extends State<MainWrapper> {
             ),
             Text(
               label,
-              style: GoogleFonts.aBeeZee(
+              style: AppFonts.navigation.copyWith(
                 color: context.watch<BottomNavCubit>().state == page
-                    ? AppColors.whatsAppGreen
+                    ? AppColors.mainColor
                     : Colors.grey,
-                fontSize: 13,
                 fontWeight: context.watch<BottomNavCubit>().state == page
                     ? FontWeight.w600
                     : FontWeight.w400,

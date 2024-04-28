@@ -3,4 +3,5 @@ class AssetManager {
   static const String _exampleImages = 'assets/common/';
 
   static const String exampleImage = '${_exampleImages}animal_example.jpg';
+  static const String exampleImage2 = '${_images}pet2.png';
 }

@@ -14,10 +14,14 @@ class AnimalItemPage extends StatefulWidget {
 }
 
 class _AnimalItemPageState extends State<AnimalItemPage> {
+  var _deviceHeight;
+  var _deviceWidth;
   bool _isContactButtonPressed = false;
 
   @override
   Widget build(BuildContext context) {
+    _deviceHeight = MediaQuery.of(context).size.height;
+    _deviceWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
       child: Hero(
@@ -36,10 +40,10 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                   fit: BoxFit.cover,
                 ),
               ),
-              width: 120, // Ajusta el ancho según tus necesidades
-              height: 150, // Ajusta la altura según tus necesidades
+              width:  _deviceWidth * 0.3, 
+              height: _deviceHeight * 0.2,
             ),
-            const SizedBox(width: 16), // Espacio entre la imagen y el texto
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +88,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                         Icon(
                           AppIcons.whatsAppIcon.icon,
                           color: AppColors
-                              .whatsAppGreen, // Aplicando el color deseado al icono
+                              .whatsAppGreen,
                         ),
                         const SizedBox(width: 4),
                         Text(
