@@ -36,14 +36,14 @@ class MySplashScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: size.height * 0.6,
+              top: size.height * 0.5,
               left: 0,
               right: 0,
               child: Center(
                 child: Column(
                   children: [
                     Text(
-                      "Descubre\n la felicidad",
+                      "Insertar Imagen*",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -51,15 +51,19 @@ class MySplashScreen extends StatelessWidget {
                           color: textColor1,
                           height: 1.2),
                     ),
-                    const SizedBox(height: 25),
-                    Text(
-                      "Rescata a una vida\nhazla feliz o algo asi jsjsj",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: textColor2,
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 50.0), // Ajusta el valor según sea necesario
+                      child: Text(
+                        "Cada mascota merece experimentar el amor y la alegría de un hogar. Únete a nosotros en nuestra misión de hacer que eso se convierta en una realidad para cada uno de ellos \n ¡Inicia sesión o regístrate ahora y sé parte de este viaje de amor y rescate!",
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: textColor2,
+                        ),
                       ),
                     ),
+
                     SizedBox(height: size.height * 0.07),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -69,10 +73,10 @@ class MySplashScreen extends StatelessWidget {
                         height: size.height * 0.08,
                         width: size.width,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(50),
                           color: backgroundColor3.withOpacity(0.9),
                           border: Border.all(
-                            color: Colors.white,
+                            color: general,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -100,8 +104,8 @@ class MySplashScreen extends StatelessWidget {
                                   height: size.height * 0.08,
                                   width: size.width / 2.2,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15),
+                                    color: general,
+                                    borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Center(
                                     child: Text(
@@ -109,7 +113,7 @@ class MySplashScreen extends StatelessWidget {
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
-                                        color: textColor1,
+                                        color: textColor3,
                                       ),
                                     ),
                                   ),

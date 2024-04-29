@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Utils/colors.dart';
 import '../widgets/main_wrapper.dart';
 
-class SignIn extends StatelessWidget {
-  const SignIn({super.key});
+class ResetP extends StatelessWidget {
+  const ResetP({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +28,27 @@ class SignIn extends StatelessWidget {
             child: ListView(
               children: [
                 SizedBox(height: size.height * 0.30),
-
+                SizedBox(height: size.height * 0.03),
+                Text(
+                  "NUEVA CONTRASEÑA",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: textColor1,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  "A continuación, ingrese su nueva contraseña",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 15, color: general),
+                ),
                 SizedBox(height: size.height * 0.04),
                 // for username and password
-                myTextField("Ingresa tu nombre de usuario", Colors.black26, Icons.alternate_email, null),
+                myTextField("Nueva Contraseña", Colors.black26, Icons.password, Icons.visibility_off_outlined),
 
-                myTextField("Ingresa tu contraseña", Colors.black26, Icons.password, Icons.visibility_off_outlined),
+                myTextField("Repita su contraseña", Colors.black26, Icons.password, Icons.visibility_off_outlined),
 
                 SizedBox(height: size.height * 0.04),
                 Padding(
@@ -59,7 +74,7 @@ class SignIn extends StatelessWidget {
                           ),
                           child: const Center(
                             child: Text(
-                              "Iniciar Sesion",
+                              "Aceptar",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -69,44 +84,6 @@ class SignIn extends StatelessWidget {
                           ),
                         ),
 
-                      ),
-                      SizedBox(height: size.height * 0.07),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                            MaterialPageRoute(
-                              builder: (context) => RequestNP(),
-                            ),
-                          );
-                          },
-                        child: Text.rich(
-                          TextSpan(
-                            text: "¿Has olvidado la contraseña? ",
-                            style: TextStyle(
-                              color: textColor2,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.03),
-                      Text.rich(
-                        TextSpan(
-                            text: "¿No tienes una cuenta? ",
-                            style: TextStyle(
-                              color: textColor2,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                            children: const [ TextSpan(
-                              text: "Registrate",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),)]
-                        ),
                       ),
                     ],
                   ),

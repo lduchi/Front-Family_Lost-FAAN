@@ -1,14 +1,13 @@
 
-import 'package:familylost_faan/Screen/RequestNP.dart';
+import 'package:familylost_faan/Screen/ResetP.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Utils/colors.dart';
 import '../widgets/main_wrapper.dart';
 
-class SignIn extends StatelessWidget {
-  const SignIn({super.key});
-
+class VerifyC extends StatelessWidget{
+  const VerifyC({super.key});
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,11 +28,25 @@ class SignIn extends StatelessWidget {
               children: [
                 SizedBox(height: size.height * 0.30),
 
+                SizedBox(height: size.height * 0.03),
+                Text(
+                  "CÓDIGO DE SEGURIDAD",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: textColor1,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  "Ingrese a continuación el código enviado a su correo electrónico",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 15, color: general),
+                ),
                 SizedBox(height: size.height * 0.04),
                 // for username and password
-                myTextField("Ingresa tu nombre de usuario", Colors.black26, Icons.alternate_email, null),
-
-                myTextField("Ingresa tu contraseña", Colors.black26, Icons.password, Icons.visibility_off_outlined),
+                myTextField("Ingresa el codigo", Colors.black26, Icons.security_rounded, null),
 
                 SizedBox(height: size.height * 0.04),
                 Padding(
@@ -45,9 +58,9 @@ class SignIn extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                               context,
-                            MaterialPageRoute(builder: (context) => BlocProvider(create:
-                            (context) => BottomNavCubit(),
-                            child: const MainWrapper(),))
+                              MaterialPageRoute(builder:
+                          (context) => const ResetP(),
+                              )
                           );
                         },
                         child: Container(
@@ -59,54 +72,16 @@ class SignIn extends StatelessWidget {
                           ),
                           child: const Center(
                             child: Text(
-                              "Iniciar Sesion",
+                              "Verificar Codigo",
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 22
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 22
                               ),
                             ),
                           ),
                         ),
 
-                      ),
-                      SizedBox(height: size.height * 0.07),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                            MaterialPageRoute(
-                              builder: (context) => RequestNP(),
-                            ),
-                          );
-                          },
-                        child: Text.rich(
-                          TextSpan(
-                            text: "¿Has olvidado la contraseña? ",
-                            style: TextStyle(
-                              color: textColor2,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.03),
-                      Text.rich(
-                        TextSpan(
-                            text: "¿No tienes una cuenta? ",
-                            style: TextStyle(
-                              color: textColor2,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                            children: const [ TextSpan(
-                              text: "Registrate",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),)]
-                        ),
                       ),
                     ],
                   ),
@@ -145,21 +120,21 @@ class SignIn extends StatelessWidget {
       ),
       child: TextField(
         decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 22,
-            ),
-            fillColor: Colors.white,
-            filled: true,
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(50),
-            ),
-            hintText: hint,
-            hintStyle: const TextStyle(
-              color: Colors.black45,
-              fontSize: 19,
-            ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 22,
+          ),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          hintText: hint,
+          hintStyle: const TextStyle(
+            color: Colors.black45,
+            fontSize: 19,
+          ),
 
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 10),
