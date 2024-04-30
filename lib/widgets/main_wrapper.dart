@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/app_painter.dart';
@@ -6,11 +7,11 @@ import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/pages/pages.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
+import 'package:familylost_faan/pages/profile_page.dart'; // Importa la página del perfil
 
 import '../Utils/colors.dart';
 import '../Utils/colors.dart';
@@ -39,12 +40,13 @@ class _MainWrapperState extends State<MainWrapper> {
     super.dispose();
   }
 
-  //List of Pages: Home, Search, Profile
+  // List of Pages: Home, Search, Profile
   final List<Widget> pages = [
     HomePage(),
     FavoritePage(),
     HomePage(),
     HomePage(),
+    ProfilePage(),
   ];
 
   void onPageChanged(int page) {
@@ -56,7 +58,7 @@ class _MainWrapperState extends State<MainWrapper> {
     return Scaffold(
       appBar: _mainWrapperAppBar(),
       body: CustomPaint(
-        //painter: AppPainter(),
+        // painter: AppPainter(),
         child: _mainWrapperBody(),
       ),
       bottomNavigationBar: _mainWrapperBottomNavBar(context),
@@ -74,7 +76,7 @@ class _MainWrapperState extends State<MainWrapper> {
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
       ),
-      backgroundColor: Colors.transparent, //COLOR BACKGROUND
+      backgroundColor: Colors.transparent, // COLOR BACKGROUND
       title: const Text('Hola, Usuario!'),
       leading: Center(
         child: CircleAvatar(
@@ -91,7 +93,7 @@ class _MainWrapperState extends State<MainWrapper> {
               _buildOutlinedButton(
                 AppStrings.navigationLost,
                 () {
-                  //TODO: Implement Lost Filter
+                  // TODO: Implementar filtro de "Lost"
                 },
               ),
               const SizedBox(width: 8),
@@ -99,7 +101,7 @@ class _MainWrapperState extends State<MainWrapper> {
               _buildOutlinedButton(
                 AppStrings.navigationFound,
                 () {
-                  //TODO: Implement Found Filter
+                  // TODO: Implementar filtro de "Found"
                 },
               ),
               const SizedBox(width: 8),
@@ -107,7 +109,7 @@ class _MainWrapperState extends State<MainWrapper> {
               _buildOutlinedButton(
                 AppStrings.navigationAdoption,
                 () {
-                  //TODO: Implement Adoption Filter
+                  // TODO: Implementar filtro de "Adoption"
                 },
               ),
             ],
@@ -199,7 +201,7 @@ class _MainWrapperState extends State<MainWrapper> {
                 _bottomAppBarItem(
                   context,
                   defaultIcon: IconlyLight.profile,
-                  page: 3,
+                  page: 4, // Cambia la página a 4 para el perfil
                   label: "Profile",
                   filledIcon: IconlyBold.profile,
                 ),

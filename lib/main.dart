@@ -43,5 +43,4 @@ class LostFamilyApp extends StatelessWidget {
       home: MySplashScreen(),
     );
   }
-
 }
