@@ -11,7 +11,7 @@ class MySplashScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        color: backgroundColor1,
+        color: backgroundColor5,
         height: size.height,
         width: size.width,
         child: Stack(
@@ -26,11 +26,12 @@ class MySplashScreen extends StatelessWidget {
                     bottomLeft: Radius.circular(40),
                     bottomRight: Radius.circular(40),
                   ),
-                  color: primaryColor,
+                  color: backgroundColor5,
                   image: const DecorationImage(
                     image: AssetImage(
-                      "images/image.png",
+                      "images/Logo.png",
                     ),
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
@@ -42,18 +43,11 @@ class MySplashScreen extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: [
-                    Text(
-                      "Insertar Imagen*",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 40,
-                          color: textColor1,
-                          height: 1.2),
-                    ),
                     const SizedBox(height: 30),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 50.0), // Ajusta el valor según sea necesario
+                      padding: EdgeInsets.symmetric(
+                          horizontal:
+                              50.0), // Ajusta el valor según sea necesario
                       child: Text(
                         "Cada mascota merece experimentar el amor y la alegría de un hogar. Únete a nosotros en nuestra misión de hacer que eso se convierta en una realidad para cada uno de ellos \n ¡Inicia sesión o regístrate ahora y sé parte de este viaje de amor y rescate!",
                         textAlign: TextAlign.justify,
@@ -63,7 +57,6 @@ class MySplashScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     SizedBox(height: size.height * 0.07),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -92,14 +85,14 @@ class MySplashScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               GestureDetector(
-                                  onTap: (){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Register(),
-                                      ),
-                                    );
-                                  },
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Register(),
+                                    ),
+                                  );
+                                },
                                 child: Container(
                                   height: size.height * 0.08,
                                   width: size.width / 2.2,
@@ -109,7 +102,7 @@ class MySplashScreen extends StatelessWidget {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "Registro",
+                                      "Omitir",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -119,7 +112,6 @@ class MySplashScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-
                               const Spacer(),
                               GestureDetector(
                                 onTap: () {
@@ -131,7 +123,7 @@ class MySplashScreen extends StatelessWidget {
                                   );
                                 },
                                 child: Text(
-                                  "Iniciar sesion",
+                                  "Siguiente",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
