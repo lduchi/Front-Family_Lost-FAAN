@@ -14,8 +14,7 @@ class MenuProfile extends StatelessWidget {
         shrinkWrap: true,
         children: [
           Container(
-            // Utilizamos un contenedor para el DrawerHeader
-            height: 200, // Establecemos una altura fija para el DrawerHeader
+            height: 200,
             child: DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
