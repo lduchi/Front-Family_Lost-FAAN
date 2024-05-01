@@ -13,42 +13,64 @@ class MenuProfile extends StatelessWidget {
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         children: [
-          Container(
-            height: 200,
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage('images/pet1.png'),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'ELIZABETH PEÑAFIEL',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'ELIZABETH PEÑAFIEL',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 0, 42, 109),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        '+593 96 947 5973',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5),
-                  Text(
-                    '+593 96 947 5973',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           ListTile(
             leading: Icon(Icons.edit),
-            title: Text('Profile Settings'),
+            title: Text(
+              'Profile Settings',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+                color: Color.fromARGB(255, 0, 42, 109),
+              ),
+            ),
+            subtitle: Text(
+              'Actualiza y modifica tu perfil',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -58,7 +80,21 @@ class MenuProfile extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.privacy_tip),
-            title: Text('Privacidad'),
+            title: Text(
+              'Privacidad',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+                color: Color.fromARGB(255, 0, 42, 109),
+              ),
+            ),
+            subtitle: Text(
+              'Cambia tu contraseña',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -68,7 +104,21 @@ class MenuProfile extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.logout),
-            title: Text('Cerrar Sesión'),
+            title: Text(
+              'Cerrar Sesión',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+                color: Color.fromARGB(255, 0, 42, 109),
+              ),
+            ),
+            subtitle: Text(
+              'Cierra tu sesión de forma segura',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                 context,
