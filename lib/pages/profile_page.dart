@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/profile/Menu_profile.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart'; // Importa la clase AppFonts
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -38,15 +39,15 @@ class ProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Elizabeth Penafiel',
-                  style: TextStyle(
+                  'Elizabeth Peñafiel',
+                  style: AppFonts.title.copyWith(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   'elizabethpeñafiel@gmail.com',
-                  style: TextStyle(
+                  style: AppFonts.caption.copyWith(
                     fontSize: 14,
                     color: const Color.fromARGB(255, 101, 98, 98),
                   ),
@@ -61,9 +62,9 @@ class ProfilePage extends StatelessWidget {
                       },
                       child: Text(
                         'Publicaciones',
-                        style: TextStyle(
+                        style: AppFonts.button.copyWith(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                           color: Color.fromARGB(255, 82, 82, 82),
                         ),
                       ),
@@ -75,7 +76,7 @@ class ProfilePage extends StatelessWidget {
                       },
                       child: Text(
                         'Otro',
-                        style: TextStyle(
+                        style: AppFonts.button.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 82, 82, 82),
