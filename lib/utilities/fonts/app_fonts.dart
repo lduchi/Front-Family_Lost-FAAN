@@ -29,6 +29,12 @@ class AppFonts {
         fontWeight: FontWeight.w500,
       );
 
+  static TextStyle get TextField => GoogleFonts.poppins(
+        fontSize: 14.0,
+        fontWeight: FontWeight.w300,
+        color: Color.fromARGB(185, 215, 215, 215),
+      );
+
   /**
        * Dialogs
        */

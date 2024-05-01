@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart'; // Importa la clase AppFonts
 
 class PrivacidaProfile extends StatelessWidget {
   const PrivacidaProfile({super.key});
@@ -8,23 +9,26 @@ class PrivacidaProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cambiar Contraseña'),
+        title: Text(
+          'Cambiar Contraseña',
+          style: AppFonts.title,
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
           SizedBox(height: 10),
-          _buildPasswordFieldWithIcon(
-              CupertinoIcons.lock, "Ingrese Contraseña nueva"),
+          _buildPasswordFieldWithIcon(CupertinoIcons.lock,
+              "Ingrese Contraseña nueva", AppFonts.TextField),
           SizedBox(height: 10),
           _buildPasswordFieldWithIcon(
-              CupertinoIcons.lock, "Repetir contraseña"),
+              CupertinoIcons.lock, "Repetir contraseña", AppFonts.TextField),
           SizedBox(height: 20),
           SizedBox(
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                // Implementar la lógica para validar y procesar el registro
+                // Implementa la lógica para validar y procesar el registro
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF009AB0),
@@ -34,9 +38,8 @@ class PrivacidaProfile extends StatelessWidget {
               ),
               child: Text(
                 "Aceptar",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style:
+                    AppFonts.button, // Utiliza el estilo de botón de AppFonts
               ),
             ),
           ),
@@ -45,8 +48,8 @@ class PrivacidaProfile extends StatelessWidget {
     );
   }
 
-//////////////////////
-  Widget _buildPasswordFieldWithIcon(IconData icon, String label) {
+  Widget _buildPasswordFieldWithIcon(
+      IconData icon, String label, TextStyle textStyle) {
     bool _obscureText = true;
 
     return Container(

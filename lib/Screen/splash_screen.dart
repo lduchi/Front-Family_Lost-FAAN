@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:familylost_faan/Screen/sign_in.dart';
 import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
-import 'package:flutter/material.dart';
 import '../Utils/colors.dart';
 import 'Register.dart';
 
@@ -50,10 +50,10 @@ class MySplashScreen extends StatelessWidget {
                           horizontal:
                               50.0), // Ajusta el valor según sea necesario
                       child: Text(
-                        "Cada mascota merece experimentar el amor y la alegría de un hogar. Únete a nosotros en nuestra misión de hacer que eso se convierta en una realidad para cada uno de ellos \n ¡Inicia sesión o regístrate ahora y sé parte de este viaje de amor y rescate!",
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          fontSize: 18,
+                        "Cada mascota merece experimentar el amor y la alegría de un hogar. Únete a nosotros en nuestra misión de hacer que eso se convierta en una realidad para cada uno de ellos.\n¡Inicia sesión o regístrate ahora y sé parte de este viaje de amor y rescate!",
+                        textAlign: TextAlign.start,
+                        style: AppFonts.caption.copyWith(
+                          fontSize: 15.5,
                           color: textColor2,
                         ),
                       ),
@@ -104,9 +104,10 @@ class MySplashScreen extends StatelessWidget {
                                   child: Center(
                                     child: Text(
                                       "Omitir",
-                                      style: TextStyle(
+                                      style: AppFonts.button.copyWith(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20,
+                                        fontSize:
+                                            18, // Ajuste del tamaño del botón
                                         color: textColor3,
                                       ),
                                     ),
@@ -125,9 +126,9 @@ class MySplashScreen extends StatelessWidget {
                                 },
                                 child: Text(
                                   "Siguiente",
-                                  style: TextStyle(
+                                  style: AppFonts.button.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: 18, // Ajuste del tamaño del botón
                                     color: textColor1,
                                   ),
                                 ),

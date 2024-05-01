@@ -23,6 +23,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
+
   //Se llama para mostrar pantalla
   
 
@@ -125,8 +126,11 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
               ),
             ],
           ),
-        ),
-      ),
+        )
+      )
     );
   }
 }
+
+  
+
