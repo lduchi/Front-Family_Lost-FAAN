@@ -1,5 +1,6 @@
 import 'package:familylost_faan/pages/cubit/HeardBorder.dart';
 import 'package:flutter/material.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 
 class DetallesAnimal extends StatelessWidget {
   final String image;
@@ -9,14 +10,23 @@ class DetallesAnimal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //DateTime date = DateTime.parse('2024-04-20'); 
+    //DateTime date = DateTime.parse('2024-04-20');
     //String formattedDate = Date('dd/MM/yyyy').format(date);
+
+    //DateTime date = DateTime.parse('2024-04-20');
+    //String formattedDate = formatDate(date);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalles Animal'),
+        backgroundColor: Color(0xFF009AB0),
+        title: Text('Detalle Animal'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+           // Navigator.pop(context);
+          },
+        ),
       ),
-
-      
       body: Container(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -39,7 +49,6 @@ class DetallesAnimal extends StatelessWidget {
                 HeartButton(
                   onPressed: () {
                     // Acción del botón de corazón
-                    
                   },
                 ),
                 Text(
@@ -88,26 +97,26 @@ class DetallesAnimal extends StatelessWidget {
             ),
             SizedBox(height: 20),
             SizedBox(
-            height: 50,
-            width: 400,
-            child: ElevatedButton(
-              onPressed: () {
-                // Logica para el boton de estado
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF009AB0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+              height: 50,
+              width: 400,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Logica para el boton de estado
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF009AB0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                 ),
-              ),
-              child: Text(
-                "ESTADO",
-                style: TextStyle(
-                  color: Colors.white,
+                child: Text(
+                  "ESTADO",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
             // Otros widgets para mostrar los detalles del animal
           ],
         ),
