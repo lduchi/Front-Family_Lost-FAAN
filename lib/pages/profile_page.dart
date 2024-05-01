@@ -47,7 +47,7 @@ class ProfilePage extends StatelessWidget {
                 Text(
                   'elizabethpeñafiel@gmail.com',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     color: const Color.fromARGB(255, 101, 98, 98),
                   ),
                 ),
