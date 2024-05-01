@@ -24,87 +24,84 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
     _deviceWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
-      child: Hero(
-        tag: widget.image,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(5),
-                  bottomLeft: Radius.circular(5),
-                ),
-                image: DecorationImage(
-                  image: AssetImage(widget.image),
-                  fit: BoxFit.cover,
-                ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(5),
+                bottomLeft: Radius.circular(5),
               ),
-              width:  _deviceWidth * 0.3, 
-              height: _deviceHeight * 0.2,
+              image: DecorationImage(
+                image: AssetImage(widget.image),
+                fit: BoxFit.cover,
+              ),
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Nombre Animal',
-                    style: AppFonts.title,
+            width: _deviceWidth * 0.3,
+            height: _deviceHeight * 0.2,
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Nombre Animal',
+                  style: AppFonts.title,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Raza Animal',
+                  style: AppFonts.primary,
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AppIcons.locationIcon,
+                    const SizedBox(width: 2),
+                    Text(
+                      AppStrings.labelLocation,
+                      style: AppFonts.primary,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _isContactButtonPressed = !_isContactButtonPressed;
+                    });
+                    // TODO: Implement contact action
+                  },
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(0),
+                    backgroundColor: MaterialStateProperty.all(
+                      AppColors.transparentBackgroundColor,
+                    ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Raza Animal',
-                    style: AppFonts.primary,
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      AppIcons.locationIcon,
-                      const SizedBox(width: 2),
+                      Icon(
+                        AppIcons.whatsAppIcon.icon,
+                        color: AppColors.whatsAppGreen,
+                      ),
+                      const SizedBox(width: 4),
                       Text(
-                        AppStrings.labelLocation,
-                        style: AppFonts.primary,
+                        AppStrings.labelContact,
+                        style: AppFonts.caption.copyWith(
+                          color: AppColors.whatsAppGreen,
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isContactButtonPressed = !_isContactButtonPressed;
-                      });
-                      // TODO: Implement contact action
-                    },
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      backgroundColor: MaterialStateProperty.all(
-                          AppColors.transparentBackgroundColor),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          AppIcons.whatsAppIcon.icon,
-                          color: AppColors
-                              .whatsAppGreen,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          AppStrings.labelContact,
-                          style: AppFonts.caption.copyWith(
-                            color: AppColors.whatsAppGreen,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

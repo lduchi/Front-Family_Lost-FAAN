@@ -56,7 +56,8 @@ class _MainWrapperState extends State<MainWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _mainWrapperAppBar(),
+      //appBar: _mainWrapperAppBar(),
+      appBar: _appBarBuilder(context.watch<BottomNavCubit>().state.toDouble()),
       body: CustomPaint(
         // painter: AppPainter(),
         child: _mainWrapperBody(),
@@ -64,6 +65,41 @@ class _MainWrapperState extends State<MainWrapper> {
       bottomNavigationBar: _mainWrapperBottomNavBar(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _mainWrapperFab(),
+    );
+  }
+
+
+// AppBar - MainWrapper Widget - Example of a custom conditional AppBar
+  AppBar _appBarBuilder(double indexPage) {
+    return AppBar(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.light,
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+      backgroundColor: Colors.transparent,
+      title: Text(
+        indexPage == 0
+            ? AppStrings.navigationHome
+            : indexPage == 1
+                ? AppStrings.buttonAccept
+                : indexPage == 2
+                    ? AppStrings.buttonBack
+                    : AppStrings.navigationProfile,
+
+      ),
+      leading: Center(
+        child: CircleAvatar(
+          radius: 16,
+          backgroundImage: AssetImage(AssetManager.exampleImage),
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: AppIcons.notificationIcon,
+        ),
+      ],
     );
   }
 
