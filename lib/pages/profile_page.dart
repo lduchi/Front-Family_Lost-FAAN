@@ -6,22 +6,20 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Mi Perfil'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              // Navegar a la página del menú del perfil (MenuProfile)
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MenuProfile()),
-              );
-            },
-          ),
-        ],
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            _scaffoldKey.currentState!.openDrawer();
+          },
+        ),
       ),
+      drawer: MenuProfile(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
