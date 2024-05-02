@@ -1,8 +1,13 @@
 
 import 'package:familylost_faan/Screen/RequestNP.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
+import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/utilities/icons/app_icons.dart';
+import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../Utils/colors.dart';
 import '../widgets/main_wrapper.dart';
 
@@ -13,6 +18,46 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: Row( // Contains the logo of the app
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              AppStrings.homeTitle,
+              style: GoogleFonts.poppins(
+                color: AppColors.mainColor,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,),
+            ),
+          ],
+        ),
+        iconTheme: IconThemeData(
+          color: AppColors.mainColor,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.light,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+        backgroundColor: AppColors.secondaryMainColor,
+        actions: [
+          IconButton(
+            icon: AppIcons.closeIconBlack,
+            onPressed: () {
+              // Navegar a la página principal o a la pantalla deseada
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (context) => BottomNavCubit(),
+                    child: const MainWrapper(isLoggedIn: false),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -47,7 +92,7 @@ class SignIn extends StatelessWidget {
                               context,
                             MaterialPageRoute(builder: (context) => BlocProvider(create:
                             (context) => BottomNavCubit(),
-                            child: const MainWrapper(),))
+                            child: const MainWrapper(isLoggedIn: true),)) //<-- Change this to the page you want to navigate to after login
                           );
                         },
                         child: Container(

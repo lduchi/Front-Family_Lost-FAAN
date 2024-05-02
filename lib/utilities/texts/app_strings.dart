@@ -1,5 +1,5 @@
 class AppStrings {
-  static const String homeTitle = 'Mi Aplicación';
+  static const String homeTitle = 'Family Lost';
   static const String homeSubtitle = '¡Hola Mundo!';
   static const String buttonText = 'Presióname';
   static const String hintText = 'Ingresa algo aquí';

@@ -62,7 +62,7 @@ class ResetP extends StatelessWidget {
                               context,
                             MaterialPageRoute(builder: (context) => BlocProvider(create:
                             (context) => BottomNavCubit(),
-                            child: const MainWrapper(),))
+                            child: const MainWrapper(isLoggedIn: true,),))
                           );
                         },
                         child: Container(

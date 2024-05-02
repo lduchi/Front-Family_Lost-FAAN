@@ -50,4 +50,9 @@ class AppColors {
    * Button Ac Color
    */
   static const Color msgDialogColor = Color(0xFF808080);
+
+  /**
+   * Icon Color
+   */
+  static const Color icnColor = Color(0xFF000000);
 }
