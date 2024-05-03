@@ -1,8 +1,13 @@
 
 import 'package:familylost_faan/Screen/ResetP.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
+import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/utilities/icons/app_icons.dart';
+import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../Utils/colors.dart';
 import '../widgets/main_wrapper.dart';
 
@@ -12,6 +17,46 @@ class VerifyC extends StatelessWidget{
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: Row( // Contains the logo of the app
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              AppStrings.homeTitle,
+              style: GoogleFonts.poppins(
+                color: AppColors.mainColor,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,),
+            ),
+          ],
+        ),
+        iconTheme: IconThemeData(
+          color: AppColors.mainColor,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.light,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+        backgroundColor: AppColors.secondaryMainColor,
+        actions: [
+          IconButton(
+            icon: AppIcons.closeIconBlack,
+            onPressed: () {
+              // Navegar a la página principal o a la pantalla deseada
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (context) => BottomNavCubit(),
+                    child: const MainWrapper(isLoggedIn: false),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -26,7 +71,26 @@ class VerifyC extends StatelessWidget{
         child: SafeArea(
             child: ListView(
               children: [
-                SizedBox(height: size.height * 0.30),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    height: size.height * 0.35,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(40),
+                        bottomRight: Radius.circular(40),
+                      ),
+                      color: Colors.transparent,
+                      image: const DecorationImage(
+                        image: AssetImage(
+                          "images/Logo.png",
+                        ),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
 
                 SizedBox(height: size.height * 0.03),
                 Text(

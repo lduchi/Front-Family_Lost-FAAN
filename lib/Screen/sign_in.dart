@@ -72,7 +72,26 @@ class SignIn extends StatelessWidget {
         child: SafeArea(
             child: ListView(
               children: [
-                SizedBox(height: size.height * 0.30),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    height: size.height * 0.30,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(40),
+                        bottomRight: Radius.circular(40),
+                      ),
+                      color: Colors.transparent,
+                      image: const DecorationImage(
+                        image: AssetImage(
+                          "images/Logo.png",
+                        ),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
 
                 SizedBox(height: size.height * 0.04),
                 // for username and password
