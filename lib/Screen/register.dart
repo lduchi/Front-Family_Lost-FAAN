@@ -1,13 +1,91 @@
+import 'package:familylost_faan/ServiciosApp/services/usuarios_service.dart';
 import 'package:flutter/material.dart';
 import '../Utils/colors.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
 }
 
+//gets del registro
+TextEditingController nombreController = TextEditingController();
+TextEditingController apellidoController = TextEditingController();
+TextEditingController direccionController = TextEditingController();
+TextEditingController celularController = TextEditingController();
+TextEditingController emailController = TextEditingController();
+TextEditingController usernameController = TextEditingController();
+TextEditingController paswordController = TextEditingController();
+TextEditingController rolController = TextEditingController();
+
 class _RegisterState extends State<Register> {
   bool _isPasswordVisible = false; // State variable for password visibility
+  //Servicio
+ // final _apiService = UsuariosService();
+
+  //Funcion  par el registro
+  Future<void> _registerUser() async {
+    try {
+      // Collect user input data
+      final name = nombreController.text;
+      final lastName = apellidoController.text;
+      final address = direccionController.text;
+      final phone = celularController.text;
+      final email = emailController.text;
+      final username = usernameController.text;
+      final password = paswordController.text;
+      final rol = rolController.text;
+      //final confirmPassword = myTextFieldController8.text;
+
+      // Validate the input data
+      if (name.isEmpty ||
+          lastName.isEmpty ||
+          address.isEmpty ||
+          phone.isEmpty ||
+          email.isEmpty ||
+          username.isEmpty ||
+          password.isEmpty) {
+        throw Exception("All fields are required");
+      }
+
+      /* if (password != confirmPassword) {
+      throw Exception("Passwords do not match");
+    }*/
+
+      // Prepare the data to send
+      final data = {
+        "nombre": name,
+        "apellido": lastName,
+        "direccion": address,
+        "telefono": phone,
+        "email": email,
+        "username": username,
+        "password": password,
+      };
+
+      // Send the POST request
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8080/auth/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(data),
+      );
+
+      // Handle the response
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = json.decode(response.body);
+        // Handle successful registration
+        print(responseData);
+      } else {
+        throw Exception('Failed to register user');
+      }
+    } catch (e) {
+      print(e);
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,54 +119,56 @@ class _RegisterState extends State<Register> {
               SizedBox(height: size.height * 0.05), // Spacing
 
               // User Input TextFields (Middle 1/3)
-             Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  myTextField("Nombre de usuario"),
+                  myTextField1("Ingrese nombre", nombreController),
                   SizedBox(height: size.height * 0.01),
-                  myTextField("Correo electrónico"),
+                  myTextField1("Ingrese apellido", apellidoController),
                   SizedBox(height: size.height * 0.01),
-                  myTextField("Nombres"),
+                  myTextField1("Ingrese direccion", direccionController),
                   SizedBox(height: size.height * 0.01),
-                  myTextField("Apellidos"),
+                  myTextField1("Ingrese telefono", celularController),
                   SizedBox(height: size.height * 0.01),
-                  myTextField("Identificación"),
+                  myTextField1("Ingrese email", emailController),
                   SizedBox(height: size.height * 0.01),
-                  myTextField("Dirección"),
+                  myTextField1("Ingrese username", usernameController),
                   SizedBox(height: size.height * 0.01),
-                  myTextField("Teléfono"),
+                  myTextFieldPassword("Password", paswordController),
                   SizedBox(height: size.height * 0.01),
-                  myTextFieldPassword("Contraseña"),
+                  myTextFieldPassword("Repeat Password", paswordController),
                   SizedBox(height: size.height * 0.01),
-                  myTextFieldPassword("Confirmar contraseña"),
-                  SizedBox(height: size.height * 0.01),
-                  myTextField("Rol"),
+                  myTextFieldRol("Rol", rolController),
                   SizedBox(height: size.height * 0.03),
                 ],
               ),
 
-
               // Registration Button (Middle 1/3)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  width: 151,
-                  height: 45,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(
-                      color: Color(0xFF04A1C4),
-                    ),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Registrarse",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                child: InkWell(
+                  onTap: () async {
+                    await _registerUser();
+                  },
+                  child: Container(
+                    width: 151,
+                    height: 45,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
                         color: Color(0xFF04A1C4),
-                        fontSize: 18,
+                      ),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Registrarse",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF04A1C4),
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
@@ -117,9 +197,11 @@ class _RegisterState extends State<Register> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  socialLoginButton("images/google.png", "Google", Color(0xFFFFFFFF), Color(0xFFE74C3C)),
+                  socialLoginButton("images/google.png", "Google",
+                      Color(0xFFFFFFFF), Color(0xFFE74C3C)),
                   SizedBox(height: size.height * 0.01),
-                  socialLoginButton("images/facebook.png", "Facebook", Color(0xFFFFFFFF), Color(0xFF3498DB)),
+                  socialLoginButton("images/facebook.png", "Facebook",
+                      Color(0xFFFFFFFF), Color(0xFF3498DB)),
                 ],
               ),
             ],
@@ -127,76 +209,118 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+
+    //METODO
   }
 
-Container myTextField(String hint) {
-  return Container(
-    width: 354,
-    height: 52.04,
-    margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(
-        color: Color(0xFFC0C0C0),
-      ),
-    ),
-    child: TextField(
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        hintText: hint,
-        hintStyle: const TextStyle(
+  Container myTextField1(String hint, TextEditingController controller) {
+    return Container(
+      width: 354,
+      height: 52.04,
+      margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
           color: Color(0xFFC0C0C0),
-          fontSize: 19,
         ),
-        border: InputBorder.none,
       ),
-    ),
-  );
-}
-
-Container myTextFieldPassword(String hint) {
-  return Container(
-    width: 354,
-    height: 52.04,
-    margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(
-        color: Color(0xFFC0C0C0),
-      ),
-    ),
-    child: TextField(
-      obscureText: !_isPasswordVisible, // Toggle visibility based on state
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        hintText: hint,
-        hintStyle: const TextStyle(
-          color: Color(0xFFC0C0C0),
-          fontSize: 19,
-        ),
-        border: InputBorder.none,
-        suffixIcon: IconButton(
-          icon: Icon(
-            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          hintText: hint,
+          hintStyle: const TextStyle(
+            color: Color(0xFFC0C0C0),
+            fontSize: 19,
           ),
-          onPressed: () {
-            setState(() {
-              _isPasswordVisible = !_isPasswordVisible; // Toggle state
-            });
-          },
+          border: InputBorder.none,
         ),
       ),
+    );
+  }
+
+  Container myTextFieldPassword(String hint, TextEditingController controller) {
+    return Container(
+      width: 354,
+      height: 52.04,
+      margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Color(0xFFC0C0C0),
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: !_isPasswordVisible,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          hintText: hint,
+          hintStyle: const TextStyle(
+            color: Color(0xFFC0C0C0),
+            fontSize: 19,
+          ),
+          border: InputBorder.none,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  String? selectedRol;
+
+ Container myTextFieldRol(String hint, TextEditingController controller) {
+  return Container(
+    width: 354,
+    height: 52.04,
+    margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(
+        color: Color(0xFFC0C0C0),
+      ),
+    ),
+    child: DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        labelText: hint,
+        border: InputBorder.none,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+      ),
+      value: selectedRol,
+      items: [
+        DropdownMenuItem<String>(
+          value: "USER",
+          child: Text("USER"),
+        ),
+      ],
+      onChanged: (value) {
+        setState(() {
+          selectedRol = value;
+        });
+      },
     ),
   );
 }
 
-
-
-  Container socialLoginButton(String image, String text, Color backgroundColor, Color borderColor) {
+  Container socialLoginButton(
+      String image, String text, Color backgroundColor, Color borderColor) {
     return Container(
       width: 354,
       height: 52.04,
