@@ -1,4 +1,4 @@
-import 'package:familylost_faan/Screen/sign_in.dart';
+import 'package:familylost_faan/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../Utils/colors.dart';
@@ -9,6 +9,8 @@ class MySplashScreen2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return MaterialApp(
       title: 'Container Example',
       home: Scaffold(
@@ -24,6 +26,73 @@ class MySplashScreen2 extends StatelessWidget {
                 _buildRowContainer("Encontrados", "Con Family Lost FANN hemos podido encontrar más de 40 mascotas en la ciudad de Cuenca."),
                 SizedBox(height: 20),
                 _buildRowContainer("Adopcion","Con Family Lost FANN hemos podido dar en adopción a más de 60 mascotas en la ciudad de Cuenca."),
+              ],
+            ),
+          ),
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Container(
+            width: size.width, // Ancho igual al ancho de la pantalla
+            decoration: BoxDecoration(
+              border: Border.all(color: textColor1), // Agregamos un borde al contenedor
+              borderRadius: BorderRadius.circular(50), // Borde redondeado
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Register(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: size.height * 0.08,
+                    width: size.width /2.5, // Dividimos el ancho en tres partes
+                    decoration: BoxDecoration(
+                      color: general,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Omitir",
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18, // Ajuste del tamaño del botón
+                          color: textColor3,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: size.height * 0.08,
+                    width: size.width / 2.5, // Dividimos el ancho en tres partes
+                    child: Center(
+                      child: Text(
+                        "Siguiente",
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18, // Ajuste del tamaño del botón
+                          color: textColor1,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
