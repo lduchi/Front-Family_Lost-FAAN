@@ -164,4 +164,12 @@ class AppNavigationScreen extends StatelessWidget {
   }
 }
 
-class AppRoutes {}
+class AppRoutes {
+
+  static const String edicionDetallPublicacionScreen = '/edicionDetallPublicacion';
+  static const String seleccionarTipoDePublicaciNScreen = '/seleccionarTipoDePublicaciN';
+  static const String publicaciNAnimalEncontradoScreen = '/publicaciNAnimalEncontrado';
+  static const String publicaciNAnimalPerdidoScreen = '/publicaciNAnimalPerdido';
+
+
+}
