@@ -5,9 +5,20 @@ class usuarios {
   String nombre = "";
   String username = "";
   String password = "";
-  String apeliido = "";
+  String apellido = "";
   String direccion = "";
   String telefono = "";
   String email = "";
   final Uint8List foto = Uint8List(0);
+
+  usuarios({
+    required this.nombre,
+    required this.apellido,
+    required this.direccion,
+    required this.telefono,
+    required this.email,
+    required this.username,
+    required this.password,
+   // required this.foto,
+  });
 }

@@ -22,70 +22,9 @@ TextEditingController rolController = TextEditingController();
 class _RegisterState extends State<Register> {
   bool _isPasswordVisible = false; // State variable for password visibility
   //Servicio
- // final _apiService = UsuariosService();
+  final _apiService = UsuariosService();
 
-  //Funcion  par el registro
-  Future<void> _registerUser() async {
-    try {
-      // Collect user input data
-      final name = nombreController.text;
-      final lastName = apellidoController.text;
-      final address = direccionController.text;
-      final phone = celularController.text;
-      final email = emailController.text;
-      final username = usernameController.text;
-      final password = paswordController.text;
-      final rol = rolController.text;
-      //final confirmPassword = myTextFieldController8.text;
-
-      // Validate the input data
-      if (name.isEmpty ||
-          lastName.isEmpty ||
-          address.isEmpty ||
-          phone.isEmpty ||
-          email.isEmpty ||
-          username.isEmpty ||
-          password.isEmpty) {
-        throw Exception("All fields are required");
-      }
-
-      /* if (password != confirmPassword) {
-      throw Exception("Passwords do not match");
-    }*/
-
-      // Prepare the data to send
-      final data = {
-        "nombre": name,
-        "apellido": lastName,
-        "direccion": address,
-        "telefono": phone,
-        "email": email,
-        "username": username,
-        "password": password,
-      };
-
-      // Send the POST request
-      final response = await http.post(
-        Uri.parse('http://10.0.2.2:8080/auth/register'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(data),
-      );
-
-      // Handle the response
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = json.decode(response.body);
-        // Handle successful registration
-        print(responseData);
-      } else {
-        throw Exception('Failed to register user');
-      }
-    } catch (e) {
-      print(e);
-      debugPrint(e.toString());
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -138,8 +77,8 @@ class _RegisterState extends State<Register> {
                   SizedBox(height: size.height * 0.01),
                   myTextFieldPassword("Repeat Password", paswordController),
                   SizedBox(height: size.height * 0.01),
-                  myTextFieldRol("Rol", rolController),
-                  SizedBox(height: size.height * 0.03),
+               /*   myTextFieldRol("", rolController),
+                  SizedBox(height: size.height * 0.03),*/
                 ],
               ),
 
@@ -148,7 +87,16 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
                   onTap: () async {
-                    await _registerUser();
+                    await _apiService.registerUser(
+                      nombreController.text,
+                      apellidoController.text,
+                      direccionController.text,
+                      celularController.text,
+                      emailController.text,
+                      usernameController.text,
+                      paswordController.text,
+                      rolController.text="USER",
+                    );
                   },
                   child: Container(
                     width: 151,
@@ -284,40 +232,40 @@ class _RegisterState extends State<Register> {
 
   String? selectedRol;
 
- Container myTextFieldRol(String hint, TextEditingController controller) {
-  return Container(
-    width: 354,
-    height: 52.04,
-    margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(
-        color: Color(0xFFC0C0C0),
-      ),
-    ),
-    child: DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: hint,
-        border: InputBorder.none,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-      ),
-      value: selectedRol,
-      items: [
-        DropdownMenuItem<String>(
-          value: "USER",
-          child: Text("USER"),
+  Container myTextFieldRol(String hint, TextEditingController controller) {
+    return Container(
+      width: 354,
+      height: 52.04,
+      margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Color(0xFFC0C0C0),
         ),
-      ],
-      onChanged: (value) {
-        setState(() {
-          selectedRol = value;
-        });
-      },
-    ),
-  );
-}
+      ),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: hint,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        ),
+        value: selectedRol,
+        items: [
+          DropdownMenuItem<String>(
+            value: "USER",
+            child: Text("USER"),
+          ),
+        ],
+        onChanged: (value) {
+          setState(() {
+            selectedRol = value;
+          });
+        },
+      ),
+    );
+  }
 
   Container socialLoginButton(
       String image, String text, Color backgroundColor, Color borderColor) {
