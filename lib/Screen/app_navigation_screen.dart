@@ -24,7 +24,7 @@ class AppNavigationScreen extends StatelessWidget {
                     decoration: AppDecoration.fillPrimary,
                     child: Column(
                       children: [
-                        /*_buildScreenTitle(
+                        _buildScreenTitle(
                           context,
                           screenTitle: "Edicion Detall. Publicacion",
                           onTapScreenTitle: () => onTapScreenTitle(context,
@@ -47,7 +47,7 @@ class AppNavigationScreen extends StatelessWidget {
                           screenTitle: "Publicación Animal Perdido",
                           onTapScreenTitle: () => onTapScreenTitle(
                               context, AppRoutes.publicaciNAnimalPerdidoScreen),
-                        )*/
+                        )
                       ],
                     ),
                   ),

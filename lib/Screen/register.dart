@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:familylost_faan/ServiciosApp/services/usuarios_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../Utils/colors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -18,13 +22,17 @@ TextEditingController emailController = TextEditingController();
 TextEditingController usernameController = TextEditingController();
 TextEditingController paswordController = TextEditingController();
 TextEditingController rolController = TextEditingController();
+//get para la imagen
+TextEditingController _datoFoto = new TextEditingController();
 
 class _RegisterState extends State<Register> {
-  bool _isPasswordVisible = false; // State variable for password visibility
-  //Servicio
+  bool _isPasswordVisible = false; // Variable para la visibilidad del password
+
+  //Se llama al servicio
   final _apiService = UsuariosService();
 
- 
+  //variable para almacenar imagen
+  String? _path;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +55,11 @@ class _RegisterState extends State<Register> {
               SizedBox(height: size.height * 0.1),
 
               // Centered App Icon
-              Center(
-                child: Image.asset(
-                  "images/icon.jpg", // Replace with your app icon image path
-                  height: size.height * 0.1,
-                  width: size.height * 0.1,
-                ),
-              ),
+              /*Center(
+                TextField (controller: _datoFoto),
+                (_path == null)? Container() : Image.file(File(_path), width: 200,),
+                RaisedButton
+              ),*/
 
               SizedBox(height: size.height * 0.05), // Spacing
 
@@ -61,7 +67,11 @@ class _RegisterState extends State<Register> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  myTextField1("Ingrese nombre", nombreController),
+                  myTextField1("Ingrese nombre", nombreController
+                      /* decoration: InputDecoration(           
+                        errorText: errorTextNombre,
+                      )*/
+                      ),
                   SizedBox(height: size.height * 0.01),
                   myTextField1("Ingrese apellido", apellidoController),
                   SizedBox(height: size.height * 0.01),
@@ -77,8 +87,6 @@ class _RegisterState extends State<Register> {
                   SizedBox(height: size.height * 0.01),
                   myTextFieldPassword("Repeat Password", paswordController),
                   SizedBox(height: size.height * 0.01),
-               /*   myTextFieldRol("", rolController),
-                  SizedBox(height: size.height * 0.03),*/
                 ],
               ),
 
@@ -95,7 +103,7 @@ class _RegisterState extends State<Register> {
                       emailController.text,
                       usernameController.text,
                       paswordController.text,
-                      rolController.text="USER",
+                      rolController.text = "USER" ,
                     );
                   },
                   child: Container(
@@ -161,7 +169,8 @@ class _RegisterState extends State<Register> {
     //METODO
   }
 
-  Container myTextField1(String hint, TextEditingController controller) {
+  Container myTextField1(String hint, TextEditingController controller,
+      {InputDecoration? decoration}) {
     return Container(
       width: 354,
       height: 52.04,
@@ -176,16 +185,26 @@ class _RegisterState extends State<Register> {
       ),
       child: TextField(
         controller: controller,
-        decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          hintText: hint,
-          hintStyle: const TextStyle(
-            color: Color(0xFFC0C0C0),
-            fontSize: 19,
-          ),
-          border: InputBorder.none,
-        ),
+        decoration: decoration?.copyWith(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              hintText: hint,
+              hintStyle: const TextStyle(
+                color: Color(0xFFC0C0C0),
+                fontSize: 19,
+              ),
+              border: InputBorder.none,
+            ) ??
+            InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              hintText: hint,
+              hintStyle: const TextStyle(
+                color: Color(0xFFC0C0C0),
+                fontSize: 19,
+              ),
+              border: InputBorder.none,
+            ),
       ),
     );
   }
@@ -301,3 +320,4 @@ class _RegisterState extends State<Register> {
     );
   }
 }
+
