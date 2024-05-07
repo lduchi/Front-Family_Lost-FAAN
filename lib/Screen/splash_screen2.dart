@@ -1,3 +1,4 @@
+import 'package:familylost_faan/Screen/sign_in.dart';
 import 'package:familylost_faan/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -74,7 +75,7 @@ class MySplashScreen2 extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomePage(),
+                        builder: (context) => const SignIn(),
                       ),
                     );
                   },
