@@ -34,14 +34,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
               builder: (context) => DetallesAnimal(image: widget.image)),
         );
       },
-      /*onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DetallesAnimal(image: widget.image),
-          ),
-        );
-      },*/
+      
       child: Container(
         color: Colors.white,
         child: Row(
