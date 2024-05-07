@@ -24,30 +24,30 @@ class AppNavigationScreen extends StatelessWidget {
                     decoration: AppDecoration.fillPrimary,
                     child: Column(
                       children: [
-                        _buildScreenTitle(
+                        /*_buildScreenTitle(
                           context,
                           screenTitle: "Edicion Detall. Publicacion",
-                          /*onTapScreenTitle: () => onTapScreenTitle(context,
-                              AppRoutes.edicionDetallPublicacionScreen),*/
+                          onTapScreenTitle: () => onTapScreenTitle(context,
+                              AppRoutes.edicionDetallPublicacionScreen),
                         ),
                         _buildScreenTitle(
                           context,
                           screenTitle: "Seleccionar Tipo de Publicación",
-                          /*onTapScreenTitle: () => onTapScreenTitle(context,
-                              AppRoutes.seleccionarTipoDePublicaciNScreen),*/
+                          onTapScreenTitle: () => onTapScreenTitle(context,
+                              AppRoutes.seleccionarTipoDePublicaciNScreen),
                         ),
                         _buildScreenTitle(
                           context,
                           screenTitle: "Publicación Animal Encontrado",
-                          /*onTapScreenTitle: () => onTapScreenTitle(context,
-                              AppRoutes.publicaciNAnimalEncontradoScreen),*/
+                          onTapScreenTitle: () => onTapScreenTitle(context,
+                              AppRoutes.publicaciNAnimalEncontradoScreen),
                         ),
                         _buildScreenTitle(
                           context,
                           screenTitle: "Publicación Animal Perdido",
-                          /*onTapScreenTitle: () => onTapScreenTitle(
-                              context, AppRoutes.publicaciNAnimalPerdidoScreen),*/
-                        )
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              context, AppRoutes.publicaciNAnimalPerdidoScreen),
+                        )*/
                       ],
                     ),
                   ),
@@ -165,4 +165,11 @@ class AppNavigationScreen extends StatelessWidget {
 }
 
 class AppRoutes {
+
+  static const String edicionDetallPublicacionScreen = '/edicionDetallPublicacion';
+  static const String seleccionarTipoDePublicaciNScreen = '/seleccionarTipoDePublicaciN';
+  static const String publicaciNAnimalEncontradoScreen = '/publicaciNAnimalEncontrado';
+  static const String publicaciNAnimalPerdidoScreen = '/publicaciNAnimalPerdido';
+
+
 }
