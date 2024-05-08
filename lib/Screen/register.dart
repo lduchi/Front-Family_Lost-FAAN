@@ -6,24 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../Utils/colors.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
 }
 
-//gets del registro
-TextEditingController nombreController = TextEditingController();
-TextEditingController apellidoController = TextEditingController();
-TextEditingController direccionController = TextEditingController();
-TextEditingController celularController = TextEditingController();
-TextEditingController emailController = TextEditingController();
-TextEditingController usernameController = TextEditingController();
-TextEditingController paswordController = TextEditingController();
-TextEditingController rolController = TextEditingController();
-//get para la imagen
-TextEditingController _datoFoto = new TextEditingController();
 
 class _RegisterState extends State<Register> {
   bool _isPasswordVisible = false; // Variable para la visibilidad del password
@@ -67,25 +56,21 @@ class _RegisterState extends State<Register> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  myTextField1("Ingrese nombre", nombreController
-                      /* decoration: InputDecoration(           
-                        errorText: errorTextNombre,
-                      )*/
-                      ),
+                  myTextField1("Ingrese nombre"),
                   SizedBox(height: size.height * 0.01),
-                  myTextField1("Ingrese apellido", apellidoController),
+                  myTextField1("Ingrese apellido"),
                   SizedBox(height: size.height * 0.01),
-                  myTextField1("Ingrese direccion", direccionController),
+                  myTextField1("Ingrese direccion"),
                   SizedBox(height: size.height * 0.01),
-                  myTextField1("Ingrese telefono", celularController),
+                  myTextField1("Ingrese telefono"),
                   SizedBox(height: size.height * 0.01),
-                  myTextField1("Ingrese email", emailController),
+                  myTextField1("Ingrese email"),
                   SizedBox(height: size.height * 0.01),
-                  myTextField1("Ingrese username", usernameController),
+                  myTextField1("Ingrese username"),
                   SizedBox(height: size.height * 0.01),
-                  myTextFieldPassword("Password", paswordController),
+                  myTextFieldPassword("Password"),
                   SizedBox(height: size.height * 0.01),
-                  myTextFieldPassword("Repeat Password", paswordController),
+                  myTextFieldPassword("Repeat Password"),
                   SizedBox(height: size.height * 0.01),
                 ],
               ),
@@ -94,7 +79,7 @@ class _RegisterState extends State<Register> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
-                  onTap: () async {
+                /*  onTap: () async {
                     await _apiService.registerUser(
                       nombreController.text,
                       apellidoController.text,
@@ -103,9 +88,9 @@ class _RegisterState extends State<Register> {
                       emailController.text,
                       usernameController.text,
                       paswordController.text,
-                      rolController.text = "USER" ,
+                      rolController.text = "USER",
                     );
-                  },
+                  },*/
                   child: Container(
                     width: 151,
                     height: 45,
@@ -169,7 +154,7 @@ class _RegisterState extends State<Register> {
     //METODO
   }
 
-  Container myTextField1(String hint, TextEditingController controller,
+  Container myTextField1(String hint, 
       {InputDecoration? decoration}) {
     return Container(
       width: 354,
@@ -184,7 +169,7 @@ class _RegisterState extends State<Register> {
         ),
       ),
       child: TextField(
-        controller: controller,
+        //controller: controller,
         decoration: decoration?.copyWith(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -209,7 +194,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Container myTextFieldPassword(String hint, TextEditingController controller) {
+  Container myTextFieldPassword(String hint, ) {
     return Container(
       width: 354,
       height: 52.04,
@@ -223,7 +208,7 @@ class _RegisterState extends State<Register> {
         ),
       ),
       child: TextField(
-        controller: controller,
+     //   controller: controller,
         obscureText: !_isPasswordVisible,
         decoration: InputDecoration(
           contentPadding:
@@ -320,4 +305,3 @@ class _RegisterState extends State<Register> {
     );
   }
 }
-

@@ -1,3 +1,4 @@
+import 'package:familylost_faan/Screen/RegisterPage.dart';
 import 'package:familylost_faan/Screen/splash_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/Screen/sign_in.dart';
@@ -91,7 +92,7 @@ class MySplashScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Register(),
+                                      builder: (context) => RegisterPage(),
                                     ),
                                   );
                                 },

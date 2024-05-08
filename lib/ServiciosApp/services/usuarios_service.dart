@@ -1,13 +1,28 @@
 import 'dart:convert';
+import 'package:familylost_faan/ServiciosApp/models/role.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:familylost_faan/ServiciosApp/Validaciones/validaciones_usuario.dart';
-import 'package:familylost_faan/ServiciosApp/models/usuarios.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class UsuariosService {
-  // ValidacionesUsuario validaciones ;
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.green,
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Text(
+            message,
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
 
   Future<void> registerUser(
     String nombre,
@@ -17,29 +32,21 @@ class UsuariosService {
     String email,
     String username,
     String password,
-    String rol,
+    Role role,
   ) async {
     try {
       var data = {
-        'nombre': nombre,
-        'apellido': apellido,
-        'direccion': direccion,
-        'telefono': telefono,
-        'email': email,
-        'username': username,
-        'password': password,
-        'rol': rol,
-        /* nombre : json as String,
-        apellido : json as String,
-         direccion : json as String,
-          telefono : json as String,
-           email : json as String,
-            username : json as String,
-             password : json as String,
-              rol : json as String,**/
+        "nombre": nombre,
+        "apellido": apellido,
+        "direccion": direccion,
+        "telefono": telefono,
+        "email": email,
+        "username": username,
+        "password": password,
+        "role": role.toString(),
       };
 
-      // Send the POST request
+      // Registro Usuarios
       final response = await http.post(
         Uri.parse('http://10.0.2.2:8080/auth/register'),
         headers: <String, String>{
@@ -50,11 +57,11 @@ class UsuariosService {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = json.decode(response.body);
-
         print(responseData);
+        print("Registro exitoso");
       } else {
         final errorBody = response.body;
-        if (errorBody != 'true' && errorBody.isNotEmpty) {
+        if (errorBody != null && errorBody.isNotEmpty) {
           final errorResponse = json.decode(errorBody);
           final errorMessage = errorResponse['message'];
           Fluttertoast.showToast(
@@ -64,14 +71,67 @@ class UsuariosService {
             backgroundColor: Colors.red,
             textColor: Colors.white,
           );
-          throw Exception('Failed to register user: $errorMessage');
+          throw Exception('fallo el registro del usuario: $errorMessage');
         } else {
-          throw Exception('Failed to register user');
+          throw Exception('Fallo el registro del usuario');
         }
       }
     } catch (e) {
       print(e);
-      //debugPrint();
+      debugPrint(e.toString());
     }
   }
+
+  /* Future<void> registerUser(
+    String nombre,
+    String apellido,
+    String direccion,
+    String telefono,
+    String email,
+    String username,
+    String password,
+    String role,
+  ) async {
+    final String apiUrl = "http://10.0.2.2:8080/auth/register";
+    final http.Client client = http.Client();
+
+    try {
+      final Map<String, String> headers = {
+        "Content-Type": "application/json",
+      };
+
+      final Map<String, dynamic> body = {
+        'nombre': nombre?? '',
+        'apellido': apellido?? '' ,
+        'direccion': direccion?? '',
+        'telefono': telefono?? '',
+        'email': email?? '',
+        'username': username?? '' ,
+        'password': password?? '' ,
+        'role': role?? '' ,
+      };
+
+      final http.Response response = await client.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: json.encode(body),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print(responseData);
+        print("Registro exitoso");
+      } else {
+        print("Registro fallido");
+      }
+    } catch (e) {
+      print(e);
+      debugPrint(e.toString());
+
+      // Show red SnackBar
+      print("Error de conexión");
+    } finally {
+      client.close();
+    }
+  }*/
 }
