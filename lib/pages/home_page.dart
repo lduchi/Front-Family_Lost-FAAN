@@ -1,7 +1,7 @@
 import 'package:familylost_faan/pages/animal_item_page.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
-import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
