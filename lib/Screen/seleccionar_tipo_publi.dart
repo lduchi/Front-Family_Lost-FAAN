@@ -2,7 +2,7 @@ import 'package:familylost_faan/Utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/utilities/colors/app_colors.dart';
 import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
-import 'package:fluttertoast/fluttertoast.dart'; // Importar fluttertoast
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SeleccionarTipoPopup extends StatefulWidget {
   @override
@@ -42,8 +42,7 @@ class _SeleccionarTipoPopupState extends State<SeleccionarTipoPopup> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center, // Centrar las opciones
         children: <Widget>[
-          SizedBox(
-              height: 6), // Reducir el espacio entre el título y las opciones
+          SizedBox(height: 6), // espacio entre el título y las opciones
           ListTile(
             title: const Text(
               'Perdido',
@@ -113,14 +112,13 @@ class _SeleccionarTipoPopupState extends State<SeleccionarTipoPopup> {
               });
             },
           ),
-          SizedBox(
-              height: 1), // Reducir el espacio entre las opciones y los botones
+          SizedBox(height: 1), // espacio entre las opciones y los botones
         ],
       ),
       actions: <Widget>[
         Row(
           mainAxisAlignment:
-              MainAxisAlignment.start, // Ajustar el espacio entre los botones
+              MainAxisAlignment.start, // espacio entre los botones
           children: <Widget>[
             Expanded(
               child: Container(
