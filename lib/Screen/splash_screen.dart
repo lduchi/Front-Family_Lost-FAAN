@@ -2,9 +2,8 @@ import 'package:familylost_faan/Screen/RegisterPage.dart';
 import 'package:familylost_faan/Screen/splash_screen2.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:familylost_faan/Screen/sign_in.dart';
 import '../Utils/colors.dart';
-import 'Register.dart';
+import 'package:familylost_faan/Screen/RegisterPage.dart';
 
 class MySplashScreen extends StatelessWidget {
   const MySplashScreen({super.key});

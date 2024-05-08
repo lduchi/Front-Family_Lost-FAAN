@@ -1,4 +1,4 @@
-import 'package:familylost_faan/Screen/Register.dart';
+import 'package:familylost_faan/Screen/RegisterPage.dart';
 import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/sign_in.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
@@ -387,7 +387,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Register(),
+                      builder: (context) =>  RegisterPage(),
                     ),
                   );
                 },

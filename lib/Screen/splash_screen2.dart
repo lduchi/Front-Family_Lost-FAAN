@@ -3,7 +3,7 @@ import 'package:familylost_faan/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../Utils/colors.dart';
-import 'Register.dart';
+import 'package:familylost_faan/Screen/RegisterPage.dart';
 
 class MySplashScreen2 extends StatelessWidget {
   const MySplashScreen2({Key? key});
@@ -47,7 +47,7 @@ class MySplashScreen2 extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Register(),
+                         builder: (context) => RegisterPage(),
                       ),
                     );
                   },
