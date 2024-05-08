@@ -1,6 +1,6 @@
 import 'package:familylost_faan/pages/detalles_animal.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
-import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';

@@ -1,10 +1,11 @@
 import 'package:familylost_faan/Screen/Register.dart';
+import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/sign_in.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/app_painter.dart';
-import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
@@ -21,7 +22,7 @@ import '../Utils/colors.dart';
 class MainWrapper extends StatefulWidget {
   final bool isLoggedIn;
 
-  const MainWrapper({super.key, required this.isLoggedIn}) ;
+  const MainWrapper({super.key, required this.isLoggedIn});
 
   @override
   State<MainWrapper> createState() => _MainWrapperState(isLoggedIn: isLoggedIn);
@@ -63,17 +64,18 @@ class _MainWrapperState extends State<MainWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isLoggedIn ? _mainLoggedWrapperAppBar() : _mainUnloggedWrapperAppBar(),
+      appBar: isLoggedIn
+          ? _mainLoggedWrapperAppBar()
+          : _mainUnloggedWrapperAppBar(),
       body: CustomPaint(
         // painter: AppPainter(),
         child: _mainWrapperBody(),
       ),
       bottomNavigationBar: _mainWrapperBottomNavBar(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _mainWrapperFab(),
+      floatingActionButton: _mainWrapperFab(context, isLoggedIn),
     );
   }
-
 
 // AppBar - MainWrapper Widget - Example of a custom conditional AppBar
   AppBar _appBarBuilder(double indexPage) {
@@ -92,7 +94,6 @@ class _MainWrapperState extends State<MainWrapper> {
                 : indexPage == 2
                     ? AppStrings.buttonBack
                     : AppStrings.navigationProfile,
-
       ),
       leading: Center(
         child: CircleAvatar(
@@ -113,7 +114,8 @@ class _MainWrapperState extends State<MainWrapper> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return AppBar(
-      title: Row( // Contains the logo of the app
+      title: Row(
+        // Contains the logo of the app
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Image(
@@ -123,7 +125,8 @@ class _MainWrapperState extends State<MainWrapper> {
           ),
         ],
       ),
-      automaticallyImplyLeading: false, // Delete white space in the left side of the AppBar - If you want to add a leading widget, set it to true
+      automaticallyImplyLeading:
+          false, // Delete white space in the left side of the AppBar - If you want to add a leading widget, set it to true
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: Brightness.light,
         statusBarColor: Colors.transparent,
@@ -138,7 +141,7 @@ class _MainWrapperState extends State<MainWrapper> {
             children: [
               _buildOutlinedButton(
                 AppStrings.navigationLost,
-                    () {
+                () {
                   // TODO: Implementar filtro de "Lost"
                 },
               ),
@@ -146,7 +149,7 @@ class _MainWrapperState extends State<MainWrapper> {
               const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationFound,
-                    () {
+                () {
                   // TODO: Implementar filtro de "Found"
                 },
               ),
@@ -154,7 +157,7 @@ class _MainWrapperState extends State<MainWrapper> {
               const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationAdoption,
-                    () {
+                () {
                   // TODO: Implementar filtro de "Adoption"
                 },
               ),
@@ -176,7 +179,8 @@ class _MainWrapperState extends State<MainWrapper> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return AppBar(
-      title: Row( // Contains the logo of the app
+      title: Row(
+        // Contains the logo of the app
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
@@ -184,7 +188,8 @@ class _MainWrapperState extends State<MainWrapper> {
             style: GoogleFonts.poppins(
               color: AppColors.mainColor,
               fontSize: 24,
-              fontWeight: FontWeight.bold,),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
@@ -205,7 +210,7 @@ class _MainWrapperState extends State<MainWrapper> {
             children: [
               _buildOutlinedButton(
                 AppStrings.navigationLost,
-                    () {
+                () {
                   // TODO: Implementar filtro de "Lost"
                 },
               ),
@@ -213,7 +218,7 @@ class _MainWrapperState extends State<MainWrapper> {
               const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationFound,
-                    () {
+                () {
                   // TODO: Implementar filtro de "Found"
                 },
               ),
@@ -221,7 +226,7 @@ class _MainWrapperState extends State<MainWrapper> {
               const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationAdoption,
-                    () {
+                () {
                   // TODO: Implementar filtro de "Adoption"
                 },
               ),
@@ -241,31 +246,31 @@ class _MainWrapperState extends State<MainWrapper> {
 
   OutlinedButton _buildOutlinedButton(String text, VoidCallback onPressed) {
     return OutlinedButton(
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: AppFonts.primary.copyWith(
-            color: AppColors.secondaryMainColor,
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: AppFonts.primary.copyWith(
+          color: AppColors.secondaryMainColor,
+        ),
+      ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+            AppColors.mainColor.withOpacity(0.6)),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
         ),
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                AppColors.mainColor.withOpacity(0.6)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            side: MaterialStateProperty.all<BorderSide>(
-              BorderSide(
-                color: AppColors.mainColor,
-                width: 0.5,
-              ),
-            ),
-            shadowColor: MaterialStateProperty.all<Color>(
-              AppColors.mainColor.withOpacity(0.6),
-            ),
+        side: MaterialStateProperty.all<BorderSide>(
+          BorderSide(
+            color: AppColors.mainColor,
+            width: 0.5,
+          ),
         ),
+        shadowColor: MaterialStateProperty.all<Color>(
+          AppColors.mainColor.withOpacity(0.6),
+        ),
+      ),
     );
   }
 
@@ -278,7 +283,7 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  Row _loggedIn(){
+  Row _loggedIn() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
@@ -347,13 +352,13 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  Padding _unLogged(){
+  Padding _unLogged() {
     Size size = MediaQuery.of(context).size;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: 30,
-          vertical: 10,
+        horizontal: 30,
+        vertical: 10,
       ),
       child: Container(
         height: size.height * 0.08,
@@ -394,11 +399,11 @@ class _MainWrapperState extends State<MainWrapper> {
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Center(
-                    child: Text( AppStrings.buttonRegister,
+                    child: Text(
+                      AppStrings.buttonRegister,
                       style: AppFonts.button.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize:
-                        18, // Ajuste del tamaño del botón
+                        fontSize: 18, // Ajuste del tamaño del botón
                         color: textColor3,
                       ),
                     ),
@@ -415,7 +420,8 @@ class _MainWrapperState extends State<MainWrapper> {
                     ),
                   );
                 },
-                child: Text( AppStrings.buttonRegister,
+                child: Text(
+                  AppStrings.buttonRegister,
                   style: AppFonts.button.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 18, // Ajuste del tamaño del botón
@@ -431,23 +437,31 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  FloatingActionButton? _mainWrapperFab() {
-    return isLoggedIn ? FloatingActionButton(
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog(
-              insetPadding: EdgeInsets.zero,
-              child: CreatePublicationPage(),
-            );
-          },
-        );
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-      backgroundColor: AppColors.mainColor,
-      child: const Icon(Icons.add),
-    ) : null;
+  FloatingActionButton? _mainWrapperFab(BuildContext context, bool isLoggedIn) {
+    return isLoggedIn
+        ? FloatingActionButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    backgroundColor: Colors.transparent,
+                    insetPadding: EdgeInsets.zero,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: SeleccionarTipoPopup(),
+                    ),
+                  );
+                },
+              );
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            backgroundColor: AppColors.mainColor,
+            child: const Icon(Icons.add),
+          )
+        : null;
   }
 
   // Body - MainWrapper Widget

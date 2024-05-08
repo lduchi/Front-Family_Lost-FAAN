@@ -5,24 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class UsuariosService {
-  void _showSuccessSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.green,
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Text(
-            message,
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        duration: Duration(seconds: 3),
-      ),
-    );
-  }
+
+  // ValidacionesUsuario validaciones ;
+
 
   Future<void> registerUser(
     String nombre,
@@ -44,6 +29,7 @@ class UsuariosService {
         "username": username,
         "password": password,
         "role": role.toString(),
+
       };
 
       // Registro Usuarios
@@ -57,11 +43,14 @@ class UsuariosService {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = json.decode(response.body);
+
         print(responseData);
         print("Registro exitoso");
       } else {
         final errorBody = response.body;
+
         if (errorBody != null && errorBody.isNotEmpty) {
+
           final errorResponse = json.decode(errorBody);
           final errorMessage = errorResponse['message'];
           Fluttertoast.showToast(
@@ -71,9 +60,11 @@ class UsuariosService {
             backgroundColor: Colors.red,
             textColor: Colors.white,
           );
+
           throw Exception('fallo el registro del usuario: $errorMessage');
         } else {
           throw Exception('Fallo el registro del usuario');
+
         }
       }
     } catch (e) {
