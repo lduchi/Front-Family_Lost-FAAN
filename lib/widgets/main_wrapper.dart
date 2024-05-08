@@ -1,11 +1,11 @@
 import 'package:familylost_faan/Screen/Register.dart';
+import 'package:familylost_faan/Screen/publicaci_n_animal_encontrado_screen.dart';
 import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/sign_in.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
-import 'package:familylost_faan/utilities/app_painter.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
@@ -14,9 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
-import 'package:familylost_faan/pages/profile_page.dart'; // Importa la página del perfil
-
-import '../Utils/colors.dart';
 import '../Utils/colors.dart';
 
 class MainWrapper extends StatefulWidget {
@@ -52,8 +49,7 @@ class _MainWrapperState extends State<MainWrapper> {
   final List<Widget> pages = [
     HomePage(),
     FavoritePage(),
-    HomePage(),
-    HomePage(),
+    PublicaciNAnimalEncontradoScreen(),
     ProfilePage(),
   ];
 
@@ -327,7 +323,7 @@ class _MainWrapperState extends State<MainWrapper> {
                 context,
                 defaultIcon: IconlyLight.notification,
                 page: 2,
-                label: "Third Page",
+                label: "Rescatados",
                 filledIcon: IconlyBold.notification,
               ),
             ],
@@ -341,7 +337,7 @@ class _MainWrapperState extends State<MainWrapper> {
               _bottomAppBarItem(
                 context,
                 defaultIcon: IconlyLight.profile,
-                page: 4, // Cambia la página a 4 para el perfil
+                page: 3,
                 label: "Profile",
                 filledIcon: IconlyBold.profile,
               ),

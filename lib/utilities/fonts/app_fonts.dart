@@ -45,6 +45,11 @@ class AppFonts {
         letterSpacing: 1.2,
         color: AppColors.mainColor,
       );
+  static TextStyle get TitleTipoPubli => GoogleFonts.poppins(
+        fontSize: 25.0,
+        fontWeight: FontWeight.bold,
+        color: AppColors.mainColor,
+      );
 
   static TextStyle get errorTitle => GoogleFonts.poppins(
         fontSize: 25.0,

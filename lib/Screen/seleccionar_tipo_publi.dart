@@ -1,3 +1,4 @@
+import 'package:familylost_faan/Screen/RegistroAnimalPerdidoScreen.dart';
 import 'package:familylost_faan/Utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/utilities/colors/app_colors.dart';
@@ -20,7 +21,7 @@ class _SeleccionarTipoPopupState extends State<SeleccionarTipoPopup> {
           Center(
             child: Text(
               '¡Seleccione un tipo!',
-              style: AppFonts.successTitle.copyWith(
+              style: AppFonts.TitleTipoPubli.copyWith(
                 fontWeight: FontWeight.bold,
                 color: general,
               ),
@@ -157,8 +158,8 @@ class _SeleccionarTipoPopupState extends State<SeleccionarTipoPopup> {
                   onPressed: () {
                     if (_tipoSeleccionado.isNotEmpty) {
                       print('Tipo seleccionado: $_tipoSeleccionado');
-                      Navigator.of(context)
-                          .pop(); // Cerrar la ventana emergente
+                      _handleTipoSeleccionado(
+                          context); // Lógica para manejar la opción seleccionada
                     } else {
                       Fluttertoast.showToast(
                         msg: "¡Seleccione una opción para poder continuar!",
@@ -198,5 +199,22 @@ class _SeleccionarTipoPopupState extends State<SeleccionarTipoPopup> {
         ),
       ],
     );
+  }
+
+  void _handleTipoSeleccionado(BuildContext context) {
+    // Manejar la opción seleccionada
+    switch (_tipoSeleccionado) {
+      case 'Perdido':
+        Navigator.pop(context); // Cerrar el diálogo
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                RegistroAnimalPerdidoScreen(), // Abrir la pantalla de registro de animal perdido
+          ),
+        );
+        break;
+      // Agregar casos para otras opciones si es necesario
+    }
   }
 }
