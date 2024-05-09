@@ -1,15 +1,15 @@
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 
-enum PostType { lost, found, adoption }
+enum PostType { LOST, FOUND, ADOPTION }
 
 extension PostTypeExtension on PostType {
   String get value {
     switch (this) {
-      case PostType.lost:
+      case PostType.LOST:
         return AppStrings.navigationLost;
-      case PostType.found:
+      case PostType.FOUND:
         return AppStrings.navigationFound;
-      case PostType.adoption:
+      case PostType.ADOPTION:
         return AppStrings.navigationAdoption;
     }
   }

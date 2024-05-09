@@ -3,6 +3,7 @@ import 'package:familylost_faan/Screen/publicaci_n_animal_encontrado_screen.dart
 import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/sign_in.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
+import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
@@ -436,21 +437,10 @@ class _MainWrapperState extends State<MainWrapper> {
   FloatingActionButton? _mainWrapperFab(BuildContext context, bool isLoggedIn) {
     return isLoggedIn
         ? FloatingActionButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    backgroundColor: Colors.transparent,
-                    insetPadding: EdgeInsets.zero,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: SeleccionarTipoPopup(),
-                    ),
-                  );
-                },
-              );
-            },
+            onPressed: () => CustomMaterialDialog.postOptions(
+              context: context,
+              type: DialogType.postOptions,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
             ),

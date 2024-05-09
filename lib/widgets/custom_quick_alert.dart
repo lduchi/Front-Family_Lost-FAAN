@@ -1,3 +1,4 @@
+import 'package:familylost_faan/Screen/RegistroAnimalPerdidoScreen.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/animations/app_animations.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
@@ -13,7 +14,7 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 class CustomMaterialDialog {
   final BuildContext context;
   final DialogType type;
-  PostType? _selectedPostType = PostType.lost;
+  PostType? _selectedPostType = PostType.LOST;
 
   CustomMaterialDialog.postOptions({
     required this.context,
@@ -169,7 +170,7 @@ class CustomMaterialDialog {
         IconsButton(
           onPressed: () {
             Navigator.of(context).pop();
-            // Here you can show the screen corresponding to the selected option
+            _navigateToSelectedScreen();
           },
           text: AppStrings.buttonAccept,
           iconData: Icons.check_circle,
@@ -196,21 +197,25 @@ class CustomMaterialDialog {
       builder: (BuildContext context, StateSetter setState) {
         return Column(
           children: PostType.values
-              .map((type) => _buildOption(
+              .map(
+                (type) => _buildOption(
                   title:
                       '${AppStrings.textRadioOptions} ${type.value.toLowerCase()}',
                   postType: type,
-                  setState: setState) as Widget)
+                  setState: setState,
+                ) as Widget,
+              )
               .toList(),
         );
       },
     );
   }
 
-  _buildOption(
-      {required String title,
-      required PostType postType,
-      required StateSetter setState}) {
+  _buildOption({
+    required String title,
+    required PostType postType,
+    required StateSetter setState,
+  }) {
     return RadioListTile<PostType>(
       title: Text(title),
       value: postType,
@@ -221,6 +226,37 @@ class CustomMaterialDialog {
         });
       },
     );
+  }
+
+  _navigateToSelectedScreen() {
+    switch (_selectedPostType) {
+      case PostType.LOST:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RegistroAnimalPerdidoScreen(), // <--- Aquí se cambia la pantalla, para las demás opcione
+          ),
+        );
+        break;
+      case PostType.FOUND:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta es la pantalla de animales encontrados'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        break;
+      case PostType.ADOPTION:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta es la pantalla de adopción de animales'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        break;
+      default:
+        break;
+    }
   }
 
   void _closeDialog() {
