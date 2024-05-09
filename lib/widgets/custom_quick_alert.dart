@@ -234,7 +234,7 @@ class CustomMaterialDialog {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RegistroAnimalPerdidoScreen(), // <--- Aquí se cambia la pantalla, para las demás opcione
+            builder: (context) => RegistroAnimalPerdidoScreen(), // <--- Aquí se cambia la pantalla, para las demás opciones se debe hacer lo mismo
           ),
         );
         break;
