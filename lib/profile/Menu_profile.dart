@@ -1,3 +1,7 @@
+import 'package:familylost_faan/Screen/RegisterPage.dart';
+import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/utilities/icons/app_icons.dart';
+import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/profile/Actualizar_profile.dart';
 import 'package:familylost_faan/profile/Privacidad_profile.dart';
@@ -5,10 +9,76 @@ import 'package:familylost_faan/Screen/sign_in.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart'; // Importa la clase AppFonts
 
 class MenuProfile extends StatelessWidget {
-  const MenuProfile({Key? key}) : super(key: key);
+  final bool isLogged;
+
+  const MenuProfile({super.key, required bool this.isLogged});
 
   @override
   Widget build(BuildContext context) {
+    return isLogged ? _loggedMenu(context) : _unloggedMenu(context);
+  }
+
+  Drawer _unloggedMenu(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blueGrey,
+            ),
+            child: Text(
+              'Bienvenido',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.login),
+            title: Text(AppStrings.login),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignIn(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.app_registration),
+            title: Text(AppStrings.buttonRegister),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RegisterPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.info_outline),
+            title: Text('Acerca de'),
+            onTap: () {
+              // Navegar a la pantalla de información sobre la app
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.help_outline),
+            title: Text('Ayuda'),
+            onTap: () {
+              // Navegar a la pantalla de ayuda
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Drawer _loggedMenu(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -16,7 +86,7 @@ class MenuProfile extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: AppColors.secondaryMainColor,
             ),
             child: Row(
               children: [
@@ -35,15 +105,15 @@ class MenuProfile extends StatelessWidget {
                       Text(
                         'ELIZABETH PEÑAFIEL',
                         style: AppFonts.title.copyWith(
-                          color: Color.fromARGB(255, 0, 42, 109),
+                          color: AppColors.activeBlueColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(height: 5),
                       Text(
                         '+593 96 947 5973',
-                        style: AppFonts.caption.copyWith(
-                          color: Colors.grey,
+                        style: AppFonts.primary.copyWith(
+                          color: AppColors.secondaryColor,
                         ),
                       ),
                     ],
@@ -58,13 +128,13 @@ class MenuProfile extends StatelessWidget {
               'Profile Settings',
               style: AppFonts.primary.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 0, 42, 109),
+                color: AppColors.activeBlueColor,
               ),
             ),
             subtitle: Text(
               'Actualiza y modifica tu perfil',
               style: AppFonts.caption.copyWith(
-                color: Colors.grey,
+                color: AppColors.secondaryColor,
               ),
             ),
             onTap: () {
@@ -80,13 +150,13 @@ class MenuProfile extends StatelessWidget {
               'Privacidad',
               style: AppFonts.primary.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 0, 42, 109),
+                color: AppColors.activeBlueColor,
               ),
             ),
             subtitle: Text(
               'Cambia tu contraseña',
               style: AppFonts.caption.copyWith(
-                color: Colors.grey,
+                color: AppColors.secondaryColor,
               ),
             ),
             onTap: () {
@@ -102,13 +172,13 @@ class MenuProfile extends StatelessWidget {
               'Cerrar Sesión',
               style: AppFonts.primary.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 0, 42, 109),
+                color: AppColors.activeBlueColor,
               ),
             ),
             subtitle: Text(
               'Cierra tu sesión de forma segura',
               style: AppFonts.caption.copyWith(
-                color: Colors.grey,
+                color: AppColors.secondaryColor,
               ),
             ),
             onTap: () {

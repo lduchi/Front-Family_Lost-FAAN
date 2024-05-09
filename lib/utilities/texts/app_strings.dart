@@ -14,6 +14,10 @@ class AppStrings {
   static const String labelDescription = 'Descripción';
   static const String labelContact = 'Contactar';
   static const String labelLocation = 'Ubicación';
+  static const String posts = 'Publicaciones';
+  static const String other = 'Otro';
+  static const String login = 'Iniciar Sesión';
+
   //Text for labels in navigation
   static const String navigationHome = 'Inicio';
   static const String navigationProfile = 'Perfil';
@@ -32,7 +36,6 @@ class AppStrings {
   static const String hintSearch = 'Buscar...';
 
   //Text for buttons
-  static const String buttonLogin = 'Iniciar Sesión';
   static const String buttonRegister = 'Registrarse';
   static const String buttonLogout = 'Cerrar Sesión';
   static const String buttonSend = 'Enviar';

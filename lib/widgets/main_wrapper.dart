@@ -2,6 +2,7 @@ import 'package:familylost_faan/Screen/Register.dart';
 import 'package:familylost_faan/Screen/publicaci_n_animal_encontrado_screen.dart';
 import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/sign_in.dart';
+import 'package:familylost_faan/profile/Menu_profile.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:flutter/material.dart';
@@ -50,10 +51,9 @@ class _MainWrapperState extends State<MainWrapper> {
   final List<Widget> pages = [
     HomePage(),
     FavoritePage(),
-    PublicaciNAnimalEncontradoScreen(),
+    HomePage(),
     ProfilePage(),
   ];
-
   void onPageChanged(int page) {
     BlocProvider.of<BottomNavCubit>(context).changeSelectedIndex(page);
   }
@@ -62,10 +62,10 @@ class _MainWrapperState extends State<MainWrapper> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: isLoggedIn
-          ? _mainLoggedWrapperAppBar()
+          ? _appBarBuilder(context.watch<BottomNavCubit>().state.toDouble())
           : _mainUnloggedWrapperAppBar(),
+      drawer: MenuProfile(isLogged: isLoggedIn),
       body: CustomPaint(
-        // painter: AppPainter(),
         child: _mainWrapperBody(),
       ),
       bottomNavigationBar: _mainWrapperBottomNavBar(context),
@@ -74,34 +74,21 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-// AppBar - MainWrapper Widget - Example of a custom conditional AppBar
   AppBar _appBarBuilder(double indexPage) {
+    return indexPage == 3 ? _profileAppBar() : _mainLoggedWrapperAppBar();
+  }
+
+  AppBar _profileAppBar() {
     return AppBar(
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.light,
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-      ),
-      backgroundColor: Colors.transparent,
-      title: Text(
-        indexPage == 0
-            ? AppStrings.navigationHome
-            : indexPage == 1
-                ? AppStrings.buttonAccept
-                : indexPage == 2
-                    ? AppStrings.buttonBack
-                    : AppStrings.navigationProfile,
-      ),
-      leading: Center(
-        child: CircleAvatar(
-          radius: 16,
-          backgroundImage: AssetImage(AssetManager.exampleImage),
-        ),
-      ),
+      backgroundColor: AppColors.secondaryMainColor,
+      foregroundColor: AppColors.mainColor,
+      elevation: 0,
+      shadowColor: Colors.black.withOpacity(0.5),
       actions: [
         IconButton(
           onPressed: () {},
-          icon: AppIcons.notificationIcon,
+          icon: AppIcons.notificationIconFill,
+          color: AppColors.mainColor,
         ),
       ],
     );
@@ -176,6 +163,7 @@ class _MainWrapperState extends State<MainWrapper> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Row(
         // Contains the logo of the app
         mainAxisAlignment: MainAxisAlignment.start,
@@ -397,7 +385,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   ),
                   child: Center(
                     child: Text(
-                      AppStrings.buttonRegister,
+                      AppStrings.login,
                       style: AppFonts.button.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 18, // Ajuste del tamaño del botón

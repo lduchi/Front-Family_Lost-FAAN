@@ -11,6 +11,10 @@ class AppColors {
   */
   static const Color secondaryColor = Color(0xFF707070);
   /**
+   * Primary Color - Blue Color Variant
+  */
+  static const Color activeBlueColor = Color.fromARGB(255, 0, 42, 109);
+  /**
    * Primary Color
    * Inactive Buttons - Text
   */
