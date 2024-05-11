@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Utils/colors.dart';
 import '../../pages/cubit/bottom_nav_cubit.dart';
 import '../../widgets/main_wrapper.dart';
-import '../Register.dart';
 
 class MySplashScreen2 extends StatelessWidget {
   const MySplashScreen2({Key? key});

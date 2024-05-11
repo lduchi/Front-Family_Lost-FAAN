@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Utils/colors.dart';
 import '../../pages/cubit/bottom_nav_cubit.dart';
 import '../../widgets/main_wrapper.dart';
-import '../Register.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({Key? key}) : super(key: key);
