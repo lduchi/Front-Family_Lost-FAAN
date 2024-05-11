@@ -1,4 +1,3 @@
-import 'package:familylost_faan/Screen/Register.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/ResetPassword/RequestNP.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';

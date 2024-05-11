@@ -1,4 +1,4 @@
-import 'package:familylost_faan/Screen/Register.dart';
+import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/publicaci_n_animal_encontrado_screen.dart';
 import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
@@ -372,7 +372,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Register(),
+                      builder: (context) => SignIn(),
                     ),
                   );
                 },
@@ -401,7 +401,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SignIn(),
+                      builder: (context) => RegisterPage(),
                     ),
                   );
                 },
