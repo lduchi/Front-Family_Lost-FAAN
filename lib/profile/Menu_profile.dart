@@ -1,21 +1,46 @@
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
+import 'package:familylost_faan/ServiciosApp/models/user.dart';
+import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
-import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/profile/Actualizar_profile.dart';
 import 'package:familylost_faan/profile/Privacidad_profile.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart'; // Importa la clase AppFonts
+import 'dart:developer' as developer;
 
-class MenuProfile extends StatelessWidget {
+class MenuProfile extends StatefulWidget {
   final bool isLogged;
 
   const MenuProfile({super.key, required bool this.isLogged});
 
   @override
+  State<MenuProfile> createState() => _MenuProfileState();
+}
+
+class _MenuProfileState extends State<MenuProfile> {
+  late User? user;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUser();
+  }
+
+  void _getUser() async {
+    try {
+      user = await UserService().getUserByUsername('mike');
+      setState(() {});
+    } catch (e, stackTrace) {
+      developer.log('Error fetching user: $e',
+          name: '_getUser', stackTrace: stackTrace);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return isLogged ? _loggedMenu(context) : _unloggedMenu(context);
+    return widget.isLogged ? _loggedMenu(context) : _unloggedMenu(context);
   }
 
   Drawer _unloggedMenu(BuildContext context) {
@@ -94,7 +119,10 @@ class MenuProfile extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 16.0),
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('images/pet1.png'),
+                    backgroundImage: Image.memory(
+                      user!.photo!.image.data,
+                      fit: BoxFit.cover,
+                    ).image,
                   ),
                 ),
                 Expanded(
@@ -103,7 +131,7 @@ class MenuProfile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'ELIZABETH PEÑAFIEL',
+                        user!.nombre + ' ' + user!.apellido,
                         style: AppFonts.title.copyWith(
                           color: AppColors.activeBlueColor,
                           fontWeight: FontWeight.bold,
@@ -111,7 +139,7 @@ class MenuProfile extends StatelessWidget {
                       ),
                       SizedBox(height: 5),
                       Text(
-                        '+593 96 947 5973',
+                        user!.telefono,
                         style: AppFonts.primary.copyWith(
                           color: AppColors.secondaryColor,
                         ),
