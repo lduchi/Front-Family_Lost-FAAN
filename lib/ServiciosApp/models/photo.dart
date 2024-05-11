@@ -1,10 +1,9 @@
-import 'dart:convert';
-import 'dart:typed_data';
+import 'package:familylost_faan/ServiciosApp/models/image.dart';
 
 class Photo {
   final String id;
   final String fileName;
-  final Uint8List image;
+  final Image image;
   final String fileType;
   final DateTime createdAt;
   final String imageHash;
@@ -22,7 +21,7 @@ class Photo {
     return Photo(
       id: json['id'] as String,
       fileName: json['fileName'] as String,
-      image: base64Decode(json['image'] as String),
+      image: Image.fromJson(json['image']),
       fileType: json['fileType'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       imageHash: json['imageHash'] as String,
@@ -33,7 +32,7 @@ class Photo {
     return {
       'id': id,
       'fileName': fileName,
-      'image': base64Encode(image),
+      'image': image.toJson(),
       'fileType': fileType,
       'createdAt': createdAt.toIso8601String(),
       'imageHash': imageHash,

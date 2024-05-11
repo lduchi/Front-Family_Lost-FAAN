@@ -6,12 +6,13 @@ class User {
   String apellido;
   String username;
   String password;
+  String email;
   String direccion;
   String telefono;
   String verificationToken;
   Photo? photo;
   String role;
-  String tokenPassword;
+  String? tokenPassword;
 
   User({
     required this.id,
@@ -19,6 +20,7 @@ class User {
     required this.apellido,
     required this.username,
     required this.password,
+    required this.email,
     required this.direccion,
     required this.telefono,
     required this.verificationToken,
@@ -34,12 +36,13 @@ class User {
       apellido: json['apellido'] as String,
       username: json['username'] as String,
       password: json['password'] as String,
+      email: json['email'] as String,
       direccion: json['direccion'] as String,
       telefono: json['telefono'] as String,
       verificationToken: json['verificationToken'] as String,
       photo: json['photo'] != null ? Photo.fromJson(json['photo']) : null,
       role: json['role'] as String,
-      tokenPassword: json['tokenPassword'] as String,
+      tokenPassword: json['tokenPassword'] != null ? json['tokenPassword'] as String : null,
     );
   }
 
@@ -50,6 +53,7 @@ class User {
       'apellido': apellido,
       'username': username,
       'password': password,
+      'email': email,
       'direccion': direccion,
       'telefono': telefono,
       'verificationToken': verificationToken,

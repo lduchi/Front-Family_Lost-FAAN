@@ -53,11 +53,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   CircleAvatar(
                     radius: 100,
-                    backgroundImage: AssetImage('images/pet1.png'),
+                    backgroundImage: Image.memory(
+                      user!.photo!.image.data,
+                      fit: BoxFit.cover,
+                    ).image,
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Elizabeth Peñafiel',
+                    user!.nombre + ' ' + user!.apellido,
                     style: AppFonts.title.copyWith(
                       fontSize: 24,
                       color: AppColors.activeBlueColor,
@@ -65,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    'elizabethpeñafiel@gmail.com',
+                    user!.email,
                     style: AppFonts.caption.copyWith(
                       fontSize: 14,
                       color: AppColors.secondaryColor,
