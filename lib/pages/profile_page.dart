@@ -1,7 +1,12 @@
+import 'package:familylost_faan/ServiciosApp/models/user.dart';
+import 'package:familylost_faan/ServiciosApp/models/usuarios.dart';
+import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
+import 'dart:developer' as developer;
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -11,6 +16,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late User? user;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUser();
+  }
+
+  Future<void> _getUser() async {
+    try {
+      user = await UserService().getUserByUsername('mike');
+      setState(() {});
+    } catch (e, stackTrace) {
+      // Handle any exceptions here
+    developer.log('Error fetching user: $e', name: '_getUser', stackTrace: stackTrace);
+      
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var _deviceHeight = MediaQuery.of(context).size.height;
