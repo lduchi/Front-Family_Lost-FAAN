@@ -3,7 +3,7 @@ import 'package:familylost_faan/widgets/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'Screen/splash_screen.dart';
+import 'Screen/onboarding/splash_screen.dart';
 
 void main() => runApp(const LostFamilyApp());
 

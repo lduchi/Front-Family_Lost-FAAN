@@ -1,11 +1,11 @@
-import 'package:familylost_faan/Screen/RegisterPage.dart';
+import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/profile/Actualizar_profile.dart';
 import 'package:familylost_faan/profile/Privacidad_profile.dart';
-import 'package:familylost_faan/Screen/sign_in.dart';
+import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart'; // Importa la clase AppFonts
 
 class MenuProfile extends StatelessWidget {

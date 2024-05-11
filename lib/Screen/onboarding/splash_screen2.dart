@@ -1,9 +1,12 @@
-import 'package:familylost_faan/Screen/sign_in.dart';
+import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Utils/colors.dart';
-import 'Register.dart';
+import '../../Utils/colors.dart';
+import '../../pages/cubit/bottom_nav_cubit.dart';
+import '../../widgets/main_wrapper.dart';
+import '../Register.dart';
 
 class MySplashScreen2 extends StatelessWidget {
   const MySplashScreen2({Key? key});
@@ -21,12 +24,17 @@ class MySplashScreen2 extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 130,),
-                _buildRowContainer("Perdidos", "En Family Lost FANN hemos podido registrar más de 50 mascotas perdidas en la ciudad de Cuenca."),
+                SizedBox(
+                  height: 130,
+                ),
+                _buildRowContainer("Perdidos",
+                    "En Family Lost FANN hemos podido registrar más de 50 mascotas perdidas en la ciudad de Cuenca."),
                 SizedBox(height: 20),
-                _buildRowContainer("Encontrados", "Con Family Lost FANN hemos podido encontrar más de 40 mascotas en la ciudad de Cuenca."),
+                _buildRowContainer("Encontrados",
+                    "Con Family Lost FANN hemos podido encontrar más de 40 mascotas en la ciudad de Cuenca."),
                 SizedBox(height: 20),
-                _buildRowContainer("Adopcion","Con Family Lost FANN hemos podido dar en adopción a más de 60 mascotas en la ciudad de Cuenca."),
+                _buildRowContainer("Adopcion",
+                    "Con Family Lost FANN hemos podido dar en adopción a más de 60 mascotas en la ciudad de Cuenca."),
               ],
             ),
           ),
@@ -36,7 +44,8 @@ class MySplashScreen2 extends StatelessWidget {
           child: Container(
             width: size.width, // Ancho igual al ancho de la pantalla
             decoration: BoxDecoration(
-              border: Border.all(color: textColor1), // Agregamos un borde al contenedor
+              border: Border.all(
+                  color: textColor1), // Agregamos un borde al contenedor
               borderRadius: BorderRadius.circular(50), // Borde redondeado
             ),
             child: Row(
@@ -47,13 +56,17 @@ class MySplashScreen2 extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Register(),
+                        builder: (context) => BlocProvider(
+                          create: (context) => BottomNavCubit(),
+                          child: const MainWrapper(isLoggedIn: false),
+                        ),
                       ),
                     );
                   },
                   child: Container(
                     height: size.height * 0.08,
-                    width: size.width /2.5, // Dividimos el ancho en tres partes
+                    width:
+                        size.width / 2.5, // Dividimos el ancho en tres partes
                     decoration: BoxDecoration(
                       color: general,
                       borderRadius: BorderRadius.circular(50),
@@ -81,7 +94,8 @@ class MySplashScreen2 extends StatelessWidget {
                   },
                   child: Container(
                     height: size.height * 0.08,
-                    width: size.width / 2.5, // Dividimos el ancho en tres partes
+                    width:
+                        size.width / 2.5, // Dividimos el ancho en tres partes
                     child: Center(
                       child: Text(
                         "Siguiente",

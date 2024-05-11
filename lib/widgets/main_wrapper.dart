@@ -1,7 +1,7 @@
 import 'package:familylost_faan/Screen/Register.dart';
 import 'package:familylost_faan/Screen/publicaci_n_animal_encontrado_screen.dart';
 import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
-import 'package:familylost_faan/Screen/sign_in.dart';
+import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/profile/Menu_profile.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';

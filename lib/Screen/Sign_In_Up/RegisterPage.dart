@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../widgets/RegisterPageAppBar.dart';
+import '../../widgets/RegisterPageAppBar.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -97,4 +97,3 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
-
