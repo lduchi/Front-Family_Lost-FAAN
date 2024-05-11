@@ -3,6 +3,7 @@ import 'package:familylost_faan/Screen/publicaci_n_animal_encontrado_screen.dart
 import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/profile/Menu_profile.dart';
+import 'package:familylost_faan/ServiciosApp/models/animal.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:flutter/material.dart';
@@ -18,27 +19,29 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import '../Utils/colors.dart';
 
+late Animal animalDatas = Animal(id: 1, nombre: "", raza: "", ubicacion: "");
+
 class MainWrapper extends StatefulWidget {
   final bool isLoggedIn;
+
 
   const MainWrapper({super.key, required this.isLoggedIn});
 
   @override
   State<MainWrapper> createState() => _MainWrapperState(isLoggedIn: isLoggedIn);
 }
-
 class _MainWrapperState extends State<MainWrapper> {
   final bool isLoggedIn;
   var _deviceHeight;
   var _deviceWidth;
   late PageController pageController;
-
   _MainWrapperState({required this.isLoggedIn});
 
   @override
   void initState() {
     super.initState();
     pageController = PageController();
+
   }
 
   @override
@@ -49,9 +52,9 @@ class _MainWrapperState extends State<MainWrapper> {
 
   // List of Pages: Home, Search, Profile
   final List<Widget> pages = [
-    HomePage(),
+    HomePage(animalData:animalDatas ,),
     FavoritePage(),
-    HomePage(),
+    HomePage(animalData: animalDatas,),
     ProfilePage(),
   ];
   void onPageChanged(int page) {
@@ -142,7 +145,18 @@ class _MainWrapperState extends State<MainWrapper> {
               _buildOutlinedButton(
                 AppStrings.navigationAdoption,
                 () {
-                  // TODO: Implementar filtro de "Adoption"
+                  animalDatas = Animal(id: 1, nombre: "AS", raza: "raza", ubicacion: "nueva"); // Inicializar aquí
+
+                // Navegar a la página HomePage con los nuevos datos
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => BottomNavCubit(),
+                        child: const MainWrapper(isLoggedIn: true),
+                      ),
+                    ),
+                  );
                 },
               ),
             ],

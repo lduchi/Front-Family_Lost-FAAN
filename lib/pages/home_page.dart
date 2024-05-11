@@ -1,3 +1,4 @@
+import 'package:familylost_faan/ServiciosApp/models/animal.dart';
 import 'package:familylost_faan/pages/animal_item_page.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
@@ -5,7 +6,10 @@ import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  //cambiar pa' json
+  final Animal animalData;
+
+  const HomePage({Key? key , required this.animalData}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,6 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _deviceHeight;
   var _deviceWidth;
+
 
   ButtonStyle enabledFilledButtonStyle(bool selected, ColorScheme colors) {
     return IconButton.styleFrom(
@@ -36,10 +41,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    print(widget.animalData.ubicacion);
+
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.animalData.ubicacion);
+
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return Container(
@@ -81,8 +90,9 @@ class _HomePageState extends State<HomePage> {
               child: InkWell(
                 onTap: () {},
                 child: AnimalItemPage(
-                  image: image,
+                  image: image, animalData: widget.animalData,
                 ),
+
               ),
             ),
           );

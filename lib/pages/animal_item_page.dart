@@ -1,3 +1,4 @@
+import 'package:familylost_faan/ServiciosApp/models/animal.dart';
 import 'package:familylost_faan/pages/detalles_animal.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
@@ -6,9 +7,10 @@ import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class AnimalItemPage extends StatefulWidget {
-  const AnimalItemPage({super.key, required this.image});
+  const AnimalItemPage({super.key, required this.image, required this.animalData, });
 
   final String image;
+  final Animal animalData;
 
   @override
   _AnimalItemPageState createState() => _AnimalItemPageState();
@@ -67,12 +69,12 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Nombre Michis',
+                    widget.animalData.nombre,
                     style: AppFonts.title,
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Raza Animal',
+                    widget.animalData.raza,
                     style: AppFonts.primary,
                   ),
                   const SizedBox(height: 2),
@@ -82,7 +84,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                       AppIcons.locationIcon,
                       const SizedBox(width: 2),
                       Text(
-                        AppStrings.labelLocation,
+                        widget.animalData.ubicacion,
                         style: AppFonts.primary,
                       ),
                     ],
