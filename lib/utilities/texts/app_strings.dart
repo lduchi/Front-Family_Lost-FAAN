@@ -14,6 +14,7 @@ class AppStrings {
   static const String labelDescription = 'Descripción';
   static const String labelContact = 'Contactar';
   static const String labelLocation = 'Ubicación';
+  static const String username = 'Usuario';
   static const String posts = 'Publicaciones';
   static const String other = 'Otro';
   static const String login = 'Iniciar Sesión';

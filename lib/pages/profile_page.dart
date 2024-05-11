@@ -1,12 +1,10 @@
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
-import 'package:familylost_faan/ServiciosApp/models/usuarios.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'dart:developer' as developer;
-
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -29,9 +27,8 @@ class _ProfilePageState extends State<ProfilePage> {
       user = await UserService().getUserByUsername('mike');
       setState(() {});
     } catch (e, stackTrace) {
-      // Handle any exceptions here
-    developer.log('Error fetching user: $e', name: '_getUser', stackTrace: stackTrace);
-      
+      developer.log('Error fetching user: $e',
+          name: '_getUser', stackTrace: stackTrace);
     }
   }
 
