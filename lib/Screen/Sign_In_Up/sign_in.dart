@@ -1,7 +1,10 @@
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/ResetPassword/RequestNP.dart';
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
+import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -119,6 +122,7 @@ class SignIn extends StatelessWidget {
                                     child: const MainWrapper(isLoggedIn: true),
                                   )) //<-- Change this to the page you want to navigate to after login
                           );
+                      _loggin(context);
                     },
                     child: Container(
                       width: size.width,
@@ -258,5 +262,11 @@ class SignIn extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _loggin(BuildContext context) async {
+    Store.setToken('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QxIiwiaWF0IjoxNzE1NTY0MTczLCJleHAiOjE3MTU2NTA1NzMsInJvbGUiOlsiUk9MRV9BRE1JTiJdLCJ1c2VySWQiOiI2In0.qm9B38AKKGkL9oUJa3RIttjbvW9yU4S8erXEwOWHPkE'); // <-- Change this to the token you want to store || Change this to the token you want to store
+    //This will have to change in the future
+    //Importante - Español: CAMBIA ESTO CON OTRO TOKEN, USA POSTMAN, SWAGGER, INSOMNIA CON TUS CREDENCIALES PARA CONSEGUIR UNO.
   }
 }

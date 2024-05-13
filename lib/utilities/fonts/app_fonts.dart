@@ -35,9 +35,21 @@ class AppFonts {
         color: Color.fromARGB(185, 215, 215, 215),
       );
 
+  static TextStyle get TitlePost => GoogleFonts.poppins(
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+        color: AppColors.secondaryColor,
+      );
+
+  static TextStyle get InputTitlePost => GoogleFonts.poppins(
+        fontSize: 18.0,
+        fontWeight: FontWeight.normal,
+        color: AppColors.secondaryColor,
+      );
+
   /**
-       * Dialogs
-       */
+   * Dialogs
+   */
 
   static TextStyle get successTitle => GoogleFonts.poppins(
         fontSize: 25.0,
@@ -45,6 +57,7 @@ class AppFonts {
         letterSpacing: 1.2,
         color: AppColors.mainColor,
       );
+
   static TextStyle get TitleTipoPubli => GoogleFonts.poppins(
         fontSize: 25.0,
         fontWeight: FontWeight.bold,

@@ -2,7 +2,10 @@ import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
+import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
+import 'package:familylost_faan/widgets/custom_quick_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/profile/Actualizar_profile.dart';
 import 'package:familylost_faan/profile/Privacidad_profile.dart';
@@ -214,10 +217,21 @@ class _MenuProfileState extends State<MenuProfile> {
                 context,
                 MaterialPageRoute(builder: (context) => SignIn()),
               );
+              _logout(context);
             },
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    Store.removeToken();
+
+    CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.success,
+        title: '¡Hasta pronto!',
+        message: 'Sesión cerrada correctamente');
   }
 }

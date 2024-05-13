@@ -1,4 +1,6 @@
-import 'package:familylost_faan/Screen/RegistroAnimalPerdidoScreen.dart';
+import 'package:familylost_faan/Screen/post/save_post_form.dart';
+import 'package:familylost_faan/ServiciosApp/dto/author.dart';
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/animations/app_animations.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
@@ -10,6 +12,8 @@ import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+
+import '../utilities/enum/state_post.dart';
 
 class CustomMaterialDialog {
   final BuildContext context;
@@ -52,8 +56,9 @@ class CustomMaterialDialog {
     required this.type,
     required String title,
     required String message,
+    bool dismissAndPop = false,
   }) {
-    _showSuccessOrErrorDialog(title, message);
+    _showSuccessOrErrorDialog(title, message, dismissAndPop);
   }
 
   /**
@@ -68,7 +73,19 @@ class CustomMaterialDialog {
     _showWarningDialog(title, message);
   }
 
-  void _showSuccessOrErrorDialog(String title, String message) {
+  /**
+   * You can invocate this method to show a dialog with the type of DialogType.warning with options
+  */
+  CustomMaterialDialog.warningWithOptions({
+    required this.context,
+    required this.type,
+    required String title,
+    required String message,
+  }) {
+    _showWarningDialogWithOptions(title, message);
+  }
+
+  void _showSuccessOrErrorDialog(String title, String message, bool dismissAndPop) {
     final String asset = type == DialogType.error
         ? AppLottielottie.error
         : AppLottielottie.success;
@@ -91,8 +108,7 @@ class CustomMaterialDialog {
       actions: [
         IconsButton(
           onPressed: () {
-            // Acción de confirmación
-            Navigator.of(context).pop();
+            dismissAndPop ? _dismissAndPop() : Navigator.of(context).pop();
           },
           text: AppStrings.buttonAccept,
           iconData: Icons.check_circle,
@@ -119,12 +135,50 @@ class CustomMaterialDialog {
       actions: [
         IconsButton(
           onPressed: () {
-            // Acción de confirmación
             Navigator.of(context).pop();
           },
           text: AppStrings.buttonAccept,
           iconData: Icons.check_circle,
           color: AppColors.warningColor,
+          textStyle: TextStyle(color: AppColors.secondaryMainColor),
+          iconColor: AppColors.secondaryMainColor,
+        ),
+      ],
+    );
+  }
+
+  void _showWarningDialogWithOptions(String title, String message) {
+    final String asset = AppLottielottie.warning;
+
+    Dialogs.materialDialog(
+      color: AppColors.secondaryMainColor,
+      title: title,
+      titleStyle: AppFonts.warningTitle,
+      msg: message,
+      msgAlign: TextAlign.center,
+      msgStyle: TextStyle(color: AppColors.msgDialogColor),
+      lottieBuilder: Lottie.asset(asset, width: 100, repeat: false),
+      context: context,
+      actions: [
+        IconsButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+          text: AppStrings.buttonAccept,
+          iconData: Icons.check_circle,
+          color: AppColors.errorColor,
+          textStyle: TextStyle(color: AppColors.secondaryMainColor),
+          iconColor: AppColors.secondaryMainColor,
+        ),
+        IconsButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+          text: AppStrings.buttonCancel,
+          iconData: Icons.cancel,
+          color: AppColors.whatsAppGreen,
           textStyle: TextStyle(color: AppColors.secondaryMainColor),
           iconColor: AppColors.secondaryMainColor,
         ),
@@ -163,7 +217,7 @@ class CustomMaterialDialog {
     Dialogs.bottomMaterialDialog(
       title: AppStrings.titleOptions,
       msg: AppStrings.messageOptions,
-      customView: _buildOptionsDialog(),
+      customView: _buildOptionsDialog(context),
       customViewPosition: CustomViewPosition.BEFORE_ACTION,
       context: context,
       actions: [
@@ -192,23 +246,54 @@ class CustomMaterialDialog {
     );
   }
 
-  _buildOptionsDialog() {
-    return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return Column(
-          children: PostType.values
-              .map(
-                (type) => _buildOption(
-                  title:
-                      '${AppStrings.textRadioOptions} ${type.value.toLowerCase()}',
-                  postType: type,
-                  setState: setState,
-                ) as Widget,
-              )
-              .toList(),
-        );
+
+  Widget _buildOptionsDialog(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: _hasAdminRole(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final hasAdminRole = snapshot.data;
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                children: hasAdminRole!
+                    ? PostType.values
+                    .map(
+                      (type) => _buildOption(
+                    title:
+                    '${AppStrings.textRadioOptions} ${type.value.toLowerCase()}',
+                    postType: type,
+                    setState: setState,
+                  ) as Widget,
+                )
+                    .toList()
+                    : PostType.values
+                    .where((element) => element != PostType.ADOPTION)
+                    .map(
+                      (type) => _buildOption(
+                    title:
+                    '${AppStrings.textRadioOptions} ${type.value.toLowerCase()}',
+                    postType: type,
+                    setState: setState,
+                  ) as Widget,
+                )
+                    .toList(),
+              );
+            },
+          );
+        }
       },
     );
+  }
+
+  Future<bool> _hasAdminRole() async {
+    final hasAdminRole = await Store.hasAdminRole();
+
+    return await hasAdminRole;
   }
 
   _buildOption({
@@ -234,23 +319,50 @@ class CustomMaterialDialog {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RegistroAnimalPerdidoScreen(), // <--- Aquí se cambia la pantalla, para las demás opciones se debe hacer lo mismo
+            builder: (context) => SavePostForm(
+              typePost: PostType.LOST,
+              author: Author(
+                id: BigInt.from(1),
+                name: 'tonoto',
+                email: 'ejemplo@gmail.com',
+                phone: '0997535419',
+              ),
+              statePost: StatePost.LOST,
+            )
           ),
         );
         break;
       case PostType.FOUND:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta es la pantalla de animales encontrados'),
-            duration: Duration(seconds: 2),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SavePostForm(
+                typePost: PostType.FOUND,
+                author: Author(
+                  id: BigInt.from(2),
+                  name: 'mike',
+                  email: 'ejemplo@gmail.com',
+                  phone: '0997535419',
+                ),
+                statePost: StatePost.FOUND,
+              )
           ),
         );
         break;
       case PostType.ADOPTION:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta es la pantalla de adopción de animales'),
-            duration: Duration(seconds: 2),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SavePostForm(
+                typePost: PostType.ADOPTION,
+                author: Author(
+                  id: BigInt.from(6),
+                  name: 'asd1',
+                  email: 'ejemplo@gmail.com',
+                  phone: '0997535419',
+                ),
+                statePost: StatePost.LOST,
+              )
           ),
         );
         break;
@@ -261,5 +373,10 @@ class CustomMaterialDialog {
 
   void _closeDialog() {
     Navigator.of(context).pop();
+  }
+
+  void _dismissAndPop() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pop(); // Volver atrás en la pantalla
   }
 }
