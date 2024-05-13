@@ -33,16 +33,24 @@ class Store {
     await preferences.setString("AUTHOR", jsonEncode(author.toJson()));
   }
 
-  static Future<Author?> getUserId() async {
+  static Future<BigInt?> getUserId() async {
     final preferences = await SharedPreferences.getInstance();
 
-    final author = preferences.getString("AUTHOR");
+    final token = preferences.getString(_tokenKey);
 
-    if (author == null) {
+    if (token == null) {
       return null;
     }
 
-    return Author.fromJson(jsonDecode(author));
+    final payload = jwtDecode(token);
+
+    if (payload.payload.containsKey('userId')) {
+      final userId = payload.payload['userId'] as String;
+
+      return BigInt.parse(userId);
+    }
+
+    return null;
   }
 
   static Future<bool> getTokenTimeOut() async {
@@ -72,7 +80,6 @@ class Store {
 
     if (payload.payload.containsKey('role')) {
       final roles = payload.payload['role'] as List<dynamic>;
-      print(roles.first);
       return roles.isNotEmpty ? roles.first : '';
     }
 
@@ -81,8 +88,6 @@ class Store {
 
   static Future<bool> hasAdminRole() async {
     final role = await getTokenRole();
-
-    print(role == 'ROLE_ADMIN');
 
     return role == 'ROLE_ADMIN';
   }
