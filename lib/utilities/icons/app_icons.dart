@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 class AppIcons {
   static const Icon addIcon = Icon(CupertinoIcons.add);
   static const Icon locationIcon = Icon(CupertinoIcons.location_solid);
+  static const Icon lockIcon = Icon(CupertinoIcons.lock);
   static const Icon phoneIcon = Icon(CupertinoIcons.phone);
   static const Icon emailIcon = Icon(CupertinoIcons.mail);
   static const Icon shareIcon = Icon(CupertinoIcons.share);
@@ -22,8 +23,13 @@ class AppIcons {
   static const Icon adoptionIcon = Icon(CupertinoIcons.heart);
   static const Icon profileIcon = Icon(CupertinoIcons.person);
   static const Icon notificationIcon = Icon(CupertinoIcons.bell);
-  static const Icon notificationIconFill = Icon(CupertinoIcons.bell_fill);
   static const Icon whatsAppIcon = Icon(CupertinoIcons
       .arrow_turn_up_right); //Change this icon to the WhatsApp icon
   static const Icon dogAppIcon = Icon(CupertinoIcons.paw);
+  static const Icon eyeShowIcon = Icon(CupertinoIcons.eye);
+  static const Icon eyeHideIcon = Icon(CupertinoIcons.eye_slash);
+
+  //Filled Icons 
+    static const Icon notificationIconFill = Icon(CupertinoIcons.bell_fill);
+
 }

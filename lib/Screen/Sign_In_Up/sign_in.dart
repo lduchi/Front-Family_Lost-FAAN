@@ -1,10 +1,10 @@
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/ResetPassword/RequestNP.dart';
+import 'package:familylost_faan/ServiciosApp/dto/login_request.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
+import 'package:familylost_faan/ServiciosApp/services/auth_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
-import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
-import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +14,18 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Utils/colors.dart';
 import '../../widgets/main_wrapper.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({super.key});
+
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  final _formKey = GlobalKey<FormState>();
+  LoginRequest? loginRequest;
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +33,6 @@ class SignIn extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          // Contains the logo of the app
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
@@ -97,15 +106,38 @@ class SignIn extends StatelessWidget {
                 ),
               ),
             ),
-
-            SizedBox(height: size.height * 0.04),
-            // for username and password
-            myTextField("Ingresa tu nombre de usuario", Colors.black26,
-                Icons.alternate_email, null),
-
-            myTextField("Ingresa tu contraseña", Colors.black26, Icons.password,
-                Icons.visibility_off_outlined),
-
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SizedBox(height: size.height * 0.04),
+                  myTextField(
+                    AppStrings.hintUsername,
+                    Colors.black26,
+                    Icons.alternate_email,
+                    null,
+                    _usernameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStrings.errorEmptyUsername;
+                      }
+                    },
+                  ),
+                  myTextField(
+                    AppStrings.hintPassword,
+                    Colors.black26,
+                    Icons.password,
+                    Icons.visibility_off_outlined,
+                    _passwordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStrings.errorEmptyPassword;
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: size.height * 0.04),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -114,15 +146,7 @@ class SignIn extends StatelessWidget {
                   // for sign in button
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BlocProvider(
-                                    create: (context) => BottomNavCubit(),
-                                    child: const MainWrapper(isLoggedIn: true),
-                                  )) //<-- Change this to the page you want to navigate to after login
-                          );
-                      _loggin(context);
+                      _login(loginRequest, context);
                     },
                     child: Container(
                       width: size.width,
@@ -222,13 +246,19 @@ class SignIn extends StatelessWidget {
   }
 
   Container myTextField(
-      String hint, Color color, IconData icono1, IconData? icono2) {
+    String hint,
+    Color color,
+    IconData icono1,
+    IconData? icono2,
+    TextEditingController? controller, {
+    String? Function(String?)? validator,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 25,
         vertical: 15,
       ),
-      child: TextField(
+      child: TextFormField(
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
@@ -260,13 +290,39 @@ class SignIn extends StatelessWidget {
             ),
           ),
         ),
+        controller: controller,
+        validator: validator,
       ),
     );
   }
 
-  Future<void> _loggin(BuildContext context) async {
-    Store.setToken('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QxIiwiaWF0IjoxNzE1NTY0MTczLCJleHAiOjE3MTU2NTA1NzMsInJvbGUiOlsiUk9MRV9BRE1JTiJdLCJ1c2VySWQiOiI2In0.qm9B38AKKGkL9oUJa3RIttjbvW9yU4S8erXEwOWHPkE'); // <-- Change this to the token you want to store || Change this to the token you want to store
-    //This will have to change in the future
-    //Importante - Español: CAMBIA ESTO CON OTRO TOKEN, USA POSTMAN, SWAGGER, INSOMNIA CON TUS CREDENCIALES PARA CONSEGUIR UNO.
+  Future<void> _login(loginRequest, BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      loginRequest = LoginRequest(
+        username: _usernameController.text,
+        password: _passwordController.text,
+      );
+
+      final response = await AuthService().login(loginRequest, context);
+
+      if (response != null) {
+        Store.setToken(response);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (context) => BottomNavCubit(),
+              child: const MainWrapper(isLoggedIn: true),
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Usuario o contraseña incorrectos'),
+          ),
+        );
+      }
+    }
   }
 }

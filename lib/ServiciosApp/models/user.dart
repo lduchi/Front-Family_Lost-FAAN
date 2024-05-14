@@ -26,8 +26,22 @@ class User {
     required this.verificationToken,
     this.photo,
     required this.role,
-    required this.tokenPassword,
+    this.tokenPassword,
   });
+
+  User.empty()
+      : id = 0,
+        nombre = '',
+        apellido = '',
+        username = '',
+        password = '',
+        email = '',
+        direccion = '',
+        telefono = '',
+        verificationToken = '',
+        photo = null,
+        role = '',
+        tokenPassword = null;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -42,7 +56,9 @@ class User {
       verificationToken: json['verificationToken'] as String,
       photo: json['photo'] != null ? Photo.fromJson(json['photo']) : null,
       role: json['role'] as String,
-      tokenPassword: json['tokenPassword'] != null ? json['tokenPassword'] as String : null,
+      tokenPassword: json['tokenPassword'] != null
+          ? json['tokenPassword'] as String
+          : null,
     );
   }
 

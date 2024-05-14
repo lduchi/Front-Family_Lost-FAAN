@@ -1,10 +1,10 @@
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
-import 'dart:developer' as developer;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -14,28 +14,37 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late User? user;
-
+  User? user;
+  BigInt? userId;
   @override
   void initState() {
     super.initState();
-    _getUser();
+    _getStoredId().then((value) {
+      userId = value;
+      _getUser();
+    });
+  }
+
+  Future<BigInt?> _getStoredId() async {
+    userId = await Store.getUserId();
+    print(userId);
+    return userId;
   }
 
   Future<void> _getUser() async {
-    try {
-      user = await UserService().getUserByUsername('mike');
-      setState(() {});
-    } catch (e, stackTrace) {
-      developer.log('Error fetching user: $e',
-          name: '_getUser', stackTrace: stackTrace);
-    }
+    user = await UserService().getUserById(userId!, context);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     var _deviceHeight = MediaQuery.of(context).size.height;
     var _deviceWidth = MediaQuery.of(context).size.width;
+
+    if (user == null) {
+      return Container();
+    }
+
     return Scaffold(
       body: Container(
         height: _deviceHeight,

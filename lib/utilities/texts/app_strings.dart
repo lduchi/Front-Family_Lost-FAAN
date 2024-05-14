@@ -18,6 +18,11 @@ class AppStrings {
   static const String posts = 'Publicaciones';
   static const String other = 'Otro';
   static const String login = 'Iniciar Sesión';
+  static const String updateProfile = 'Actualizar Perfil';
+  static const String updatePassword = 'Actualizar Contraseña';
+  static const String currentPassword = 'Contraseña Actual';
+  static const String newPassword = 'Contraseña Nueva';
+  static const String repeatPassword = 'Repetir Contraseña';
 
   //Text for labels in navigation
   static const String navigationHome = 'Inicio';
@@ -28,6 +33,7 @@ class AppStrings {
 
   //Text for hints
   static const String hintEmail = 'Ingresa tu correo electrónico';
+  static const String hintUsername = 'Ingresa tu nombre de usuario';
   static const String hintPassword = 'Ingresa tu contraseña';
   static const String hintName = 'Ingresa tu nombre';
   static const String hintLastName = 'Ingresa tu apellido';
@@ -52,7 +58,7 @@ class AppStrings {
 
   //Text for labels in forms
   static const String formTitle = 'Crear Publicación';
-  static const String formTitlePost = 'Títutlo de la publicación';
+  static const String formTitlePost = 'Título de la publicación';
   static const String formPhoto = 'Selecciona una foto';
   static const String formName = 'Nombre del animal';
   static const String formType = 'Tipo de animal';
@@ -67,13 +73,15 @@ class AppStrings {
   static const String formViewedDate = 'Fecha de avistamiento';
   static const String formLostDate = 'Fecha de extravío';
   static const String formDescription = 'Agregar un comentario adicional';
+
   //Text for errors
   static const String errorEmail = 'Por favor ingrese un correo válido';
   static const String errorTitle = 'Por favor ingrese un título válido';
-  static const String errorPassword = 'Por favor ingrese una contraseña';
-  static const String errorName = 'Por favor ingrese un nombre';
-  static const String errorLastName = 'Por favor ingrese un apellido';
-  static const String errorPhone = 'Por favor ingrese un teléfono';
+  static const String errorPassword = 'Por favor ingrese una contraseña válida';
+  static const String errorConfirmPassword = 'Las contraseñas no coinciden';
+  static const String errorName = 'Por favor ingrese un nombre válido';
+  static const String errorLastName = 'Por favor ingrese un apellido válido';
+  static const String errorPhone = 'Por favor ingrese un teléfono válido';
   static const String errorAddress = 'Por favor ingrese una dirección';
   static const String errorDescription = 'Por favor ingrese una descripción';
   static const String errorLocation = 'Por favor seleccione una ubicación';
@@ -82,9 +90,70 @@ class AppStrings {
   static const String errorBreed = 'Por favor seleccione una raza';
   static const String errorGender = 'Por favor seleccione un género';
   static const String errorAge = 'Por favor ingrese una edad';
-  static const String errorAnimalName = 'Por favor ingrese el nombre del animal';
+  static const String errorAnimalName =
+      'Por favor ingrese el nombre del animal';
+  static const String error = 'Error';
+  static const String errorLogin =
+      'Correo electrónico o contraseña incorrectos';
+  static String errorConnection = 'Revise su conexión a internet';
 
+  //Text for errors with empty fields
+  static const String errorEmptyEmail =
+      'El campo de correo electrónico no puede estar vacío';
+  static const String errorEmptyPassword =
+      'El campo de contraseña no puede estar vacío';
+  static const String errorEmptyConfirmPassword =
+      'El campo de confirmar contraseña no puede estar vacío';
+  static const String errorEmptyName =
+      'El campo de nombre no puede estar vacío';
+  static const String errorEmptyLastName =
+      'El campo de apellido no puede estar vacío';
+  static const String errorEmptyPhone =
+      'El campo de teléfono no puede estar vacío';
+  static const String errorEmptyAddress =
+      'El campo de dirección no puede estar vacío';
+  static const String errorEmptyDescription =
+      'El campo de descripción no puede estar vacío';
+  static const String errorEmptyLocation =
+      'El campo de ubicación no puede estar vacío';
+  static const String errorEmptyDate = 'El campo de fecha no puede estar vacío';
+  static const String errorEmptyType =
+      'El campo de tipo de animal no puede estar vacío';
+  static const String errorEmptyBreed = 'El campo de raza no puede estar vacío';
+  static const String errorEmptyGender =
+      'El campo de género no puede estar vacío';
+  static const String errorEmptyAge = 'El campo de edad no puede estar vacío';
+  static const String errorEmptyAnimalName =
+      'El campo de nombre del animal no puede estar vacío';
+  static const String errorEmptyUsername =
+      'El campo de usuario no puede estar vacío';
 
+  //Text for errors with invalid length fields
+  static const String errorPasswordLength =
+      'La contraseña debe tener al menos 6 caracteres';
+  static const String errorNameLength =
+      'El nombre debe tener al menos 3 caracteres';
+  static const String errorLastNameLength =
+      'El apellido debe tener al menos 3 caracteres';
+  static const String errorPhoneLength =
+      'El teléfono debe tener al menos 10 caracteres';
+  static const String errorAddressLength =
+      'La dirección debe tener al menos 10 caracteres';
+  static const String errorDescriptionLength =
+      'La descripción debe tener al menos 10 caracteres';
+  static const String errorAnimalNameLength =
+      'El nombre del animal debe tener al menos 3 caracteres';
+  static const String errorUsernameLength =
+      'El nombre de usuario debe tener al menos 3 caracteres';
+
+  //Text for errors with invalid format fields
+
+  //Text for errors with duplicated fields
+  static const String errorDuplicatedEmail =
+      'El correo electrónico ya está registrado';
+  static const String errorDuplicatedUsername =
+      'El nombre de usuario ya está registrado';
+  static const String errorDuplicatedPhone = 'El teléfono ya está registrado';
 
   //Text for loading dialog
   static const String postActionTitle = 'Publicar';
@@ -96,7 +165,9 @@ class AppStrings {
   static const String messageSelectLocation = 'Seleccionar esta ubicación';
   static const String textRadioOptions = 'Publicar como';
   static const String textAttentionTitle = '¡Atención!';
-  static const String textAttentionMessage = 'Si sales de esta pantalla, perderás los datos ingresados. ¿Deseas continuar?';
-  static const String textErrorMessage = 'Error al intentar guardar la publicación, por favor revisa los datos ingresados';
+  static const String textAttentionMessage =
+      'Si sales de esta pantalla, perderás los datos ingresados. ¿Deseas continuar?';
+  static const String textErrorMessage =
+      'Error al intentar guardar la publicación, por favor revisa los datos ingresados';
   static const String textErrorTitle = 'Error al guardar';
 }

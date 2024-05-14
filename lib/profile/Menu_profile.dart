@@ -11,7 +11,6 @@ import 'package:familylost_faan/profile/Actualizar_profile.dart';
 import 'package:familylost_faan/profile/Privacidad_profile.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart'; // Importa la clase AppFonts
-import 'dart:developer' as developer;
 
 class MenuProfile extends StatefulWidget {
   final bool isLogged;
@@ -23,22 +22,25 @@ class MenuProfile extends StatefulWidget {
 }
 
 class _MenuProfileState extends State<MenuProfile> {
-  late User? user;
-
+  User? user;
+  BigInt? userId;
   @override
   void initState() {
     super.initState();
-    _getUser();
+    _getStoredId().then((value) {
+      userId = value;
+      _getUser();
+    });
+  }
+
+  Future<BigInt?> _getStoredId() async {
+    userId = await Store.getUserId();
+    return userId;
   }
 
   void _getUser() async {
-    try {
-      user = await UserService().getUserByUsername('mike');
-      setState(() {});
-    } catch (e, stackTrace) {
-      developer.log('Error fetching user: $e',
-          name: '_getUser', stackTrace: stackTrace);
-    }
+    user = await UserService().getUserById(userId!, context);
+    setState(() {});
   }
 
   @override
@@ -107,6 +109,10 @@ class _MenuProfileState extends State<MenuProfile> {
   }
 
   Drawer _loggedMenu(BuildContext context) {
+    if (user == null) {
+      return Drawer();
+    }
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -193,7 +199,7 @@ class _MenuProfileState extends State<MenuProfile> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PrivacidaProfile()),
+                MaterialPageRoute(builder: (context) => PrivacidadProfile()),
               );
             },
           ),

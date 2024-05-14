@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
-import 'package:familylost_faan/widgets/main_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class DioInterceptor extends Interceptor {
@@ -19,8 +18,7 @@ class DioInterceptor extends Interceptor {
     final context = options.extra['context'] as BuildContext?;
 
     if (context != null) {
-      CustomMaterialDialog.simple(
-          context: context, type: DialogType.loading);
+      CustomMaterialDialog.simple(context: context, type: DialogType.loading);
     }
 
     super.onRequest(options, handler);
