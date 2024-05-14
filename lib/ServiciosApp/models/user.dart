@@ -16,7 +16,7 @@ class User {
 
   User({
     required this.id,
-    required this.nombre,
+   this.nombre = '',
     required this.apellido,
     required this.username,
     required this.password,

@@ -7,7 +7,7 @@ class RegisterPageAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Color(0xFF009AB0),
       padding: EdgeInsets.all(25),
       child: Row(
         children: [
@@ -18,7 +18,7 @@ class RegisterPageAppBar extends StatelessWidget
             child: Icon(
               Icons.arrow_back,
               size: 30,
-              color: Color(0xFF707070),
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
           ),
           Padding(
@@ -28,7 +28,7 @@ class RegisterPageAppBar extends StatelessWidget
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF707070),
+                color: Color.fromARGB(255, 255, 255, 255),
               ),
             ),
           ),
