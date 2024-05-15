@@ -1,11 +1,60 @@
-import 'dart:typed_data';
-
+import 'dart:io';
+import 'package:familylost_faan/ServiciosApp/models/usuarios.dart';
+import 'package:familylost_faan/ServiciosApp/services/register_service.dart';
+import 'package:familylost_faan/core/utils/show_messages.dart';
+import 'package:familylost_faan/core/utils/text_input.dart';
+import 'package:familylost_faan/widgets/RegisterPageAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
-import '../../widgets/RegisterPageAppBar.dart';
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
 
-class RegisterPage extends StatelessWidget {
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController nombreController = TextEditingController();
+  TextEditingController apellidoController = TextEditingController();
+  TextEditingController direccionController = TextEditingController();
+  TextEditingController telefonoController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passRepeatController = TextEditingController();
+
+  @override
+  void dispose() {
+    nombreController.dispose();
+    apellidoController.dispose();
+    direccionController.dispose();
+    telefonoController.dispose();
+    emailController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    passRepeatController.dispose();
+    super.dispose();
+  }
+
+  File? imageFile;
+  final picker = ImagePicker();
+
+  bool isPasswordVisible = true;
+
+  final apiService = UsuariosService();
+
+  Future<void> _getImage() async {
+    final XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (image != null) {
+      setState(() {
+        imageFile = File(image.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,27 +62,103 @@ class RegisterPage extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
-          _buildTextFieldWithIcon(
-              CupertinoIcons.person, "Nombres"), // Usa CupertinoIcons
+          Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Center(
+                child: imageFile != null
+                    ? Image.file(
+                        imageFile!,
+                        fit: BoxFit.cover,
+                      )
+                    : Icon(
+                        Icons.upload_file,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _getImage,
+            child: Text("Seleccionar foto de perfil"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF009AB0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          CustomTextInput(
+              controller: nombreController,
+              label: "Nombres",
+              icon: CupertinoIcons.person),
           SizedBox(height: 10),
-          _buildTextFieldWithIcon(CupertinoIcons.person, "Apellidos"),
+          CustomTextInput(
+              controller: apellidoController,
+              label: "Apellidos",
+              icon: CupertinoIcons.person),
           SizedBox(height: 10),
-          _buildTextFieldWithIcon(CupertinoIcons.phone, "Número de teléfono"),
+          CustomTextInput(
+              controller: direccionController,
+              label: "Direccion",
+              icon: CupertinoIcons.location),
           SizedBox(height: 10),
-          _buildTextFieldWithIcon(CupertinoIcons.mail, "Correo electrónico"),
+          CustomTextInput(
+              controller: telefonoController,
+              label: "Telefono",
+              icon: CupertinoIcons.phone),
           SizedBox(height: 10),
-          _buildTextFieldWithIcon(CupertinoIcons.at, "Usuario"),
+          CustomTextInput(
+              controller: direccionController,
+              label: "Direccion",
+              icon: CupertinoIcons.mail),
           SizedBox(height: 10),
-          _buildPasswordFieldWithIcon(CupertinoIcons.lock, "Contraseña"),
+          CustomTextInput(
+              controller: usernameController,
+              label: "Username",
+              icon: CupertinoIcons.at),
           SizedBox(height: 10),
-          _buildPasswordFieldWithIcon(
-              CupertinoIcons.lock, "Repetir contraseña"),
+          CustomTextInput(
+            controller: passwordController,
+            label: "Contraseña",
+            icon: CupertinoIcons.lock,
+            isShow: true,
+            isPassword: isPasswordVisible,
+            onChanges: () {
+              print("Estoy llegando");
+              setState(() {
+                isPasswordVisible = !isPasswordVisible;
+              });
+            },
+          ),
+          SizedBox(height: 10),
+          CustomTextInput(
+            controller: passRepeatController,
+            label: "Repetir Contraseña",
+            icon: CupertinoIcons.lock,
+            isShow: true,
+            isPassword: isPasswordVisible,
+            onChanges: () {
+              print("Estoy llegando");
+              setState(() {
+                isPasswordVisible = !isPasswordVisible;
+              });
+            },
+          ),
           SizedBox(height: 20),
           SizedBox(
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
-                // Implementar la lógica para validar y procesar el registro
+              onPressed: () async {
+                SaveUser();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF009AB0),
@@ -54,46 +179,51 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextFieldWithIcon(IconData icon, String label) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: Icon(icon),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(color: Color(0xFF707070)),
-          ),
-        ),
-      ),
-    );
-  }
+  void SaveUser() async {
+    String nombre_ = nombreController.text;
+    String apellido_ = apellidoController.text;
+    String direccion_ = direccionController.text;
+    String telefono_ = telefonoController.text;
+    String email_ = emailController.text;
+    String username_ = usernameController.text;
+    String password_ = passRepeatController.text;
 
-  Widget _buildPasswordFieldWithIcon(IconData icon, String label) {
-    bool _obscureText = true;
+    if (imageFile == null) {
+      showFieldError(context, "Image");
+      return;
+    }
+    if (nombre_.isEmpty) {
+      showFieldError(context, "Nombre");
+    } else if (apellido_.isEmpty) {
+      showFieldError(context, "Apellido");
+    } else if (direccion_.isEmpty) {
+      showFieldError(context, "Direccion");
+    } else if (telefono_.isEmpty) {
+      showFieldError(context, "Telefono");
+    } else if (email_.isEmpty) {
+      showFieldError(context, "Correo Electronico");
+    } else if (username_.isEmpty) {
+      showFieldError(context, "Username");
+    } else if (password_.isEmpty) {
+      showFieldError(context, "Password");
+    } else {
+      Usuarios userNuevo = Usuarios(
+        nombre: nombre_,
+        apellido: apellido_,
+        direccion: direccion_,
+        telefono: telefono_,
+        email: email_,
+        username: username_,
+        password: password_,
+      );
 
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      child: TextFormField(
-        obscureText: _obscureText,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: Icon(icon),
-          suffixIcon: IconButton(
-            icon: _obscureText
-                ? Icon(CupertinoIcons.eye_slash)
-                : Icon(CupertinoIcons.eye_slash),
-            onPressed: () {
-              _obscureText = !_obscureText;
-            },
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(color: Color(0xFF707070)),
-          ),
-        ),
-      ),
-    );
+      final UsuariosService apiService = UsuariosService();
+      try {
+        await apiService.saveUser(userNuevo, imageFile!, context);
+        print('Publicacion guardada ');
+      } catch (e) {
+        print('Error al guardar la publicación: $e');
+      }
+    }
   }
 }

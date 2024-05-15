@@ -49,7 +49,7 @@ class _SavePostFormState extends State<SavePostForm> {
   Completer<GoogleMapController> _controller = Completer();
   LatLng? _currentCenterPosition;
   final _formKey = GlobalKey<FormState>();
-  File? _imageFile;
+ File? _imageFile;
   final picker = ImagePicker();
   final _titleController = TextEditingController();
   DateTime? _selectedDate;
