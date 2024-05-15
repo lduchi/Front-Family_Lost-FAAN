@@ -3,7 +3,7 @@ import 'package:familylost_faan/ServiciosApp/models/image.dart';
 class Photo {
   final String id;
   final String fileName;
-  final Image image;
+  final Image? image;
   final String fileType;
   final DateTime createdAt;
   final String imageHash;
@@ -32,7 +32,7 @@ class Photo {
     return {
       'id': id,
       'fileName': fileName,
-      'image': image.toJson(),
+      'image': image!.toJson(),
       'fileType': fileType,
       'createdAt': createdAt.toIso8601String(),
       'imageHash': imageHash,

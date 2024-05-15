@@ -9,7 +9,7 @@ class User {
   String email;
   String direccion;
   String telefono;
-  String verificationToken;
+  String? verificationToken;
   Photo? photo;
   String role;
   String? tokenPassword;
@@ -23,7 +23,7 @@ class User {
     required this.email,
     required this.direccion,
     required this.telefono,
-    required this.verificationToken,
+    this.verificationToken,
     this.photo,
     required this.role,
     this.tokenPassword,
@@ -53,7 +53,9 @@ class User {
       email: json['email'] as String,
       direccion: json['direccion'] as String,
       telefono: json['telefono'] as String,
-      verificationToken: json['verificationToken'] as String,
+      verificationToken: json['verificationToken'] != null
+          ? json['verificationToken'] as String
+          : '',
       photo: json['photo'] != null ? Photo.fromJson(json['photo']) : null,
       role: json['role'] as String,
       tokenPassword: json['tokenPassword'] != null

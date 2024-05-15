@@ -1,5 +1,7 @@
+import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
+import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   User? user;
   BigInt? userId;
+  List<SavePost> myPosts = [];
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +37,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _getUser() async {
     user = await UserService().getUserById(userId!, context);
+    setState(() {
+      _getPosts();
+    });
+  }
+
+  Future<void> _getPosts() async {
+    myPosts = await PostService().getPostsByUser(userId!, context);
     setState(() {});
   }
 
@@ -59,10 +70,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   CircleAvatar(
                     radius: 100,
-                    backgroundImage: Image.memory(
-                      user!.photo!.image.data,
-                      fit: BoxFit.cover,
-                    ).image,
+                    backgroundImage: user?.photo?.image?.data != null
+                        ? Image.memory(user!.photo!.image!.data).image
+                        : AssetImage(AssetManager.largeLogo),
                   ),
                   SizedBox(height: 8),
                   Text(
@@ -145,8 +155,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
         crossAxisSpacing: 2,
       ),
       itemCount: 5,
-      itemBuilder: (BuildContext context, int index) {
-        //final post = 1;
+      itemBuilder: (BuildContext context, int myPosts) {
         return Container(
           color: AppColors.secondaryColor,
           child: Image.asset(

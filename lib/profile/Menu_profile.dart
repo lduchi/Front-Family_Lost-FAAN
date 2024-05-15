@@ -1,6 +1,7 @@
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
+import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
@@ -128,10 +129,9 @@ class _MenuProfileState extends State<MenuProfile> {
                   padding: const EdgeInsets.only(right: 16.0),
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: Image.memory(
-                      user!.photo!.image.data,
-                      fit: BoxFit.cover,
-                    ).image,
+                    backgroundImage: user?.photo?.image?.data != null
+                        ? Image.memory(user!.photo!.image!.data).image
+                        : AssetImage(AssetManager.largeLogo),
                   ),
                 ),
                 Expanded(

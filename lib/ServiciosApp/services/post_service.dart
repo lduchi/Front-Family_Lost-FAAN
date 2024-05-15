@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:familylost_faan/ServiciosApp/dto/page_response.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/dio_interceptor.dart';
 import 'package:familylost_faan/environment/environment.dart';
@@ -18,7 +19,7 @@ class PostService {
     _dio.interceptors.add(DioInterceptor());
   }
 
-  final String endPointUrl = baseUrl + '/post';
+  final String endPointUrl = baseUrl + '/posts';
   final String endPointUrlPhoto = baseUrl + '/file';
 
   Future<SavePost> savePost(SavePost savePost, File photo, BuildContext context) async {
@@ -65,5 +66,23 @@ class PostService {
     final savedPost = await SavePost.fromJson(response.data);
 
     return savedPost;
+  }
+
+  Future<List<SavePost>> getPostsByUser(BigInt userId, BuildContext context) async {
+    final String url = '$endPointUrl/author-id';
+
+    final response = await _dio.get(
+      url,
+      options: Options(
+        extra: {'context': context},
+      ),
+      queryParameters: {'authorId': userId},
+    );
+
+    final PageResponse pageResponse = PageResponse.fromJson(response.data);
+
+    print(pageResponse.content);
+    return pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
+
   }
 }

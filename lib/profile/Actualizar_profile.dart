@@ -3,13 +3,13 @@ import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/models/user_update.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
+import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/app_validator.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
-import 'dart:developer' as developer;
 import 'package:image_picker/image_picker.dart';
 
 class ActualizarProfile extends StatefulWidget {
@@ -65,19 +65,14 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
   }
 
   void _updatePhoto(String username, File file) async {
-    try {
-      await UserService().updatePhoto(username, file);
-    } catch (e, stackTrace) {
-      developer.log('Error uploading photo: $e',
-          name: '_updatePhoto', stackTrace: stackTrace);
-    }
+    await UserService().updatePhoto(username, file);
   }
 
   void _updateUser() async {
     if (_formKey.currentState!.validate()) {
       UpdateUser updateUser = UpdateUser(
         id: user!.id,
-        verificationToken: user!.verificationToken,
+        verificationToken: user!.verificationToken ?? '',
         nombre: _nameTextController.text,
         apellido: _lastNameTextController.text,
         username: _usernameTextController.text,
@@ -138,14 +133,16 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
               radius: _deviceSize.width * 0.2,
               backgroundImage: _selectedImage != null
                   ? FileImage(_selectedImage!)
-                  : Image.memory(user!.photo!.image.data).image,
+                  : user?.photo?.image?.data != null
+                      ? MemoryImage(user!.photo!.image!.data)
+                      : AssetImage(AssetManager.largeLogo) as ImageProvider<Object>?,
             ),
             iconSize: _deviceSize.width * 0.4,
           ),
           SizedBox(height: _deviceSize.height * 0.01),
           Form(
               key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+              //autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
                   _buildTextFieldWithIcon(
