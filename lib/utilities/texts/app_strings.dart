@@ -62,6 +62,9 @@ class AppStrings {
   static const String formPhoto = 'Selecciona una foto';
   static const String formName = 'Nombre del animal';
   static const String formType = 'Tipo de animal';
+  static const String postType = 'Tipo de publicación';
+  static const String author = 'Autor';
+  static const String authorComent = 'Extra';
   static const String formBreed = 'Raza';
   static const String formColor = 'Color';
   static const String formAge = 'Edad';
@@ -170,4 +173,11 @@ class AppStrings {
   static const String textErrorMessage =
       'Error al intentar guardar la publicación, por favor revisa los datos ingresados';
   static const String textErrorTitle = 'Error al guardar';
+  static const String deletePost = '¿Deseas eliminar esta publicación?';
+  static const String deletePostTitle = 'Eliminar publicación';
+  static const String deletePostMessage = 'La publicación se eliminará';
+  static const String deletePostSuccess = 'Publicación eliminada con éxito';
+  static const String deletePostError = 'Error al eliminar la publicación';
+  static const String deletePostErrorTitle = 'Error al eliminar';
+  static const String successTitle = '¡Éxito!';
 }
