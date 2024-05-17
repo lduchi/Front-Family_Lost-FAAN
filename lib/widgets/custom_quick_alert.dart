@@ -12,7 +12,6 @@ import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-
 import '../utilities/enum/state_post.dart';
 
 class CustomMaterialDialog {

@@ -3,10 +3,14 @@ import 'package:familylost_faan/ServiciosApp/models/usuarios.dart';
 import 'package:familylost_faan/ServiciosApp/services/register_service.dart';
 import 'package:familylost_faan/core/utils/show_messages.dart';
 import 'package:familylost_faan/core/utils/text_input.dart';
+import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/widgets/RegisterPageAppBar.dart';
+import 'package:familylost_faan/widgets/custom_quick_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -22,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passRepeatController = TextEditingController();
-
+  bool isLoading = false;
   @override
   void dispose() {
     nombreController.dispose();
@@ -59,121 +63,130 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: RegisterPageAppBar(),
-      body: ListView(
-        padding: EdgeInsets.all(20),
+      body: Stack(
         children: [
-          Container(
-            height: 200,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
+          ListView(
+            padding: EdgeInsets.all(20),
+            children: [
+              Container(
+                height: 200,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: imageFile != null
+                      ? Image.file(
+                    imageFile!,
+                    fit: BoxFit.cover,
+                  )
+                      : Icon(
+                    Icons.upload_file,
+                    size: 50,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _getImage,
+                child: Text("Seleccionar foto de perfil"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF009AB0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              CustomTextInput(
+                  controller: nombreController,
+                  label: "Nombres",
+                  icon: CupertinoIcons.person),
+              SizedBox(height: 10),
+              CustomTextInput(
+                  controller: apellidoController,
+                  label: "Apellidos",
+                  icon: CupertinoIcons.person),
+              SizedBox(height: 10),
+              CustomTextInput(
+                  controller: direccionController,
+                  label: "Direccion",
+                  icon: CupertinoIcons.location),
+              SizedBox(height: 10),
+              CustomTextInput(
+                  controller: telefonoController,
+                  label: "Telefono",
+                  icon: CupertinoIcons.phone),
+              SizedBox(height: 10),
+              CustomTextInput(
+                  controller: emailController,
+                  label: "Correo Electronico",
+                  icon: CupertinoIcons.mail),
+              SizedBox(height: 10),
+              CustomTextInput(
+                  controller: usernameController,
+                  label: "Username",
+                  icon: CupertinoIcons.at),
+              SizedBox(height: 10),
+              CustomTextInput(
+                controller: passwordController,
+                label: "Contraseña",
+                icon: CupertinoIcons.lock,
+                isShow: true,
+                isPassword: isPasswordVisible,
+                onChanges: () {
+                  print("Estoy llegando");
+                  setState(() {
+                    isPasswordVisible = !isPasswordVisible;
+                  });
+                },
+              ),
+              SizedBox(height: 10),
+              CustomTextInput(
+                controller: passRepeatController,
+                label: "Repetir Contraseña",
+                icon: CupertinoIcons.lock,
+                isShow: true,
+                isPassword: isPasswordVisible,
+                onChanges: () {
+                  print("Estoy llegando");
+                  setState(() {
+                    isPasswordVisible = !isPasswordVisible;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    SaveUser();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF009AB0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  child: Text(
+                    "Registrarse",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.01),
               child: Center(
-                child: imageFile != null
-                    ? Image.file(
-                        imageFile!,
-                        fit: BoxFit.cover,
-                      )
-                    : Icon(
-                        Icons.upload_file,
-                        size: 50,
-                        color: Colors.grey,
-                      ),
+                child: LoadingAnimationWidget.inkDrop(color: Colors.red, size: 50),
               ),
             ),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _getImage,
-            child: Text("Seleccionar foto de perfil"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF009AB0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50.0),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          CustomTextInput(
-              controller: nombreController,
-              label: "Nombres",
-              icon: CupertinoIcons.person),
-          SizedBox(height: 10),
-          CustomTextInput(
-              controller: apellidoController,
-              label: "Apellidos",
-              icon: CupertinoIcons.person),
-          SizedBox(height: 10),
-          CustomTextInput(
-              controller: direccionController,
-              label: "Direccion",
-              icon: CupertinoIcons.location),
-          SizedBox(height: 10),
-          CustomTextInput(
-              controller: telefonoController,
-              label: "Telefono",
-              icon: CupertinoIcons.phone),
-          SizedBox(height: 10),
-          CustomTextInput(
-              controller: direccionController,
-              label: "Direccion",
-              icon: CupertinoIcons.mail),
-          SizedBox(height: 10),
-          CustomTextInput(
-              controller: usernameController,
-              label: "Username",
-              icon: CupertinoIcons.at),
-          SizedBox(height: 10),
-          CustomTextInput(
-            controller: passwordController,
-            label: "Contraseña",
-            icon: CupertinoIcons.lock,
-            isShow: true,
-            isPassword: isPasswordVisible,
-            onChanges: () {
-              print("Estoy llegando");
-              setState(() {
-                isPasswordVisible = !isPasswordVisible;
-              });
-            },
-          ),
-          SizedBox(height: 10),
-          CustomTextInput(
-            controller: passRepeatController,
-            label: "Repetir Contraseña",
-            icon: CupertinoIcons.lock,
-            isShow: true,
-            isPassword: isPasswordVisible,
-            onChanges: () {
-              print("Estoy llegando");
-              setState(() {
-                isPasswordVisible = !isPasswordVisible;
-              });
-            },
-          ),
-          SizedBox(height: 20),
-          SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () async {
-                SaveUser();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF009AB0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-              ),
-              child: Text(
-                "Registrarse",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -218,12 +231,24 @@ class _RegisterPageState extends State<RegisterPage> {
       );
 
       final UsuariosService apiService = UsuariosService();
+      setState(() {
+        isLoading = true;
+      });
       try {
         await apiService.saveUser(userNuevo, imageFile!, context);
-        print('Publicacion guardada ');
+        setState(() {
+          isLoading = false;
+        });
+        CustomMaterialDialog.successOrError(context: context, type: DialogType.loading, title: "¡Hey!", message: "Gracias por registrarte");
       } catch (e) {
         print('Error al guardar la publicación: $e');
+        setState(() {
+          isLoading = false;
+        });
+        CustomMaterialDialog.successOrError(context: context, type: DialogType.error, title: "Whoops..", message: "Estamos teniendo problemas una disculpa :)");
+
       }
     }
   }
+
 }
