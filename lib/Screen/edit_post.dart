@@ -43,6 +43,7 @@ class EditPost extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
+                    
                     children: [
                       Expanded(
                         child: Container(
@@ -57,7 +58,6 @@ class EditPost extends StatelessWidget {
                             children: [
                               _buildTextFieldWithLabel(
                                   "Nombre", "Nombre", size),
-                              SizedBox(height: size.height * 0.01),
                               _buildTextFieldWithLabel(
                                   "Ubicacion", "Ubicacion", size),
                             ],
@@ -77,17 +77,23 @@ class EditPost extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _buildTextFieldWithLabel("Fecha", "Fecha", size),
-                              SizedBox(height: size.height * 0.01),
+
+
                               _buildTextFieldWithLabel("Tipo de publicacion",
                                   "Tipo de publicacion", size),
                             ],
                           ),
                         ),
+                        
                       ),
                     ],
                   ),
-                  SizedBox(height: size.height * 0.01),
-                  Center(
+SizedBox(
+  height: size.height * 0.01, // Ajuste del tamaño del SizedBox
+  child: Container(
+    color: Colors.white, // Color blanco
+  ),
+),                  Center(
                     // Centrar la parte de descripcion e imagen
                     child: Container(
                       padding: const EdgeInsets.all(8.0),
@@ -101,8 +107,17 @@ class EditPost extends StatelessWidget {
                         children: [
                           _buildTextFieldWithLabel2(
                               "Descripcion", "Descripcion", size),
-                          SizedBox(height: size.height * 0.01),
-                          Text(
+SizedBox(
+  height: size.height * 0.01, // Ajuste del tamaño del SizedBox
+  
+),  
+                   SizedBox(
+  height: size.height * 0.01, // Ajuste del tamaño del SizedBox
+  child: Container(
+    color: Colors.white, // Color blanco
+  ),
+),             
+                        Text(
                             "Imagen",
                             style: TextStyle(
                               color: Colors.black,
@@ -194,12 +209,21 @@ class EditPost extends StatelessWidget {
     );
   }
 
-  Widget _buildTextFieldWithLabel(String hint, String label, Size size) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
+ Widget _buildTextFieldWithLabel(String hint, String label, Size size) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [   
+      Container(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        decoration: BoxDecoration(
+          color: Colors.blue[100], // Margen de color del título
+borderRadius: BorderRadius.horizontal(
+      left: Radius.circular(20.0), // Borde izquierdo semicircular
+      right: Radius.circular(20.0), // Borde derecho semicircular
+    ),          
+        ),
+        child: Padding(
+  padding: EdgeInsets.all(8.0), // Ajuste del relleno del contenedor
           child: Text(
             label,
             style: TextStyle(
@@ -208,33 +232,33 @@ class EditPost extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          width: 150,
-          height: 52.04,
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: Color(0xFFC0C0C0),
+      ),
+      SizedBox(height: 2.0), // Espacio entre el título y el campo de texto
+      // Contenedor para el campo de texto con fondo blanco y sin borde de color
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+          color: Colors.white, // Fondo blanco del campo de texto
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: TextField(
+          decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            hintText: hint,
+            hintStyle: const TextStyle(
+              color: Color.fromARGB(255, 124, 120, 120),
+              fontSize: 15,
             ),
-          ),
-          child: TextField(
-            decoration: InputDecoration(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              hintText: hint,
-              hintStyle: const TextStyle(
-                color: Color.fromARGB(255, 124, 120, 120),
-                fontSize: 15,
-              ),
-              border: InputBorder.none,
-            ),
+            border: InputBorder.none, // Sin borde
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
+
+
 
   Widget _buildTextFieldWithLabel2(String hint, String label, Size size) {
     return Column(
