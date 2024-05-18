@@ -231,6 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
       );
 
       final UsuariosService apiService = UsuariosService();
+      FocusScope.of(context).unfocus();
       setState(() {
         isLoading = true;
       });
