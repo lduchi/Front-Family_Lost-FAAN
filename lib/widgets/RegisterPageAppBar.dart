@@ -24,7 +24,8 @@ class RegisterPageAppBar extends StatelessWidget
           Padding(
             padding: EdgeInsets.only(left: 20),
             child: Text(
-              "Crear una cuenta",
+              ""
+                  "Crear una cuenta",
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.bold,
