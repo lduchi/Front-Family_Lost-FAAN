@@ -47,10 +47,8 @@ class _MySplashScreenState extends State<MySplashScreen>
         width: size.width,
         child: Stack(
           children: [
-            Positioned(
-              top: 100.0, // Ajusta este valor según la altura que desees
-              left: 0.0,
-              right: 0.0,
+            Align(
+              alignment: Alignment.topCenter,
               child: AnimatedContainer(
                 duration: const Duration(seconds: 1),
                 curve: Curves.easeIn,
@@ -98,7 +96,6 @@ class _MySplashScreenState extends State<MySplashScreen>
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 30,
-                          vertical: 80,
                         ),
                         child: Container(
                           height: size.height * 0.08,
