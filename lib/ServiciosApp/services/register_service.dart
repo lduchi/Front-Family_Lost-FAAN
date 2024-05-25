@@ -13,7 +13,7 @@ import 'package:http_parser/http_parser.dart';
 class UsuariosService {
   late final Dio _dio;
 
-  PostService() {
+  UsuariosService() {
     _dio = DioClient().instance;
   }
 

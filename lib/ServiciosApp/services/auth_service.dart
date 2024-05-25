@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class AuthService {
   late final Dio _dio;
 
-  PostService() {
+  AuthService() {
     _dio = DioClient().instance;
   }
 

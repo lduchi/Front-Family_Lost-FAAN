@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 class UserService {
   late final Dio _dio;
 
-  PostService() {
+  UserService() {
     _dio = DioClient().instance;
   }
 
