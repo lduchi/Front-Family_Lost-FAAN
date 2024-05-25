@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
-import 'package:familylost_faan/ServiciosApp/interceptors/dio_interceptor.dart';
+import 'package:familylost_faan/ServiciosApp/dto/author.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/models/user_update.dart';
+import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:familylost_faan/environment/environment.dart';
 import 'dart:convert';
 
@@ -12,16 +13,15 @@ import 'package:flutter/material.dart';
 class UserService {
   late final Dio _dio;
 
-  UserService() {
-    _dio = Dio();
-    _dio.interceptors.add(DioInterceptor());
+  PostService() {
+    _dio = DioClient().instance;
   }
 
-  String endPointUrl = baseUrl + '/usuario';
+  String endPointUrl = baseUrl + '/user';
 
   String endPointUrlPhoto = baseUrl + '/file';
 
-  Future<User> getUserById(BigInt id, BuildContext context) async {
+  Future<User> getUserById(String id, BuildContext context) async {
     var url = '$endPointUrl/$id';
 
     try {
@@ -62,7 +62,7 @@ class UserService {
   }
 
   //This method is working fine, or I think so :D
-  Future<String> updateUser(int id, UpdateUser user) async {
+  Future<String> updateUser(String id, UpdateUser user) async {
     var url = '$endPointUrl/actualizarUser/$id';
     final response = await _dio.put(url, data: json.encode(user.toJson()));
 
@@ -101,7 +101,19 @@ class UserService {
     }
   }
 
-  Future<bool> updatePassword(BigInt id, String password) async {
+  Future<Author> getAuthorByUsername(String username) async {
+    var url = '$endPointUrl/get-author/$username';
+    final response = await _dio.get(url);
+
+    if (response.statusCode == 200) {
+      final authorResponse = Author.fromJson(response.data);
+      return authorResponse;
+    } else {
+      throw Exception('Failed to load author');
+    }
+  }
+
+  Future<bool> updatePassword(String id, String password) async {
     var url = '$endPointUrl/update-password/$id';
     final response =
         await _dio.put(url, queryParameters: {'password': password});

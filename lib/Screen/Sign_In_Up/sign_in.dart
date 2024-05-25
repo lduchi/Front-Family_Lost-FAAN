@@ -23,7 +23,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-  LoginRequest? loginRequest;
+  AuthenticationRequest? loginRequest;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -298,7 +298,7 @@ class _SignInState extends State<SignIn> {
 
   Future<void> _login(loginRequest, BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      loginRequest = LoginRequest(
+      loginRequest = AuthenticationRequest(
         username: _usernameController.text,
         password: _passwordController.text,
       );
@@ -306,7 +306,12 @@ class _SignInState extends State<SignIn> {
       final response = await AuthService().login(loginRequest, context);
 
       if (response != null) {
-        Store.setToken(response);
+        final accessToken = response['accessJwt'];
+        final refreshToken = response['refreshJwt'];
+
+        Store.setTokens(accessToken, refreshToken);
+        Store.setLogged(true);
+
         Navigator.push(
           context,
           MaterialPageRoute(

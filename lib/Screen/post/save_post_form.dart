@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
 import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/ServiciosApp/utils/animal_list.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
@@ -49,7 +51,7 @@ class _SavePostFormState extends State<SavePostForm> {
   Completer<GoogleMapController> _controller = Completer();
   LatLng? _currentCenterPosition;
   final _formKey = GlobalKey<FormState>();
- File? _imageFile;
+  File? _imageFile;
   final picker = ImagePicker();
   final _titleController = TextEditingController();
   DateTime? _selectedDate;
@@ -81,12 +83,6 @@ class _SavePostFormState extends State<SavePostForm> {
     target: LatLng(-2.8973852640959343, -79.00446994564442),
     zoom: 14.4746,
   );
-
-  static final CameraPosition _position = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(-2.8973852640959343, -79.00446994564442),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +136,11 @@ class _SavePostFormState extends State<SavePostForm> {
                       height: 90,
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage(AssetManager.largeLogo),
+                        backgroundImage: CachedNetworkImageProvider(
+                          author.imageUrl.isNotEmpty
+                              ? author.imageUrl
+                              : AssetManager.largeLogo,
+                        ),
                       ),
                     ),
                     SizedBox(width: 30),
@@ -149,8 +149,7 @@ class _SavePostFormState extends State<SavePostForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'ELIZABETH PEÑAFIEL',
-                            // Cambiar por el nombre del usuario
+                            author.username.toUpperCase(),
                             style: AppFonts.TitlePost,
                           ),
                           SizedBox(height: 5),
@@ -543,20 +542,19 @@ class _SavePostFormState extends State<SavePostForm> {
     );
 
     SavePost savePostInstance = SavePost(
-      id: '',
       title: _titleController.text,
-      authorComment: _authorCommentController.text,
-      typePost: typePost.value,
+      additionalComment: _authorCommentController.text,
+      typePost: typePost.name,
       author: author,
+      date: _selectedDate ?? DateTime.now(),
       animal: Animal(
         name: _nameController.text,
         type: _typeController.text,
         race: _raceController.text,
         gender: _genderController.text,
-        date: _selectedDate,
       ),
       location: geoJsonLocation,
-      state: statePost.value,
+      state: statePost.name,
     );
 
     SavePost savePost =

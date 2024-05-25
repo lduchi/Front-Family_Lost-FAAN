@@ -6,7 +6,7 @@
  */
 
 class UpdateUser {
-  int id;
+  String id;
   String nombre;
   String apellido;
   String username;

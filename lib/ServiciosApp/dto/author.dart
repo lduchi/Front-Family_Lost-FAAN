@@ -2,37 +2,41 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 class Author {
-  BigInt id;
-  String name;
+  String id;
+  String username;
   String email;
   String phone;
-  Uint8List? data;
+  String imagePath;
+  String imageUrl;
 
   Author({
     required this.id,
-    required this.name,
+    required this.username,
     required this.email,
     required this.phone,
-    this.data,
+    this.imagePath = '',
+    this.imageUrl = '',
   });
 
   factory Author.fromJson(Map<String, dynamic> json) {
     return Author(
-      id: BigInt.parse(json['id'].toString()),
-      name: json['name'],
+      id: json['id'],
+      username: json['username'],
       email: json['email'],
       phone: json['phone'],
-      data: json['data'] != null ? base64Decode(json['data']) : null,
+      imagePath: json['imagePath'] != null ? json['imagePath'] : '',
+      imageUrl: json['imageUrl'] != null ? json['imageUrl'] : '',
     );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id.toString();
-    data['name'] = this.name;
+    data['username'] = this.username;
     data['email'] = this.email;
     data['phone'] = this.phone;
-    data['data'] = this.data;
+    data['imageUrl'] = this.imageUrl;
+    data['imagePath'] = this.imagePath;
     return data;
   }
 }

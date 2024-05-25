@@ -18,7 +18,7 @@ class PrivacidadProfile extends StatefulWidget {
 class _PrivacidadProfileState extends State<PrivacidadProfile> {
   final _formKey = GlobalKey<FormState>();
   User? user;
-  BigInt? userId;
+  String? userId;
   bool _passwordInVisible = true;
 
   final _passwordTextController = TextEditingController();
@@ -30,7 +30,7 @@ class _PrivacidadProfileState extends State<PrivacidadProfile> {
     _getStoredId();
   }
 
-  Future<BigInt?> _getStoredId() async {
+  Future<String?> _getStoredId() async {
     userId = await Store.getUserId();
     return userId;
   }

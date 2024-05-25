@@ -21,7 +21,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   User? user;
-  BigInt? userId;
+  String? userId;
   bool likedPosts = false;
 
   @override
@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  Future<BigInt?> _getStoredId() async {
+  Future<String?> _getStoredId() async {
     userId = await Store.getUserId();
     return userId;
   }
@@ -130,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class _ProfileGridView extends StatefulWidget {
-  final BigInt userId;
+  final String userId;
   final bool likedPosts;
   const _ProfileGridView(
       {Key? key, required this.userId, required this.likedPosts})
@@ -179,10 +179,10 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
           },
           child: Container(
             color: AppColors.mainColor,
-            child: Image.memory(
+            /*child: Image.memory(
               post.data!,
               fit: BoxFit.cover,
-            ),
+            ),*/
           ),
         );
       },
@@ -213,7 +213,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Center(
+                    /*Center(
                       child: ClipRRect(
                         borderRadius:
                             BorderRadius.circular(_deviceSize.width * 0.02),
@@ -224,7 +224,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                           width: _deviceSize.width,
                         ),
                       ),
-                    ),
+                    ),*/
                     const SizedBox(height: 8.0),
                     Text(
                       post.title,
@@ -235,7 +235,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                     ),
                     const SizedBox(height: 8.0),
                     Text(
-                      '${AppStrings.author}: ${post.author.name}',
+                      '${AppStrings.author}: ${post.author.username}',
                       style: AppFonts.TextField.copyWith(
                         color: AppColors.activeBlueColor,
                         fontWeight: FontWeight.bold,
@@ -259,7 +259,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                     ),
                     const SizedBox(height: 8.0),
                     Text(
-                      '${AppStrings.authorComent}: ${post.authorComment}',
+                      '${AppStrings.authorComent}: ${post.additionalComment}',
                       style: AppFonts.TextField.copyWith(
                         color: AppColors.activeBlueColor,
                         fontWeight: FontWeight.bold,
@@ -303,7 +303,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
           AppColors.errorColor,
           AppStrings.buttonDelete,
           onPressed: () {
-            var data = PostService().deletePost(post.id, context);
+            var data = PostService().deletePost(post.id ?? '', context);
             print(data);
             Navigator.pop(context);
           },

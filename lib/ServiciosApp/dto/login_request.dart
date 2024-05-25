@@ -1,11 +1,11 @@
-class LoginRequest {
+class AuthenticationRequest {
   String username;
   String password;
 
-  LoginRequest({required this.username, required this.password});
+  AuthenticationRequest({required this.username, required this.password});
 
-  factory LoginRequest.fromJson(Map<String, dynamic> json) {
-    return LoginRequest(
+  factory AuthenticationRequest.fromJson(Map<String, dynamic> json) {
+    return AuthenticationRequest(
       username: json['username'],
       password: json['password'],
     );

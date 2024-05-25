@@ -1,44 +1,49 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
 import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 
 class SavePost {
-  String id;
+  String? id;
   String title;
-  String authorComment;
+  String additionalComment;
   String typePost;
   Author author;
   Animal animal;
   GeoJson location;
   String state;
-  Uint8List? data;
+  String imagePath;
+  String imageUrl;
+  DateTime? date;
 
   SavePost({
-    required this.id,
+    this.id,
     required this.title,
-    required this.authorComment,
+    required this.additionalComment,
     required this.typePost,
     required this.author,
     required this.animal,
     required this.location,
     required this.state,
-    this.data,
+    this.date,
+    this.imagePath = '',
+    this.imageUrl = '',
   });
 
   factory SavePost.fromJson(Map<String, dynamic> json) {
     return SavePost(
       id: json['id'],
       title: json['title'],
-      authorComment: json['authorComment'],
+      additionalComment: json['authorComment'],
       typePost: json['typePost'],
       author: Author.fromJson(json['author']),
       animal: Animal.fromJson(json['animal']),
       location: GeoJson.fromJson(json['location']),
       state: json['state'],
-      data: json['data'] != null ? base64Decode(json['data']) : null,
+      date: json['date'] != null
+          ? DateTime.parse(json['date'])
+          : null,
+      imagePath: json['imagePath'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
     );
   }
 
@@ -46,13 +51,15 @@ class SavePost {
     return {
       'id': id,
       'title': title,
-      'authorComment': authorComment,
+      'authorComment': additionalComment,
       'typePost': typePost,
       'author': author.toJson(),
       'animal': animal.toJson(),
       'location': location.toJson(),
       'state': state,
-      'data': data,
+      'date': date?.toIso8601String(),
+      'imagePath': imagePath,
+      'imageUrl': imageUrl,
     };
   }
 }

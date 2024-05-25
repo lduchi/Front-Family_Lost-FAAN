@@ -24,7 +24,7 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
   var _deviceSize;
   User? user;
   late File? _selectedImage = null;
-  BigInt? userId;
+  String? userId;
 
   final _imagePicker = ImagePicker();
   final _nameTextController = TextEditingController();
@@ -52,7 +52,7 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
     }
   }
 
-  Future<BigInt?> _getStoredId() async {
+  Future<String?> _getStoredId() async {
     userId = await Store.getUserId();
     return userId;
   }

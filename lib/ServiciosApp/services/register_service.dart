@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/models/usuarios.dart';
+import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:familylost_faan/ServiciosApp/interceptors/dio_interceptor.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
-import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/environment/environment.dart';
 import 'package:familylost_faan/pages/pages.dart';
 import 'package:http_parser/http_parser.dart';
@@ -15,8 +13,8 @@ import 'package:http_parser/http_parser.dart';
 class UsuariosService {
   late final Dio _dio;
 
-  UsuariosService() {
-    _dio = Dio();
+  PostService() {
+    _dio = DioClient().instance;
   }
 
   final String endPointUrlPhoto = baseUrl + '/file';

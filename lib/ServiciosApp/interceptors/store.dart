@@ -7,18 +7,38 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Store {
   const Store._();
 
-  static const String _tokenKey = "TOKEN";
+  static const String _tokenAccessKey = "ACCESS_TOKEN";
+  static const String _tokenRefreshKey = "REFRESH_TOKEN";
 
-  static Future<void> setToken(String token) async {
+  static Future<void> setTokens(String accessToken, String refreshToken) async {
     final preferences = await SharedPreferences.getInstance();
 
-    await preferences.setString(_tokenKey, token);
+    await preferences.setString(_tokenAccessKey, accessToken);
+    await preferences.setString(_tokenRefreshKey, refreshToken);
   }
 
-  static Future<String?> getToken() async {
+  static Future<void> setAccessToken(String token) async {
     final preferences = await SharedPreferences.getInstance();
 
-    return preferences.getString(_tokenKey);
+    await preferences.setString(_tokenAccessKey, token);
+  }
+
+  static Future<String?> getAccessToken() async {
+    final preferences = await SharedPreferences.getInstance();
+
+    return preferences.getString(_tokenAccessKey);
+  }
+
+  static Future<void> setRefreshToken(String token) async {
+    final preferences = await SharedPreferences.getInstance();
+
+    await preferences.setString(_tokenRefreshKey, token);
+  }
+
+  static Future<String?> getRefreshToken() async {
+    final preferences = await SharedPreferences.getInstance();
+
+    return preferences.getString(_tokenRefreshKey);
   }
 
   static Future<void> removeToken() async {
@@ -27,16 +47,30 @@ class Store {
     await preferences.clear();
   }
 
-  static Future<void> setUserId(Author author) async {
+  static Future<String?> getUserId() async {
     final preferences = await SharedPreferences.getInstance();
 
-    await preferences.setString("AUTHOR", jsonEncode(author.toJson()));
+    final token = preferences.getString(_tokenAccessKey);
+
+    if (token == null) {
+      return null;
+    }
+
+    final jwtData = jwtDecode(token);
+
+    if (jwtData.payload.containsKey('userId')) {
+      final userId = jwtData.payload['userId'];
+
+      return userId;
+    }
+
+    return null;
   }
 
-  static Future<BigInt?> getUserId() async {
+  static Future<String?> getUserName() async {
     final preferences = await SharedPreferences.getInstance();
 
-    final token = preferences.getString(_tokenKey);
+    final token = preferences.getString(_tokenAccessKey);
 
     if (token == null) {
       return null;
@@ -44,19 +78,33 @@ class Store {
 
     final payload = jwtDecode(token);
 
-    if (payload.payload.containsKey('userId')) {
-      final userId = payload.payload['userId'] as String;
+    if (payload.payload.containsKey('sub')) {
+      final username = payload.payload['sub'] as String;
 
-      return BigInt.parse(userId);
+      return username;
     }
 
     return null;
   }
 
-  static Future<bool> getTokenTimeOut() async {
+  static Future<bool> getAccessTokenTimeOut() async {
     final preferences = await SharedPreferences.getInstance();
 
-    final token = preferences.getString(_tokenKey);
+    final token = preferences.getString(_tokenAccessKey);
+
+    if (token == null) {
+      return true;
+    }
+
+    final jwtData = jwtDecode(token);
+
+    return jwtData.isExpired!;
+  }
+
+  static Future<bool> getRefreshTokenTimeOut() async {
+    final preferences = await SharedPreferences.getInstance();
+
+    final token = preferences.getString(_tokenAccessKey);
 
     if (token == null) {
       return true;
@@ -70,7 +118,7 @@ class Store {
   static Future<String> getTokenRole() async {
     final preferences = await SharedPreferences.getInstance();
 
-    final token = preferences.getString(_tokenKey);
+    final token = preferences.getString(_tokenAccessKey);
 
     if (token == null) {
       return '';
@@ -79,8 +127,9 @@ class Store {
     final payload = jwtDecode(token);
 
     if (payload.payload.containsKey('role')) {
-      final roles = payload.payload['role'] as List<dynamic>;
-      return roles.isNotEmpty ? roles.first : '';
+      final rol = payload.payload['role'];
+
+      return rol;
     }
 
     return '';
@@ -89,6 +138,36 @@ class Store {
   static Future<bool> hasAdminRole() async {
     final role = await getTokenRole();
 
-    return role == 'ROLE_ADMIN';
+    return role == 'ADMIN';
+  }
+
+  static Future<void> setLogged(bool isLogged) async {
+    final preferences = await SharedPreferences.getInstance();
+
+    await preferences.setBool('isLoggedIn', isLogged);
+  }
+
+  static Future<bool?> isLogged() async {
+    final preferences = await SharedPreferences.getInstance();
+
+    final bool isLogged = preferences.getBool('isLoggedIn') ?? false;
+
+    return isLogged && !await getAccessTokenTimeOut();
+  }
+
+  static Future<void> setAuthor(Author author) async {
+    final preferences = await SharedPreferences.getInstance();
+    final authorJson = jsonEncode(author.toJson());
+    await preferences.setString('author', authorJson);
+  }
+
+  static Future<Author?> getAuthor() async {
+    final preferences = await SharedPreferences.getInstance();
+    final authorJson = preferences.getString('author');
+    if (authorJson != null) {
+      final author = Author.fromJson(jsonDecode(authorJson));
+      return author;
+    }
+    return null;
   }
 }

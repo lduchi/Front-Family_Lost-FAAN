@@ -1,7 +1,12 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/publicaci_n_animal_encontrado_screen.dart';
 import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
+import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
+import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
+import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
 import 'package:familylost_faan/profile/Menu_profile.dart';
 import 'package:familylost_faan/ServiciosApp/models/animal.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
@@ -35,6 +40,8 @@ class _MainWrapperState extends State<MainWrapper> {
   var _deviceHeight;
   var _deviceWidth;
   late PageController pageController;
+  late WebSocketChnl webSocket;
+
   _MainWrapperState({required this.isLoggedIn});
 
   @override
@@ -42,6 +49,51 @@ class _MainWrapperState extends State<MainWrapper> {
     super.initState();
     pageController = PageController();
 
+    if (isLoggedIn) {
+      WebSocketChnl.instance.initialize();
+
+      scheduledNotification();
+
+      getAndSetAuthor();
+
+      AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+        if (!isAllowed) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Allow Notifications'),
+              content: Text('Our app would like to send you notifications'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Don\'t Allow',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                TextButton(
+                    onPressed: () => AwesomeNotifications()
+                        .requestPermissionToSendNotifications()
+                        .then((_) => Navigator.pop(context)),
+                    child: Text(
+                      'Allow',
+                      style: TextStyle(
+                        color: Colors.teal,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ))
+              ],
+            ),
+          );
+        }
+      });
+    }
   }
 
   @override

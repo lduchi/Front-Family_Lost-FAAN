@@ -1,24 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/dto/login_request.dart';
+import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:familylost_faan/environment/environment.dart';
 import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
-import 'package:familylost_faan/ServiciosApp/interceptors/dio_interceptor.dart';
 
 class AuthService {
   late final Dio _dio;
 
-  AuthService() {
-    _dio = Dio();
-    _dio.interceptors.add(DioInterceptor());
+  PostService() {
+    _dio = DioClient().instance;
   }
 
   String endPointUrl = baseUrl + '/auth';
 
-  login(LoginRequest loginRequest, BuildContext context) async {
-    var url = '$endPointUrl/signin';
+  login(AuthenticationRequest loginRequest, BuildContext context) async {
+    var url = '$endPointUrl/authenticate';
     try {
       final response = await _dio.post(
         url,
@@ -28,10 +27,10 @@ class AuthService {
         ),
       );
 
-      print(response.data);
 
       if (response.statusCode == 200) {
-        return response.data['token'];
+        print(response.data);
+        return response.data;
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.badResponse) {

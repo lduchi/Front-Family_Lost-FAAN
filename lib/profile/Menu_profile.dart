@@ -1,6 +1,8 @@
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
+import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
+import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
@@ -24,7 +26,7 @@ class MenuProfile extends StatefulWidget {
 
 class _MenuProfileState extends State<MenuProfile> {
   User? user;
-  BigInt? userId;
+  String? userId;
   @override
   void initState() {
     super.initState();
@@ -34,7 +36,7 @@ class _MenuProfileState extends State<MenuProfile> {
     });
   }
 
-  Future<BigInt?> _getStoredId() async {
+  Future<String?> _getStoredId() async {
     userId = await Store.getUserId();
     return userId;
   }
@@ -233,6 +235,10 @@ class _MenuProfileState extends State<MenuProfile> {
 
   Future<void> _logout(BuildContext context) async {
     Store.removeToken();
+
+    cancelScheduledNotification;
+
+    WebSocketChnl.instance.disconnect();
 
     CustomMaterialDialog.successOrError(
         context: context,

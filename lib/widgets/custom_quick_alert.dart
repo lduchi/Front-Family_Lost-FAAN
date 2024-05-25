@@ -191,7 +191,7 @@ class CustomMaterialDialog {
     Dialogs.materialDialog(
       color: AppColors.secondaryMainColor,
       msg: AppStrings.loadingTitle,
-      lottieBuilder: Lottie.asset(asset, width: 100, repeat: false),
+      lottieBuilder: Lottie.asset(asset, width: 100, repeat: true),
       context: context,
       barrierDismissible: false,
     );
@@ -205,7 +205,7 @@ class CustomMaterialDialog {
       msg: AppStrings.loadingTitle,
       lottieBuilder: Lottie.asset(
         asset,
-        width: 100,
+        repeat: true,
       ),
       context: context,
       barrierDismissible: false,
@@ -312,7 +312,9 @@ class CustomMaterialDialog {
     );
   }
 
-  _navigateToSelectedScreen() {
+  _navigateToSelectedScreen() async {
+    final author = await Store.getAuthor();
+
     switch (_selectedPostType) {
       case PostType.LOST:
         Navigator.push(
@@ -321,10 +323,11 @@ class CustomMaterialDialog {
             builder: (context) => SavePostForm(
               typePost: PostType.LOST,
               author: Author(
-                id: BigInt.from(1),
-                name: 'tonoto',
-                email: 'ejemplo@gmail.com',
-                phone: '0997535419',
+                id: author?.id ?? '',
+                username: author?.username ?? '',
+                email: author?.email ?? '',
+                phone: author?.phone ?? '',
+                imageUrl: author?.imageUrl ?? '',
               ),
               statePost: StatePost.LOST,
             )
@@ -338,10 +341,11 @@ class CustomMaterialDialog {
               builder: (context) => SavePostForm(
                 typePost: PostType.FOUND,
                 author: Author(
-                  id: BigInt.from(2),
-                  name: 'mike',
-                  email: 'ejemplo@gmail.com',
-                  phone: '0997535419',
+                  id: author?.id ?? '',
+                  username: author?.username ?? '',
+                  email: author?.email ?? '',
+                  phone: author?.phone ?? '',
+                  imageUrl: author?.imageUrl ?? '',
                 ),
                 statePost: StatePost.FOUND,
               )
@@ -355,10 +359,11 @@ class CustomMaterialDialog {
               builder: (context) => SavePostForm(
                 typePost: PostType.ADOPTION,
                 author: Author(
-                  id: BigInt.from(6),
-                  name: 'asd1',
-                  email: 'ejemplo@gmail.com',
-                  phone: '0997535419',
+                  id: author?.id ?? '',
+                  username: author?.username ?? '',
+                  email: author?.email ?? '',
+                  phone: author?.phone ?? '',
+                  imageUrl: author?.imageUrl ?? '',
                 ),
                 statePost: StatePost.LOST,
               )

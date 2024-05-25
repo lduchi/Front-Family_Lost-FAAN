@@ -1,5 +1,5 @@
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
-import 'package:familylost_faan/ServiciosApp/models/photo.dart';
+import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/utilities/enum/post_type.dart';
 import 'package:familylost_faan/utilities/enum/state_post.dart';
@@ -7,27 +7,31 @@ import 'package:familylost_faan/utilities/enum/state_post.dart';
 class Post {
   String id;
   String title;
-  String authorComment;
+  String additionalComment;
   DateTime createAt;
-  List<int> likes;
+  DateTime date;
+  List<String> likes;
   Animal animal;
-  String location;
+  GeoJson location;
   StatePost state;
   PostType type;
-  Photo photo;
+  String imagePath;
+  String imageUrl;
   User author;
 
   Post({
     required this.id,
     required this.title,
-    required this.authorComment,
+    required this.additionalComment,
     required this.createAt,
+    required this.date,
     required this.likes,
     required this.animal,
     required this.location,
     required this.state,
     required this.type,
-    required this.photo,
+    this.imagePath = '',
+    this.imageUrl = '',
     required this.author,
   });
 }

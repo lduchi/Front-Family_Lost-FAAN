@@ -57,12 +57,12 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
 
   void _setData() {
     _titleController.text = widget.post.title;
-    _selectedDate = widget.post.animal.date;
+    _selectedDate = widget.post.date;
     _nameController.text = widget.post.animal.name;
     _typeController.text = widget.post.animal.type;
     _raceController.text = widget.post.animal.race;
     //_genderController.text = widget.post.animal.gender;
-    _authorCommentController.text = widget.post.authorComment;
+    _authorCommentController.text = widget.post.additionalComment;
     _currentCenterPosition = LatLng(
       widget.post.location.coordinates[1],
       widget.post.location.coordinates[0],

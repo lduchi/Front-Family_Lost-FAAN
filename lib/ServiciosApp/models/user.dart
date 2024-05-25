@@ -1,7 +1,7 @@
 import 'package:familylost_faan/ServiciosApp/models/photo.dart';
 
 class User {
-  int id;
+  String id;
   String nombre;
   String apellido;
   String username;
@@ -30,7 +30,7 @@ class User {
   });
 
   User.empty()
-      : id = 0,
+      : id = '',
         nombre = '',
         apellido = '',
         username = '',
@@ -45,7 +45,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] as int,
+      id: json['id'],
       nombre: json['nombre'] as String,
       apellido: json['apellido'] as String,
       username: json['username'] as String,

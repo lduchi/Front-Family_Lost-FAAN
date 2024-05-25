@@ -180,4 +180,10 @@ class AppStrings {
   static const String deletePostError = 'Error al eliminar la publicación';
   static const String deletePostErrorTitle = 'Error al eliminar';
   static const String successTitle = '¡Éxito!';
+
+  static const String notifTitleNewPost = '¡Se ha creado una nueva publicación!';
+  static const String notifTitleNewLike = '¡A alguien le gusta tu publicación!';
+  static const String notifTitleScheduled = '¿Cuentas ya con una publicación?';
+  static const String notifBodyScheduled = '¡No olvides actualizarla e informar que sucedió con la mascota!';
+  static const String notifScheduledeAccept = '¡Vamos allá!';
 }
