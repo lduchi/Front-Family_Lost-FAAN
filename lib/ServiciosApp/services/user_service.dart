@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
+import 'package:familylost_faan/ServiciosApp/dto/user_dto.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/models/user_update.dart';
 import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
@@ -21,8 +22,8 @@ class UserService {
 
   String endPointUrlPhoto = baseUrl + '/file';
 
-  Future<User> getUserById(String id, BuildContext context) async {
-    var url = '$endPointUrl/$id';
+  Future<UserDTO> getUserById(String id, BuildContext context) async {
+    var url = '$endPointUrl/get/$id';
 
     try {
       final response = await _dio.get(
@@ -31,8 +32,10 @@ class UserService {
           extra: {'context': context},
         ),
       );
+      print(response.data);
+
       if (response.statusCode == 200) {
-        final userResponse = User.fromJson(response.data);
+        final userResponse = UserDTO.fromJson(response.data);
         return userResponse;
       } else {
         throw Exception('Failed to load user');

@@ -55,7 +55,7 @@ class _SavePostFormState extends State<SavePostForm> {
   final picker = ImagePicker();
   final _titleController = TextEditingController();
   DateTime? _selectedDate;
-  final _authorCommentController = TextEditingController();
+  final _additionalCommentController = TextEditingController();
   final _nameController = TextEditingController();
   final _typeController = TextEditingController();
   final _raceController = TextEditingController();
@@ -399,7 +399,7 @@ class _SavePostFormState extends State<SavePostForm> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
-                  controller: _authorCommentController,
+                  controller: _additionalCommentController,
                   decoration: InputDecoration(
                     labelText: AppStrings.formDescription,
                     border: InputBorder.none,
@@ -543,7 +543,7 @@ class _SavePostFormState extends State<SavePostForm> {
 
     SavePost savePostInstance = SavePost(
       title: _titleController.text,
-      additionalComment: _authorCommentController.text,
+      additionalComment: _additionalCommentController.text,
       typePost: typePost.name,
       author: author,
       date: _selectedDate ?? DateTime.now(),

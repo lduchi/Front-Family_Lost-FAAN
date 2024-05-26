@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:familylost_faan/ServiciosApp/dto/user_dto.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/models/user_update.dart';
@@ -22,7 +24,7 @@ class ActualizarProfile extends StatefulWidget {
 class _ActualizarProfileState extends State<ActualizarProfile> {
   final _formKey = GlobalKey<FormState>();
   var _deviceSize;
-  User? user;
+  UserDTO? user;
   late File? _selectedImage = null;
   String? userId;
 
@@ -44,9 +46,9 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
 
   void _initControllers() {
     if (user != null) {
-      _nameTextController.text = user!.nombre;
-      _lastNameTextController.text = user!.apellido;
-      _phoneTextController.text = user!.telefono;
+      _nameTextController.text = user!.name;
+      _lastNameTextController.text = user!.lastname;
+      _phoneTextController.text = user!.phone;
       _emailTextController.text = user!.email;
       _usernameTextController.text = user!.username;
     }
@@ -70,24 +72,24 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
 
   void _updateUser() async {
     if (_formKey.currentState!.validate()) {
-      UpdateUser updateUser = UpdateUser(
-        id: user!.id,
-        verificationToken: user!.verificationToken ?? '',
-        nombre: _nameTextController.text,
-        apellido: _lastNameTextController.text,
-        username: _usernameTextController.text,
-        password: user!.password,
-        email: _emailTextController.text,
-        direccion: user!.direccion,
-        telefono: _phoneTextController.text,
-      );
-      if (_selectedImage != null) {
-        _updatePhoto(updateUser.username, _selectedImage!);
-      }
-      await UserService().updateUser(updateUser.id, updateUser);
-      setState(() {
-        _getUser();
-      });
+      // UpdateUser updateUser = UpdateUser(
+      //   id: user!.id,
+      //   //verificationToken: user!.verificationToken ?? '',
+      //   nombre: _nameTextController.text,
+      //   apellido: _lastNameTextController.text,
+      //   username: _usernameTextController.text,
+      //   password: user!.password,
+      //   email: _emailTextController.text,
+      //   direccion: user!.direccion,
+      //   telefono: _phoneTextController.text,
+      // );
+      // if (_selectedImage != null) {
+      //   _updatePhoto(updateUser.username, _selectedImage!);
+      // }
+      // await UserService().updateUser(updateUser.id, updateUser);
+      // setState(() {
+      //   _getUser();
+      // });
     }
   }
 
@@ -133,9 +135,10 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
               radius: _deviceSize.width * 0.2,
               backgroundImage: _selectedImage != null
                   ? FileImage(_selectedImage!)
-                  : user?.photo?.image?.data != null
-                      ? MemoryImage(user!.photo!.image!.data)
-                      : AssetImage(AssetManager.largeLogo) as ImageProvider<Object>?,
+                  : user?.imageUrl != null
+                      ? CachedNetworkImageProvider(user!.imageUrl)
+                      : AssetImage(AssetManager.largeLogo)
+                          as ImageProvider<Object>?,
             ),
             iconSize: _deviceSize.width * 0.4,
           ),

@@ -64,7 +64,7 @@ class AppStrings {
   static const String formType = 'Tipo de animal';
   static const String postType = 'Tipo de publicación';
   static const String author = 'Autor';
-  static const String authorComent = 'Extra';
+  static const String authorComment = 'Comentario';
   static const String formBreed = 'Raza';
   static const String formColor = 'Color';
   static const String formAge = 'Edad';
@@ -181,9 +181,11 @@ class AppStrings {
   static const String deletePostErrorTitle = 'Error al eliminar';
   static const String successTitle = '¡Éxito!';
 
-  static const String notifTitleNewPost = '¡Se ha creado una nueva publicación!';
+  static const String notifTitleNewPost =
+      '¡Se ha creado una nueva publicación!';
   static const String notifTitleNewLike = '¡A alguien le gusta tu publicación!';
   static const String notifTitleScheduled = '¿Cuentas ya con una publicación?';
-  static const String notifBodyScheduled = '¡No olvides actualizarla e informar que sucedió con la mascota!';
+  static const String notifBodyScheduled =
+      '¡No olvides actualizarla e informar que sucedió con la mascota!';
   static const String notifScheduledeAccept = '¡Vamos allá!';
 }

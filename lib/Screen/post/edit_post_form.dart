@@ -41,7 +41,7 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
   final picker = ImagePicker();
   final _titleController = TextEditingController();
   DateTime? _selectedDate;
-  final _authorCommentController = TextEditingController();
+  final _additionalCommentController = TextEditingController();
   final _nameController = TextEditingController();
   final _typeController = TextEditingController();
   final _raceController = TextEditingController();
@@ -62,12 +62,11 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
     _typeController.text = widget.post.animal.type;
     _raceController.text = widget.post.animal.race;
     //_genderController.text = widget.post.animal.gender;
-    _authorCommentController.text = widget.post.additionalComment;
+    //_additionalCommentController.text = widget.post.additionalComment!;
     _currentCenterPosition = LatLng(
       widget.post.location.coordinates[1],
       widget.post.location.coordinates[0],
     );
-
   }
 
   Future<void> _getImage() async {
@@ -405,7 +404,7 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
-                  controller: _authorCommentController,
+                  controller: _additionalCommentController,
                   decoration: InputDecoration(
                     labelText: AppStrings.formDescription,
                     border: InputBorder.none,
@@ -550,7 +549,7 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
     // SavePost savePostInstance = SavePost(
     //   id: '',
     //   title: _titleController.text,
-    //   authorComment: _authorCommentController.text,
+    //   additionalComment: _additionalCommentController.text,
     //   typePost: typePost!.value, //Check is needed here
     //   author: author,
     //   animal: Animal(

@@ -1,5 +1,3 @@
-import 'package:familylost_faan/ServiciosApp/models/photo.dart';
-
 class Animal {
   int id = 1;
   String nombre = "null";
@@ -11,5 +9,4 @@ class Animal {
     required this.raza,
     required this.ubicacion,
   });
-
 }

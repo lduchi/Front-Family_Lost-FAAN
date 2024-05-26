@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:familylost_faan/Screen/post/edit_post_form.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
+import 'package:familylost_faan/ServiciosApp/dto/user_dto.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
-import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
@@ -20,7 +21,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  User? user;
+  UserDTO? user;
   String? userId;
   bool likedPosts = false;
 
@@ -63,14 +64,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.all(8.0),
                   child: CircleAvatar(
                     radius: 100,
-                    backgroundImage: user?.photo?.image?.data != null
-                        ? Image.memory(user!.photo!.image!.data).image
-                        : AssetImage(AssetManager.largeLogo),
+                    backgroundImage: CachedNetworkImageProvider(
+                      user!.imageUrl.isNotEmpty
+                          ? user!.imageUrl
+                          : AssetManager.largeLogo,
+                    ),
                   ),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  user!.nombre + ' ' + user!.apellido,
+                  user!.name + ' ' + user!.lastname,
                   style: AppFonts.title.copyWith(
                     fontSize: 24,
                     color: AppColors.activeBlueColor,
@@ -179,10 +182,17 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
           },
           child: Container(
             color: AppColors.mainColor,
-            /*child: Image.memory(
-              post.data!,
-              fit: BoxFit.cover,
-            ),*/
+            child: Container(
+              child: post.imageUrl.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: post.imageUrl,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      AssetManager.largeLogo,
+                      fit: BoxFit.cover,
+                    ),
+            ),
           ),
         );
       },
@@ -213,18 +223,28 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    /*Center(
+                    Center(
                       child: ClipRRect(
                         borderRadius:
                             BorderRadius.circular(_deviceSize.width * 0.02),
-                        child: Image.memory(
-                          post.data!,
-                          fit: BoxFit.cover,
-                          height: _deviceSize.height * 0.4,
-                          width: _deviceSize.width,
+                        child: Container(
+                          color: AppColors.mainColor,
+                          child: Container(
+                            child: post.imageUrl.isNotEmpty
+                                ? CachedNetworkImage(
+                                    imageUrl: post.imageUrl,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset(
+                                    AssetManager.largeLogo,
+                                    fit: BoxFit.cover,
+                                  ),
+                            height: _deviceSize.height * 0.4,
+                            width: _deviceSize.width,
+                          ),
                         ),
                       ),
-                    ),*/
+                    ),
                     const SizedBox(height: 8.0),
                     Text(
                       post.title,
@@ -259,7 +279,8 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                     ),
                     const SizedBox(height: 8.0),
                     Text(
-                      '${AppStrings.authorComent}: ${post.additionalComment}',
+                      //'${AppStrings.authorComent}: ${post.additionalComment}',
+                      "Comentario del autor:",
                       style: AppFonts.TextField.copyWith(
                         color: AppColors.activeBlueColor,
                         fontWeight: FontWeight.bold,

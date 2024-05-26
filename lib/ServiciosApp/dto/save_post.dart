@@ -5,7 +5,7 @@ import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 class SavePost {
   String? id;
   String title;
-  String additionalComment;
+  String? additionalComment;
   String typePost;
   Author author;
   Animal animal;
@@ -18,7 +18,7 @@ class SavePost {
   SavePost({
     this.id,
     required this.title,
-    required this.additionalComment,
+    this.additionalComment,
     required this.typePost,
     required this.author,
     required this.animal,
@@ -33,15 +33,13 @@ class SavePost {
     return SavePost(
       id: json['id'],
       title: json['title'],
-      additionalComment: json['authorComment'],
+      additionalComment: json['additionalComment'],
       typePost: json['typePost'],
       author: Author.fromJson(json['author']),
       animal: Animal.fromJson(json['animal']),
       location: GeoJson.fromJson(json['location']),
-      state: json['state'],
-      date: json['date'] != null
-          ? DateTime.parse(json['date'])
-          : null,
+      state: json.containsKey('state') ? json['state'] : '',
+      date: json['date'] != null ? DateTime.parse(json['date']) : null,
       imagePath: json['imagePath'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
     );
@@ -51,7 +49,7 @@ class SavePost {
     return {
       'id': id,
       'title': title,
-      'authorComment': additionalComment,
+      'additionalComment': additionalComment,
       'typePost': typePost,
       'author': author.toJson(),
       'animal': animal.toJson(),

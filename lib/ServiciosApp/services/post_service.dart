@@ -71,7 +71,11 @@ class PostService {
       },
     );
 
+    print(response.data);
+
     final PageResponse pageResponse = PageResponse.fromJson(response.data);
+
+    print(pageResponse.content);
 
     return pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
   }

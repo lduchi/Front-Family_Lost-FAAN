@@ -6,7 +6,6 @@ class Usuarios {
   String email;
   String direccion;
   String telefono;
-  
 
   Usuarios({
     required this.nombre,

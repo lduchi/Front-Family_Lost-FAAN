@@ -1,5 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
-import 'package:familylost_faan/ServiciosApp/models/user.dart';
+import 'package:familylost_faan/ServiciosApp/dto/user_dto.dart';
 import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
@@ -25,7 +26,7 @@ class MenuProfile extends StatefulWidget {
 }
 
 class _MenuProfileState extends State<MenuProfile> {
-  User? user;
+  UserDTO? user;
   String? userId;
   @override
   void initState() {
@@ -131,9 +132,11 @@ class _MenuProfileState extends State<MenuProfile> {
                   padding: const EdgeInsets.only(right: 16.0),
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: user?.photo?.image?.data != null
-                        ? Image.memory(user!.photo!.image!.data).image
-                        : AssetImage(AssetManager.largeLogo),
+                    backgroundImage: CachedNetworkImageProvider(
+                      user!.imageUrl.isNotEmpty
+                          ? user!.imageUrl
+                          : AssetManager.largeLogo,
+                    ),
                   ),
                 ),
                 Expanded(
@@ -142,7 +145,7 @@ class _MenuProfileState extends State<MenuProfile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        user!.nombre + ' ' + user!.apellido,
+                        user!.name + ' ' + user!.lastname,
                         style: AppFonts.title.copyWith(
                           color: AppColors.activeBlueColor,
                           fontWeight: FontWeight.bold,
@@ -150,7 +153,7 @@ class _MenuProfileState extends State<MenuProfile> {
                       ),
                       SizedBox(height: 5),
                       Text(
-                        user!.telefono,
+                        user!.phone,
                         style: AppFonts.primary.copyWith(
                           color: AppColors.secondaryColor,
                         ),
