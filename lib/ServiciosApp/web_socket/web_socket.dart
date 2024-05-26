@@ -18,7 +18,7 @@ class WebSocketChnl {
   static WebSocketChnl get instance => _instance;
 
   Future<void> initialize() async {
-    accessToken = await Store.getRefreshToken() as String;
+    accessToken = (await Store.getAccessToken())!;
     username = await Store.getUserName() as String;
 
     stompClient = StompClient(

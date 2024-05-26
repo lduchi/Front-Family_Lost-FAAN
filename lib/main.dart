@@ -12,8 +12,6 @@ import 'Screen/onboarding/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  bool isLoggedIn = await Store.isLogged() ?? false;
-
   AwesomeNotifications().initialize(
     'resource://drawable/res_app_icon',
     [
@@ -43,27 +41,26 @@ void main() async {
           create: (_) => BottomNavCubit(),
         ),
       ],
-      child: LostFamilyApp(isLoggedIn: isLoggedIn),
+      child: LostFamilyApp(),
     ),
   );
 }
 
 class LostFamilyApp extends StatefulWidget {
-  final bool isLoggedIn;
 
-  const LostFamilyApp({super.key, required this.isLoggedIn});
+  const LostFamilyApp({super.key});
 
   @override
-  State<StatefulWidget> createState() => _LostFamilyAppState(isLoggedIn: isLoggedIn);
+  State<StatefulWidget> createState() => _LostFamilyAppState();
 }
 
 class _LostFamilyAppState extends State<LostFamilyApp> {
-  final bool isLoggedIn;
-
-  _LostFamilyAppState({required this.isLoggedIn});
+  bool? isLoggedIn;
 
   @override
   void initState() {
+    _initializeLoggedIn();
+
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         AwesomeNotifications().requestPermissionToSendNotifications();
@@ -74,9 +71,27 @@ class _LostFamilyAppState extends State<LostFamilyApp> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoggedIn == null) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: isLoggedIn ? MainWrapper(isLoggedIn: isLoggedIn) : MySplashScreen(),
+      home: isLoggedIn! ? MainWrapper(isLoggedIn: isLoggedIn!) : MySplashScreen(),
     );
+  }
+
+  Future<void> _initializeLoggedIn() async {
+    bool? loggedIn = await Store.isLogged();
+    setState(() {
+      isLoggedIn = loggedIn ?? false;
+    });
   }
 }

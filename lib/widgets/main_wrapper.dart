@@ -50,7 +50,7 @@ class _MainWrapperState extends State<MainWrapper> {
     pageController = PageController();
 
     if (isLoggedIn) {
-      WebSocketChnl.instance.initialize();
+      initializeWebSocket();
 
       scheduledNotification();
 
@@ -564,5 +564,10 @@ class _MainWrapperState extends State<MainWrapper> {
         ),
       ),
     );
+  }
+
+  Future<void> initializeWebSocket() async {
+    webSocket = WebSocketChnl.instance;
+    await webSocket.initialize();
   }
 }
