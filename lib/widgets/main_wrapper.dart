@@ -1,11 +1,8 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
-import 'package:familylost_faan/Screen/publicaci_n_animal_encontrado_screen.dart';
-import 'package:familylost_faan/Screen/seleccionar_tipo_publi.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
-import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
-import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
+import 'package:familylost_faan/pages/information_faan.dart';
 import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
 import 'package:familylost_faan/profile/Menu_profile.dart';
 import 'package:familylost_faan/ServiciosApp/models/animal.dart';
@@ -29,12 +26,12 @@ late Animal animalDatas = Animal(id: 1, nombre: "", raza: "", ubicacion: "");
 class MainWrapper extends StatefulWidget {
   final bool isLoggedIn;
 
-
   const MainWrapper({super.key, required this.isLoggedIn});
 
   @override
   State<MainWrapper> createState() => _MainWrapperState(isLoggedIn: isLoggedIn);
 }
+
 class _MainWrapperState extends State<MainWrapper> {
   final bool isLoggedIn;
   var _deviceHeight;
@@ -104,9 +101,13 @@ class _MainWrapperState extends State<MainWrapper> {
 
   // List of Pages: Home, Search, Profile
   final List<Widget> pages = [
-    HomePage(animalData:animalDatas ,),
+    HomePage(
+      animalData: animalDatas,
+    ),
     FavoritePage(),
-    HomePage(animalData: animalDatas,),
+    HomePage(
+      animalData: animalDatas,
+    ),
     ProfilePage(),
   ];
   void onPageChanged(int page) {
@@ -197,9 +198,13 @@ class _MainWrapperState extends State<MainWrapper> {
               _buildOutlinedButton(
                 AppStrings.navigationAdoption,
                 () {
-                  animalDatas = Animal(id: 1, nombre: "AS", raza: "raza", ubicacion: "nueva"); // Inicializar aquí
+                  animalDatas = Animal(
+                      id: 1,
+                      nombre: "AS",
+                      raza: "raza",
+                      ubicacion: "nueva"); // Inicializar aquí
 
-                // Navegar a la página HomePage con los nuevos datos
+                  // Navegar a la página HomePage con los nuevos datos
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -230,6 +235,12 @@ class _MainWrapperState extends State<MainWrapper> {
     _deviceWidth = MediaQuery.of(context).size.width;
     return AppBar(
       automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       title: Row(
         // Contains the logo of the app
         mainAxisAlignment: MainAxisAlignment.start,
@@ -265,7 +276,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   // TODO: Implementar filtro de "Lost"
                 },
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 5),
               const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationFound,
@@ -273,7 +284,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   // TODO: Implementar filtro de "Found"
                 },
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 5),
               const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationAdoption,
@@ -286,10 +297,32 @@ class _MainWrapperState extends State<MainWrapper> {
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: AppIcons.dogAppIcon,
-          color: AppColors.mainColor,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const InformationFaan ()),
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.all(7.0),
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(255, 249, 248, 248)
+                        .withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Image.asset(
+                "images/icon.png",
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -305,6 +338,7 @@ class _MainWrapperState extends State<MainWrapper> {
         ),
       ),
       style: ButtonStyle(
+        minimumSize: MaterialStateProperty.all(Size(60, 45)),
         backgroundColor: MaterialStateProperty.all<Color>(
             AppColors.mainColor.withOpacity(0.6)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -408,12 +442,12 @@ class _MainWrapperState extends State<MainWrapper> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 30,
-        vertical: 10,
+        horizontal: 20,
+        vertical: 2,
       ),
       child: Container(
         height: size.height * 0.08,
-        width: size.width,
+        width: size.width / 2.2,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: backgroundColor3.withOpacity(0.9),
@@ -430,7 +464,9 @@ class _MainWrapperState extends State<MainWrapper> {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.only(right: 5),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 0,
+          ),
           child: Row(
             children: [
               GestureDetector(
@@ -443,7 +479,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   );
                 },
                 child: Container(
-                  height: size.height * 0.08,
+                  height: size.height * 0.15, // Ajuste del tamaño del botón
                   width: size.width / 2.2,
                   decoration: BoxDecoration(
                     color: general,
@@ -454,7 +490,7 @@ class _MainWrapperState extends State<MainWrapper> {
                       AppStrings.login,
                       style: AppFonts.button.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18, // Ajuste del tamaño del botón
+                        fontSize: 18, // Ajuste del tamaño del texto
                         color: textColor3,
                       ),
                     ),
@@ -475,7 +511,7 @@ class _MainWrapperState extends State<MainWrapper> {
                   AppStrings.buttonRegister,
                   style: AppFonts.button.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18, // Ajuste del tamaño del botón
+                    fontSize: 18, // Ajuste del tamaño del texto
                     color: textColor1,
                   ),
                 ),

@@ -1,7 +1,6 @@
 import 'package:familylost_faan/Screen/onboarding/splash_screen2.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Utils/colors.dart';
 import '../../pages/cubit/bottom_nav_cubit.dart';

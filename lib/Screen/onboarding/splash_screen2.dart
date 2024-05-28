@@ -1,5 +1,5 @@
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
-import 'package:familylost_faan/pages/home_page.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,7 +24,7 @@ class MySplashScreen2 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 130,
+                  height: 100,
                 ),
                 _buildRowContainer("Perdidos",
                     "En Family Lost FANN hemos podido registrar más de 50 mascotas perdidas en la ciudad de Cuenca."),
@@ -39,16 +39,85 @@ class MySplashScreen2 extends StatelessWidget {
           ),
         ),
         floatingActionButton: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Container(
-            width: size.width, // Ancho igual al ancho de la pantalla
+            height: size.height * 0.08,
+            width: size.width,
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: backgroundColor3.withOpacity(0.9),
               border: Border.all(
-                  color: textColor1), // Agregamos un borde al contenedor
-              borderRadius: BorderRadius.circular(50), // Borde redondeado
+                color: general,
+              ), // Borde redondeado
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12.withOpacity(0.05),
+                  spreadRadius: 1,
+                  blurRadius: 7,
+                  offset: const Offset(0, -1),
+                ),
+              ],
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider(
+                            create: (context) => BottomNavCubit(),
+                            child: const MainWrapper(isLoggedIn: false),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: size.height * 0.08,
+                      width: size.width / 2.2,
+                      decoration: BoxDecoration(
+                        color: general,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Omitir",
+                          style: AppFonts.button.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: textColor3,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  const SignIn(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Siguiente",
+                      style: AppFonts.button.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: textColor1,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+            ),
+            /*child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -108,7 +177,7 @@ class MySplashScreen2 extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
+            ),*/
           ),
         ),
       ),
@@ -124,7 +193,7 @@ class MySplashScreen2 extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(5.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),

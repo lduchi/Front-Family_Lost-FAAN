@@ -27,9 +27,9 @@ class AppStrings {
   //Text for labels in navigation
   static const String navigationHome = 'Inicio';
   static const String navigationProfile = 'Perfil';
-  static const String navigationLost = 'PERDIDO';
-  static const String navigationFound = 'ENCONTRADO';
-  static const String navigationAdoption = 'ADOPCION';
+  static const String navigationLost = 'Perdidos';
+  static const String navigationFound = 'Encontrados';
+  static const String navigationAdoption = 'Adopta';
 
   //Text for hints
   static const String hintEmail = 'Ingresa tu correo electrónico';

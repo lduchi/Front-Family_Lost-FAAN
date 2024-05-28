@@ -1,6 +1,5 @@
 import 'package:familylost_faan/pages/cubit/HeardBorder.dart';
 import 'package:flutter/material.dart';
-import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 
 class DetallesAnimal extends StatelessWidget {
   final String image;
@@ -23,7 +22,7 @@ class DetallesAnimal extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-           // Navigator.pop(context);
+            // Navigator.pop(context);
           },
         ),
       ),

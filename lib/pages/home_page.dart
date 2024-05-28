@@ -1,4 +1,5 @@
 import 'package:familylost_faan/ServiciosApp/models/animal.dart';
+import 'package:familylost_faan/Utils/colors.dart';
 import 'package:familylost_faan/pages/animal_item_page.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
@@ -9,7 +10,7 @@ class HomePage extends StatefulWidget {
   //cambiar pa' json
   final Animal animalData;
 
-  const HomePage({Key? key , required this.animalData}) : super(key: key);
+  const HomePage({Key? key, required this.animalData}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -18,7 +19,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _deviceHeight;
   var _deviceWidth;
-
 
   ButtonStyle enabledFilledButtonStyle(bool selected, ColorScheme colors) {
     return IconButton.styleFrom(
@@ -42,7 +42,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     print(widget.animalData.ubicacion);
-
   }
 
   @override
@@ -67,7 +66,7 @@ class _HomePageState extends State<HomePage> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Text(
-          'Animales',
+          '!El regreso a casa comienza aqui!',
           style: AppFonts.primary,
         ),
       ),
@@ -81,23 +80,21 @@ class _HomePageState extends State<HomePage> {
         (context, index) {
           final String image = AssetManager.exampleImage;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
+              elevation: 10,
+              shape: RoundedRectangleBorder(),
               child: InkWell(
                 onTap: () {},
                 child: AnimalItemPage(
-                  image: image, animalData: widget.animalData,
+                  image: image,
+                  animalData: widget.animalData,
                 ),
-
               ),
             ),
           );
         },
-        childCount: 5, //TODO: Change this to the number of items
+        childCount: 6,
       ),
     );
   }
@@ -109,13 +106,16 @@ class _HomePageState extends State<HomePage> {
         height: _deviceHeight * 0.3,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 10, //TODO: Change this to the number of items
+          itemCount: 10,
           itemBuilder: (context, index) {
             final String image = AssetManager.exampleImage2;
+            final String text =
+                'Hola, soy Pepito! \nMe perdi el dia 24/12/2021 cerca del Batan Shopping ¡Ayudame volver a casa! ';
+
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                child: _cardList(image),
+                child: _cardList(image, text),
               ),
             );
           },
@@ -124,43 +124,47 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Card _cardList(String image) {
+  Card _cardList(String image, String text) {
     return Card(
       child: Container(
         width: _deviceWidth * 0.95,
-        height: _deviceHeight * 0.3,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          image: DecorationImage(
-            image: AssetImage(image),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+        height: _deviceHeight * 0.2,
+        child: Stack(
           children: [
-            Spacer(),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Nombre Animal',
-                      style: AppFonts.primary.copyWith(
-                        color: AppColors.secondaryMainColor,
-                      ),
+            Column(
+              children: [
+                Container(
+                  height: _deviceHeight * 0.16,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    image: DecorationImage(
+                      image: AssetImage(image),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.start,
+                    style: AppFonts.caption.copyWith(
+                      fontSize: 15.5,
+                      color: textColor1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: 167,
+              right: 1,
+              child: IconButton(
+                onPressed: () {
+                  // Handle button press
+                },
+                icon: Icon(Icons.add_circle,
+                    color: AppColors.mainColor, size: 30),
               ),
             ),
           ],
