@@ -54,6 +54,7 @@ class _SignInState extends State<SignIn> {
           statusBarIconBrightness: Brightness.dark,
         ),
         backgroundColor: AppColors.secondaryMainColor,
+        elevation: 0,
         actions: [
           IconButton(
             icon: AppIcons.closeIconBlack,
@@ -74,14 +75,7 @@ class _SignInState extends State<SignIn> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [
-              backgroundColor2,
-              backgroundColor2,
-              backgroundColor4,
-            ],
-          ),
+          color: Colors.white
         ),
         child: SafeArea(
             child: ListView(
@@ -140,7 +134,7 @@ class _SignInState extends State<SignIn> {
             ),
             SizedBox(height: size.height * 0.04),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 children: [
                   // for sign in button
@@ -180,7 +174,7 @@ class _SignInState extends State<SignIn> {
                       TextSpan(
                         text: "¿Has olvidado la contraseña? ",
                         style: TextStyle(
-                          color: textColor2,
+                          color: AppColors.mainColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
@@ -201,7 +195,7 @@ class _SignInState extends State<SignIn> {
                       TextSpan(
                           text: "¿No tienes una cuenta? ",
                           style: TextStyle(
-                            color: textColor2,
+                            color: AppColors.mainColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
@@ -267,8 +261,10 @@ class _SignInState extends State<SignIn> {
           fillColor: Colors.white,
           filled: true,
           border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(50),
+            borderSide: BorderSide(
+              color: Colors.grey, // Borde gris
+            ),
+            borderRadius: BorderRadius.circular(30), // Ajuste del radio del borde
           ),
           hintText: hint,
           hintStyle: const TextStyle(
