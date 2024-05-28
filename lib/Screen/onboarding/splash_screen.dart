@@ -1,6 +1,7 @@
 import 'package:familylost_faan/Screen/onboarding/splash_screen2.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Utils/colors.dart';
 import '../../pages/cubit/bottom_nav_cubit.dart';
@@ -46,8 +47,10 @@ class _MySplashScreenState extends State<MySplashScreen>
         width: size.width,
         child: Stack(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
+            Positioned(
+              top: 100.0, // Ajusta este valor según la altura que desees
+              left: 0.0,
+              right: 0.0,
               child: AnimatedContainer(
                 duration: const Duration(seconds: 1),
                 curve: Curves.easeIn,
@@ -70,7 +73,7 @@ class _MySplashScreenState extends State<MySplashScreen>
             ),
             Positioned(
               top:
-                  size.height * 0.4, // Ajusta la posición vertical de la imagen
+              size.height * 0.4, // Ajusta la posición vertical de la imagen
               left: 0,
               right: 0,
               child: FadeTransition(
@@ -94,7 +97,8 @@ class _MySplashScreenState extends State<MySplashScreen>
                       // Empieza el código del botón
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 30,
+                          horizontal: 40,
+                          vertical: 150,
                         ),
                         child: Container(
                           height: size.height * 0.08,
@@ -157,7 +161,7 @@ class _MySplashScreenState extends State<MySplashScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const MySplashScreen2(),
+                                        const MySplashScreen2(),
                                       ),
                                     );
                                   },
