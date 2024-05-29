@@ -38,7 +38,7 @@ class _SignInState extends State<SignIn> {
             Text(
               AppStrings.homeTitle,
               style: GoogleFonts.poppins(
-                color: AppColors.mainColor,
+                color: AppColors.secondaryColor,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -174,7 +174,7 @@ class _SignInState extends State<SignIn> {
                       TextSpan(
                         text: "¿Has olvidado la contraseña? ",
                         style: TextStyle(
-                          color: AppColors.mainColor,
+                          color: Colors.grey,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
@@ -195,7 +195,7 @@ class _SignInState extends State<SignIn> {
                       TextSpan(
                           text: "¿No tienes una cuenta? ",
                           style: TextStyle(
-                            color: AppColors.mainColor,
+                            color: Colors.grey,
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
@@ -256,20 +256,20 @@ class _SignInState extends State<SignIn> {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
-            vertical: 22,
+            vertical: 19,
           ),
           fillColor: Colors.white,
-          filled: true,
+          filled: false,
           border: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.grey, // Borde gris
             ),
-            borderRadius: BorderRadius.circular(30), // Ajuste del radio del borde
+            borderRadius: BorderRadius.circular(40), // Ajuste del radio del borde
           ),
           hintText: hint,
           hintStyle: const TextStyle(
             color: Colors.black45,
-            fontSize: 19,
+            fontSize: 17,
           ),
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 10),

@@ -15,7 +15,7 @@ class MySplashScreen2 extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return MaterialApp(
-      title: 'Container Example',
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
           child: Padding(
@@ -39,7 +39,7 @@ class MySplashScreen2 extends StatelessWidget {
           ),
         ),
         floatingActionButton: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.only(left: 80, right: 30),
           child: Container(
             height: size.height * 0.08,
             width: size.width,
@@ -59,7 +59,7 @@ class MySplashScreen2 extends StatelessWidget {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(right: 5),
+              padding: const EdgeInsets.only(right: 20),
               child: Row(
                 children: [
                   GestureDetector(
@@ -76,7 +76,7 @@ class MySplashScreen2 extends StatelessWidget {
                     },
                     child: Container(
                       height: size.height * 0.08,
-                      width: size.width / 2.2,
+                      width: size.width / 2.3,
                       decoration: BoxDecoration(
                         color: general,
                         borderRadius: BorderRadius.circular(50),
@@ -217,15 +217,15 @@ class MySplashScreen2 extends StatelessWidget {
               ],
             ),
             width: 150,
-            height: 170,
+            height: 160,
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 5.0),
+          padding: EdgeInsets.only(left: 4.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
+              SizedBox(height: 3),
               Container(
                 decoration: BoxDecoration(
                   color: general,
