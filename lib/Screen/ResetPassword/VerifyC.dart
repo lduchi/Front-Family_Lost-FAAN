@@ -59,16 +59,6 @@ class VerifyC extends StatelessWidget {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [
-              backgroundColor2,
-              backgroundColor2,
-              backgroundColor4,
-            ],
-          ),
-        ),
         child: SafeArea(
             child: ListView(
           children: [
@@ -183,7 +173,10 @@ class VerifyC extends StatelessWidget {
           fillColor: Colors.white,
           filled: true,
           border: OutlineInputBorder(
-            borderSide: BorderSide.none,
+            borderSide: BorderSide(
+              color: color, // Establece el color del borde
+              width: 2.0, // Establece el ancho del borde
+            ),
             borderRadius: BorderRadius.circular(50),
           ),
           hintText: hint,

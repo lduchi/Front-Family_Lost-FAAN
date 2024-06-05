@@ -39,7 +39,7 @@ class RequestNP extends StatelessWidget {
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
         ),
-        backgroundColor: AppColors.secondaryMainColor,
+       // backgroundColor: AppColors.secondaryMainColor,
         actions: [
           IconButton(
             icon: AppIcons.closeIconBlack,
@@ -59,16 +59,7 @@ class RequestNP extends StatelessWidget {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [
-              backgroundColor2,
-              backgroundColor2,
-              backgroundColor4,
-            ],
-          ),
-        ),
+        
         child: SafeArea(
             child: ListView(
           children: [
@@ -168,45 +159,48 @@ class RequestNP extends StatelessWidget {
   }
 
   Container myTextField(
-      String hint, Color color, IconData icono1, IconData? icono2) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-        vertical: 15,
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 22,
+  String hint, Color color, IconData icono1, IconData? icono2) {
+  return Container(
+    padding: const EdgeInsets.symmetric(
+      horizontal: 25,
+      vertical: 15,
+    ),
+    child: TextField(
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 22,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: color, // Establece el color del borde
+            width: 2.0, // Establece el ancho del borde
           ),
-          fillColor: Colors.white,
-          filled: true,
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        hintText: hint,
+        hintStyle: const TextStyle(
+          color: Colors.black45,
+          fontSize: 19,
+        ),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Icon(
+            icono1,
+            color: color,
           ),
-          hintText: hint,
-          hintStyle: const TextStyle(
-            color: Colors.black45,
-            fontSize: 19,
-          ),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Icon(
-              icono1,
-              color: color,
-            ),
-          ),
-          suffixIcon: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Icon(
-              icono2,
-              color: color,
-            ),
+        ),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: Icon(
+            icono2,
+            color: color,
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
