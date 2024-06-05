@@ -22,17 +22,17 @@ class RequestNP extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              AppStrings.homeTitle,
+              AppStrings.textReset,
               style: GoogleFonts.poppins(
-                color: AppColors.mainColor,
-                fontSize: 24,
+                color: textColor1,
+                fontSize: 19,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ],
         ),
         iconTheme: IconThemeData(
-          color: AppColors.mainColor,
+          color: const Color.fromARGB(255, 0, 0, 0),
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarBrightness: Brightness.light,
@@ -94,15 +94,7 @@ class RequestNP extends StatelessWidget {
             ),
 
             SizedBox(height: size.height * 0.03),
-            Text(
-              "¿CONTRASEÑA OLVIDADA?",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: textColor1,
-              ),
-            ),
+
             const SizedBox(height: 15),
             Text(
               "Ingrese su correo si ha olvidado su contraseña ",
@@ -137,7 +129,7 @@ class RequestNP extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          "Enviar Codigo",
+                          "Enviar Código",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,

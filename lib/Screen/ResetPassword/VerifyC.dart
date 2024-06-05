@@ -22,17 +22,17 @@ class VerifyC extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              AppStrings.homeTitle,
+              AppStrings.textResetP,
               style: GoogleFonts.poppins(
-                color: AppColors.mainColor,
-                fontSize: 24,
+                color: const Color.fromARGB(255, 0, 0, 0),
+                fontSize: 19,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ],
         ),
         iconTheme: IconThemeData(
-          color: AppColors.mainColor,
+          color: const Color.fromARGB(255, 0, 0, 0),
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarBrightness: Brightness.light,
@@ -94,15 +94,7 @@ class VerifyC extends StatelessWidget {
             ),
 
             SizedBox(height: size.height * 0.03),
-            Text(
-              "CÓDIGO DE SEGURIDAD",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: textColor1,
-              ),
-            ),
+
             const SizedBox(height: 15),
             Text(
               "Ingrese a continuación el código enviado a su correo electrónico",
@@ -137,7 +129,7 @@ class VerifyC extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          "Verificar Codigo",
+                          "Verificar Código",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,

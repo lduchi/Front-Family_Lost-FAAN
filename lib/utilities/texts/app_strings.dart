@@ -3,6 +3,8 @@ class AppStrings {
   static const String homeSubtitle = '¡Hola Mundo!';
   static const String buttonText = 'Presióname';
   static const String hintText = 'Ingresa algo aquí';
+  static const String textReset = '¿CONTRASEÑA OLVIDADA?';
+  static const String textResetP = '¿CÓDIGO DE SEGURIDAD?';
 
   //Text for labels
   static const String labelEmail = 'Correo Electrónico';
