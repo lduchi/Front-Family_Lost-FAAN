@@ -23,9 +23,9 @@ class ResetP extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              AppStrings.homeTitle,
+              "NUEVA CONTRASEÑA",
               style: GoogleFonts.poppins(
-                color: AppColors.mainColor,
+                color: AppColors.secondaryColor,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -94,15 +94,6 @@ class ResetP extends StatelessWidget {
               ),
             ),
             SizedBox(height: size.height * 0.03),
-            Text(
-              "NUEVA CONTRASEÑA",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: textColor1,
-              ),
-            ),
             const SizedBox(height: 15),
             Text(
               "A continuación, ingrese su nueva contraseña",

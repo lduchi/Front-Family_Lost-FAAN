@@ -22,10 +22,10 @@ class RequestNP extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              AppStrings.homeTitle,
+              "¿CONTRASEÑA OLVIDADA?",
               style: GoogleFonts.poppins(
-                color: AppColors.mainColor,
-                fontSize: 24,
+                color: AppColors.secondaryColor,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -94,15 +94,6 @@ class RequestNP extends StatelessWidget {
             ),
 
             SizedBox(height: size.height * 0.03),
-            Text(
-              "¿CONTRASEÑA OLVIDADA?",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: textColor1,
-              ),
-            ),
             const SizedBox(height: 15),
             Text(
               "Ingrese su correo si ha olvidado su contraseña ",

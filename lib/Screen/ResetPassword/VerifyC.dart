@@ -22,10 +22,10 @@ class VerifyC extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              AppStrings.homeTitle,
+              "CÓDIGO DE SEGURIDAD",
               style: GoogleFonts.poppins(
-                color: AppColors.mainColor,
-                fontSize: 24,
+                color: AppColors.secondaryColor,
+                fontSize: 23,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -94,15 +94,6 @@ class VerifyC extends StatelessWidget {
             ),
 
             SizedBox(height: size.height * 0.03),
-            Text(
-              "CÓDIGO DE SEGURIDAD",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: textColor1,
-              ),
-            ),
             const SizedBox(height: 15),
             Text(
               "Ingrese a continuación el código enviado a su correo electrónico",
