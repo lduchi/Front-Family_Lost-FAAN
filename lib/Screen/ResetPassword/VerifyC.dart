@@ -22,17 +22,17 @@ class VerifyC extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              "CÓDIGO DE SEGURIDAD",
+              AppStrings.textResetP,
               style: GoogleFonts.poppins(
-                color: AppColors.secondaryColor,
-                fontSize: 23,
+                color: const Color.fromARGB(255, 0, 0, 0),
+                fontSize: 19,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ],
         ),
         iconTheme: IconThemeData(
-          color: AppColors.mainColor,
+          color: const Color.fromARGB(255, 0, 0, 0),
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarBrightness: Brightness.light,
@@ -59,16 +59,6 @@ class VerifyC extends StatelessWidget {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [
-              backgroundColor2,
-              backgroundColor2,
-              backgroundColor4,
-            ],
-          ),
-        ),
         child: SafeArea(
             child: ListView(
           children: [
@@ -94,6 +84,7 @@ class VerifyC extends StatelessWidget {
             ),
 
             SizedBox(height: size.height * 0.03),
+
             const SizedBox(height: 15),
             Text(
               "Ingrese a continuación el código enviado a su correo electrónico",
@@ -128,7 +119,7 @@ class VerifyC extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          "Verificar Codigo",
+                          "Verificar Código",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -182,7 +173,10 @@ class VerifyC extends StatelessWidget {
           fillColor: Colors.white,
           filled: true,
           border: OutlineInputBorder(
-            borderSide: BorderSide.none,
+            borderSide: BorderSide(
+              color: color, // Establece el color del borde
+              width: 2.0, // Establece el ancho del borde
+            ),
             borderRadius: BorderRadius.circular(50),
           ),
           hintText: hint,
