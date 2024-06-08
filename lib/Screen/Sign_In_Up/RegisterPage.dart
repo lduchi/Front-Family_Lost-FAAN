@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -78,14 +77,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Center(
                   child: imageFile != null
                       ? Image.file(
-                    imageFile!,
-                    fit: BoxFit.cover,
-                  )
+                          imageFile!,
+                          fit: BoxFit.cover,
+                        )
                       : Icon(
-                    Icons.upload_file,
-                    size: 50,
-                    color: Colors.grey,
-                  ),
+                          Icons.upload_file,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
                 ),
               ),
               SizedBox(height: 20),
@@ -102,61 +101,147 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 20),
               CustomTextInput(
                   controller: nombreController,
-                  label: "Nombres",
-                  icon: CupertinoIcons.person),
+                  label: "Nombre",
+                  icon: CupertinoIcons.person,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de nombre vacio";
+                    }
+                    final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
+                    if (!nameRegex.hasMatch(value)) {
+                      return 'Nombre solo debe contener letras';
+                    }
+                    return null;
+                  }),
               SizedBox(height: 10),
               CustomTextInput(
                   controller: apellidoController,
-                  label: "Apellidos",
-                  icon: CupertinoIcons.person),
+                  label: "Apellido",
+                  icon: CupertinoIcons.person,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de apellidos vacio";
+                    }
+                    final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
+                    if (!nameRegex.hasMatch(value)) {
+                      return 'Apellido solo debe contener letras';
+                    }
+                    return null;
+                  }),
               SizedBox(height: 10),
               CustomTextInput(
                   controller: direccionController,
-                  label: "Direccion",
-                  icon: CupertinoIcons.location),
+                  label: "Dirección",
+                  icon: CupertinoIcons.location,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de dirección vacio";
+                    }
+                    final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
+                    if (!nameRegex.hasMatch(value)) {
+                      return 'Dirección solo debe contener letras';
+                    }
+                    return null;
+                  }),
               SizedBox(height: 10),
               CustomTextInput(
                   controller: telefonoController,
                   label: "Telefono",
-                  icon: CupertinoIcons.phone),
+                  icon: CupertinoIcons.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de telefono vacio";
+                    }
+                    final RegExp phoneRegex = RegExp(r'^[0-9]{10,13}$');
+                    if (!phoneRegex.hasMatch(value)) {
+                      return 'Telefono solo debe contener numeros';
+                    }
+
+                    return null;
+                  }),
               SizedBox(height: 10),
               CustomTextInput(
                   controller: emailController,
                   label: "Correo Electronico",
-                  icon: CupertinoIcons.mail),
+                  icon: CupertinoIcons.mail,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de email vacio";
+                    }
+                    final RegExp emailRegex =
+                        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Formato de email incorrecto';
+                    }
+
+                    return null;
+                  }),
               SizedBox(height: 10),
               CustomTextInput(
                   controller: usernameController,
                   label: "Username",
-                  icon: CupertinoIcons.at),
+                  icon: CupertinoIcons.at,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de username vacio";
+                    }
+                    final RegExp usernameRegex = RegExp(r'^[a-zA-Z0-9]+$');
+                    if (!usernameRegex.hasMatch(value)) {
+                      return 'Username solo contener letras y numeros';
+                    }
+
+                    return null;
+                  }),
               SizedBox(height: 10),
               CustomTextInput(
-                controller: passwordController,
-                label: "Contraseña",
-                icon: CupertinoIcons.lock,
-                isShow: true,
-                isPassword: isPasswordVisible,
-                onChanges: () {
-                  print("Estoy llegando");
-                  setState(() {
-                    isPasswordVisible = !isPasswordVisible;
-                  });
-                },
-              ),
+                  controller: passwordController,
+                  label: "Contraseña",
+                  icon: CupertinoIcons.lock,
+                  isShow: true,
+                  isPassword: isPasswordVisible,
+                  onChanges: () {
+                    print("Estoy llegando");
+                    setState(() {
+                      isPasswordVisible = !isPasswordVisible;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de contraseña vacio";
+                    }
+                    final RegExp passwordRegex = RegExp(
+                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+                    if (!passwordRegex.hasMatch(value)) {
+                      return 'La contraseña debe contener al menos una letra en mayúscula, un número y un carácter especial, y tener al menos 8 caracteres';
+                    }
+
+                    return null;
+                  }),
               SizedBox(height: 10),
               CustomTextInput(
-                controller: passRepeatController,
-                label: "Repetir Contraseña",
-                icon: CupertinoIcons.lock,
-                isShow: true,
-                isPassword: isPasswordVisible,
-                onChanges: () {
-                  print("Estoy llegando");
-                  setState(() {
-                    isPasswordVisible = !isPasswordVisible;
-                  });
-                },
-              ),
+                  controller: passRepeatController,
+                  label: "Repetir Contraseña",
+                  icon: CupertinoIcons.lock,
+                  isShow: true,
+                  isPassword: isPasswordVisible,
+                  onChanges: () {
+                    print("Estoy llegando");
+                    setState(() {
+                      isPasswordVisible = !isPasswordVisible;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de contraseña vacio";
+                    }
+                    final RegExp passwordRegex = RegExp(
+                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+                    if (!passwordRegex.hasMatch(value)) {
+                      return 'La contraseña debe contener al menos una letra en mayúscula, un número y un carácter especial, y tener al menos 8 caracteres';
+                    }
+
+                    return null;
+                  }),
               SizedBox(height: 20),
               SizedBox(
                 height: 50,
@@ -184,7 +269,8 @@ class _RegisterPageState extends State<RegisterPage> {
             Container(
               color: Colors.black.withOpacity(0.01),
               child: Center(
-                child: LoadingAnimationWidget.inkDrop(color: Colors.red, size: 50),
+                child:
+                    LoadingAnimationWidget.inkDrop(color: Colors.red, size: 50),
               ),
             ),
         ],
@@ -205,21 +291,7 @@ class _RegisterPageState extends State<RegisterPage> {
       showFieldError(context, "Image");
       return;
     }
-    if (nombre_.isEmpty) {
-      showFieldError(context, "Nombre");
-    } else if (apellido_.isEmpty) {
-      showFieldError(context, "Apellido");
-    } else if (direccion_.isEmpty) {
-      showFieldError(context, "Direccion");
-    } else if (telefono_.isEmpty) {
-      showFieldError(context, "Telefono");
-    } else if (email_.isEmpty) {
-      showFieldError(context, "Correo Electronico");
-    } else if (username_.isEmpty) {
-      showFieldError(context, "Username");
-    } else if (password_.isEmpty) {
-      showFieldError(context, "Password");
-    } else {
+   else {
       Usuarios userNuevo = Usuarios(
         nombre: nombre_,
         apellido: apellido_,
@@ -240,16 +312,24 @@ class _RegisterPageState extends State<RegisterPage> {
         setState(() {
           isLoading = false;
         });
-        CustomMaterialDialog.successOrError(context: context, type: DialogType.loading, title: "¡Hey!", message: "Gracias por registrarte");
+        CustomMaterialDialog.successOrError(
+            context: context,
+            type: DialogType.loading,
+            title: "¡Hey!",
+            message: "Gracias por registrarte");
       } catch (e) {
         print('Error al guardar la publicación: $e');
         setState(() {
           isLoading = false;
         });
-        CustomMaterialDialog.successOrError(context: context, type: DialogType.error, title: "Whoops..", message: "Estamos teniendo problemas una disculpa :)");
-
+        CustomMaterialDialog.successOrError(
+            context: context,
+            type: DialogType.error,
+            title: "Whoops..",
+            message: "Estamos teniendo problemas una disculpa :)");
       }
     }
   }
 
+ 
 }
