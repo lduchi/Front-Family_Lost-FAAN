@@ -1,25 +1,24 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
-import 'package:flutter/material.dart';
 
 int createUniqueId() {
   return DateTime.now().millisecondsSinceEpoch.remainder(100000);
 }
 
 Future<void> createdPostNotification(Map<String, dynamic> post) async {
-  String imageUrl = post['image'].replaceFirst('http://', 'https://');
-  print('New post received ${post.toString()}');
+  String imageUrl = post['imageUrl'].toString().replaceFirst('http', 'https');
 
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: createUniqueId(),
       channelKey: 'basic_channel',
       title: '${Emojis.animals_paw_prints} ${AppStrings.notifTitleNewPost}',
-      body: '${post['author']} ha publicado que su mascota \'${post['animal']}\' se encuentra ${post['state'] == 'LOST' ? 'perdido' : 'encontrado'}',
+      body: '${post['title']}',
       bigPicture: imageUrl,
+      largeIcon: imageUrl,
+      hideLargeIconOnExpand: true,
       notificationLayout: NotificationLayout.BigPicture,
       wakeUpScreen: true,
     ),
@@ -39,7 +38,6 @@ Future<void> likedPostNotification() async {
 
 Future<void> scheduledNotification() async {
   String localTimeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
-  print('The now date is ${DateTime.now()} + $localTimeZone');
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: createUniqueId(),

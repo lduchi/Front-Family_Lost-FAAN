@@ -42,9 +42,10 @@ class WebSocketChnl {
   void onConnect(StompFrame frame) {
     print('Connected to the websocket to $username');
     stompClient.subscribe(
-      destination: '/user/specific/newPost',
+      destination: '/user/specific/notification',
       callback: (StompFrame frame) {
         if (frame.body != null) {
+          print('Received new post notification, ${frame.body}');
           Map<String, dynamic> post = jsonDecode(frame.body!);
           createdPostNotification(post);
           // Handle the received post data as needed

@@ -28,6 +28,7 @@ class DioInterceptor extends Interceptor {
 
     if (context != null) {
       CustomMaterialDialog.simple(context: context, type: DialogType.loading);
+      options.headers['Accept-Language'] = Localizations.localeOf(context).languageCode;
     }
 
     super.onRequest(options, handler);
@@ -69,6 +70,9 @@ class DioInterceptor extends Interceptor {
           return;
         }
       }
+    } else {
+      CustomMaterialDialog.close(
+          context: context!, type: DialogType.catLoading);
     }
 
     super.onError(err, handler);

@@ -1,0 +1,1 @@
+enum NotificationState { UNREAD, READ, ERROR }

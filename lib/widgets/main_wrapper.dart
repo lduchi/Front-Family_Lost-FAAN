@@ -142,7 +142,9 @@ class _MainWrapperState extends State<MainWrapper> {
       shadowColor: Colors.black.withOpacity(0.5),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
+          },
           icon: AppIcons.notificationIconFill,
           color: AppColors.mainColor,
         ),
@@ -222,7 +224,9 @@ class _MainWrapperState extends State<MainWrapper> {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
+          },
           icon: AppIcons.notificationIconFill,
           color: AppColors.mainColor,
         ),
@@ -563,7 +567,8 @@ class _MainWrapperState extends State<MainWrapper> {
 
         pageController.animateToPage(page,
             duration: const Duration(milliseconds: 10),
-            curve: Curves.fastLinearToSlowEaseIn);
+            curve: Curves.fastLinearToSlowEaseIn,
+        );
       },
       child: Container(
         color: Colors.transparent,

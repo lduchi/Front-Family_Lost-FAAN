@@ -18,6 +18,7 @@ import 'package:familylost_faan/utilities/fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:familylost_faan/widgets/custom_quick_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -155,7 +156,7 @@ class _SavePostFormState extends State<SavePostForm> {
                           SizedBox(height: 5),
                           TextFormField(
                             style: AppFonts.InputTitlePost,
-                            textCapitalization: TextCapitalization.words,
+                            textCapitalization: TextCapitalization.characters,
                             controller: _titleController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -373,29 +374,57 @@ class _SavePostFormState extends State<SavePostForm> {
                   child: Text(AppStrings.formLocation),
                 ),
                 SizedBox(height: 5),
-                TextFormField(
-                  readOnly: true,
-                  controller: TextEditingController(
-                    text: _currentCenterPosition != null
-                        ? 'Lat: ${_currentCenterPosition!.latitude.toStringAsFixed(6)}, Lng: ${_currentCenterPosition!.longitude.toStringAsFixed(6)}'
-                        : '',
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return AppStrings.errorLocation;
+                FutureBuilder<String>(
+                  future: _currentCenterPosition != null
+                      ? getAddressFromCoordinates(_currentCenterPosition!.latitude, _currentCenterPosition!.longitude)
+                      : null,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      return TextFormField(
+                        readOnly: true,
+                        controller: TextEditingController(text: snapshot.data),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return AppStrings.errorLocation;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: _currentCenterPosition != null
+                              ? AppStrings.formLocationSelected
+                              : AppStrings.formEmptyLocationSelected,
+                          border: InputBorder.none,
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.only(right: 15),
+                            child: Icon(Icons.location_on),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return TextFormField(
+                        readOnly: true,
+                        controller: TextEditingController(text: ''),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return AppStrings.errorLocation;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: AppStrings.formEmptyLocationSelected,
+                          border: InputBorder.none,
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.only(right: 15),
+                            child: Icon(Icons.location_on),
+                          ),
+                        ),
+                      );
                     }
-                    return null;
                   },
-                  decoration: InputDecoration(
-                    labelText: _currentCenterPosition != null
-                        ? AppStrings.formLocationSelected
-                        : AppStrings.formEmptyLocationSelected,
-                    border: InputBorder.none,
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.only(right: 15),
-                      child: Icon(Icons.location_on),
-                    ),
-                  ),
                 ),
                 SizedBox(height: 16),
                 TextFormField(
@@ -561,5 +590,18 @@ class _SavePostFormState extends State<SavePostForm> {
         await api.savePost(savePostInstance, _imageFile!, context);
 
     print('Publicacion guardada ${savePost.id}');
+  }
+
+  Future<String> getAddressFromCoordinates(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        return '${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}';
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+    return '';
   }
 }
