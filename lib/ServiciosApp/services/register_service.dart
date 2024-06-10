@@ -16,8 +16,9 @@ class UsuariosService {
   UsuariosService() {
     _dio = DioClient().instance;
   }
+ 
 
-  final String endPointUrlPhoto = baseUrl + '/file';
+  final String endPointUrlPhoto = baseUrl + '/auth';
 
   /*Future<Usuarios> saveUser(
       Usuarios saveUser, File photo, BuildContext context) async {
@@ -93,7 +94,7 @@ class UsuariosService {
     File photo,
     BuildContext context,
   ) async {
-    final String url = '$endPointUrlPhoto/register-user';
+    final String url = '$endPointUrlPhoto/register';
 
     final formData = FormData.fromMap(
       {
@@ -128,7 +129,8 @@ class UsuariosService {
           dismissAndPop: true,
         );
 
-        final savedUser = await Usuarios.fromJson(response.data as Map<String, dynamic>);
+        final savedUser =
+            await Usuarios.fromJson(response.data as Map<String, dynamic>);
 
         return savedUser;
       } else if (response.statusCode == 500) {
@@ -159,7 +161,4 @@ class UsuariosService {
       rethrow;
     }
   }
-
-
-  
 }

@@ -194,54 +194,36 @@ class _RegisterPageState extends State<RegisterPage> {
                   }),
               SizedBox(height: 10),
               CustomTextInput(
-                  controller: passwordController,
-                  label: "Contraseña",
-                  icon: CupertinoIcons.lock,
-                  isShow: true,
-                  isPassword: isPasswordVisible,
-                  onChanges: () {
-                    print("Estoy llegando");
-                    setState(() {
-                      isPasswordVisible = !isPasswordVisible;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de contraseña vacio";
-                    }
-                    final RegExp passwordRegex = RegExp(
-                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
-                    if (!passwordRegex.hasMatch(value)) {
-                      return 'La contraseña debe contener al menos una letra en mayúscula, un número y un carácter especial, y tener al menos 8 caracteres';
-                    }
-
-                    return null;
-                  }),
+                controller: passwordController,
+                label: "Contraseña",
+                icon: CupertinoIcons.lock,
+                isShow: true,
+                isPassword: isPasswordVisible,
+                onChanges: () {
+                  setState(() {
+                    isPasswordVisible = !isPasswordVisible;
+                  });
+                },
+                validator: _validatePassword,
+              ),
               SizedBox(height: 10),
               CustomTextInput(
-                  controller: passRepeatController,
-                  label: "Repetir Contraseña",
-                  icon: CupertinoIcons.lock,
-                  isShow: true,
-                  isPassword: isPasswordVisible,
-                  onChanges: () {
-                    print("Estoy llegando");
-                    setState(() {
-                      isPasswordVisible = !isPasswordVisible;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de contraseña vacio";
-                    }
-                    final RegExp passwordRegex = RegExp(
-                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
-                    if (!passwordRegex.hasMatch(value)) {
-                      return 'La contraseña debe contener al menos una letra en mayúscula, un número y un carácter especial, y tener al menos 8 caracteres';
-                    }
-
-                    return null;
-                  }),
+                controller: passRepeatController,
+                label: "Repetir Contraseña",
+                icon: CupertinoIcons.lock,
+                isShow: true,
+                isPassword: isPasswordVisible,
+                onChanges: () {
+                  setState(() {
+                    isPasswordVisible = !isPasswordVisible;
+                  });
+                },
+                validator: (value) {
+                  String? passwordError = _validatePassword(value);
+                  String? passwordMatchError = _validatePasswordMatch(value);
+                  return passwordError ?? passwordMatchError;
+                },
+              ),
               SizedBox(height: 20),
               SizedBox(
                 height: 50,
@@ -278,6 +260,25 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo de contraseña vacio";
+    }
+    final RegExp passwordRegex = RegExp(
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+    if (!passwordRegex.hasMatch(value)) {
+      return 'La contraseña debe contener al menos una letra en mayúscula, un número y un carácter especial, y tener al menos 8 caracteres';
+    }
+    return null;
+  }
+
+  String? _validatePasswordMatch(String? value) {
+    if (value != passwordController.text) {
+      return 'Las contraseñas no coinciden';
+    }
+    return null;
+  }
+
   void SaveUser() async {
     String nombre_ = nombreController.text;
     String apellido_ = apellidoController.text;
@@ -290,8 +291,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (imageFile == null) {
       showFieldError(context, "Image");
       return;
-    }
-   else {
+    } else {
       Usuarios userNuevo = Usuarios(
         nombre: nombre_,
         apellido: apellido_,
@@ -316,9 +316,9 @@ class _RegisterPageState extends State<RegisterPage> {
             context: context,
             type: DialogType.loading,
             title: "¡Hey!",
-            message: "Gracias por registrarte");
+            message: "Gracias por registrarte ");
       } catch (e) {
-        print('Error al guardar la publicación: $e');
+        print('Error al guardar al registro: $e');
         setState(() {
           isLoading = false;
         });
@@ -326,10 +326,8 @@ class _RegisterPageState extends State<RegisterPage> {
             context: context,
             type: DialogType.error,
             title: "Whoops..",
-            message: "Estamos teniendo problemas una disculpa :)");
+            message: "Estamos teniendo problemas una disculpa ");
       }
     }
   }
-
- 
 }
