@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+@Deprecated("Images now are saved in the Cloudinary service, use that instead, will be removed in next version")
 class Image {
   final int type;
   final Uint8List data;

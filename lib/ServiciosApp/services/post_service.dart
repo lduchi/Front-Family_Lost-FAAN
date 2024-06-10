@@ -71,11 +71,7 @@ class PostService {
       },
     );
 
-    print(response.data);
-
     final PageResponse pageResponse = PageResponse.fromJson(response.data);
-
-    print(pageResponse.content);
 
     return pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
   }
@@ -96,7 +92,7 @@ class PostService {
         'pageSize': 10,
       },
     );
-    print(response.data);
+
     final PageResponse pageResponse = PageResponse.fromJson(response.data);
 
     return pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
@@ -109,29 +105,27 @@ class PostService {
   Future<void> deletePost(String postId, BuildContext context) async {
     final String url = '$endPointUrl/delete/$postId';
 
-    await _dio.delete(
+    var response = await _dio.delete(
       url,
       options: Options(
         extra: {'context': context},
       ),
     );
 
-    // response.statusCode == 200
-    //     ? CustomMaterialDialog.successOrError(
-    //         context: context,
-    //         type: DialogType.success,
-    //         title: AppStrings.successTitle,
-    //         message: AppStrings.deletePostSuccess,
-    //         dismissAndPop: true,
-    //       )
-    //     : CustomMaterialDialog.successOrError(
-    //         context: context,
-    //         type: DialogType.error,
-    //         title: AppStrings.deletePostErrorTitle,
-    //         message: AppStrings.deletePostError,
-    //       );
-
-    // return response.data;
+    response.statusCode == 200
+        ? CustomMaterialDialog.successOrError(
+            context: context,
+            type: DialogType.success,
+            title: AppStrings.successTitle,
+            message: AppStrings.deletePostSuccess,
+            dismissAndPop: true,
+          )
+        : CustomMaterialDialog.successOrError(
+            context: context,
+            type: DialogType.error,
+            title: AppStrings.deletePostErrorTitle,
+            message: AppStrings.deletePostError,
+          );
   }
 
   Future<String> updatePost(SavePost savePost, BuildContext context) async {

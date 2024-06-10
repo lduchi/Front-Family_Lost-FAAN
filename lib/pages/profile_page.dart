@@ -23,7 +23,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   UserDTO? user;
   String? userId;
-  bool likedPosts = false;
 
   @override
   void initState() {
@@ -210,97 +209,101 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
         ),
       ),
       builder: (context) {
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: ClipRRect(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(16.0),
-            ),
-            child: Container(
-              padding: EdgeInsets.all(_deviceSize.width * 0.05),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Center(
-                      child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(_deviceSize.width * 0.02),
+        return bottomSheetDetail(context, _deviceSize, post);
+      },
+    );
+  }
+
+  Padding bottomSheetDetail(BuildContext context, Size _deviceSize, SavePost post) {
+    return Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: ClipRRect(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(16.0),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(_deviceSize.width * 0.05),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Center(
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(_deviceSize.width * 0.02),
+                      child: Container(
+                        color: AppColors.mainColor,
                         child: Container(
-                          color: AppColors.mainColor,
-                          child: Container(
-                            child: post.imageUrl.isNotEmpty
-                                ? CachedNetworkImage(
-                                    imageUrl: post.imageUrl,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.asset(
-                                    AssetManager.largeLogo,
-                                    fit: BoxFit.cover,
-                                  ),
-                            height: _deviceSize.height * 0.4,
-                            width: _deviceSize.width,
-                          ),
+                          child: post.imageUrl.isNotEmpty
+                              ? CachedNetworkImage(
+                                  imageUrl: post.imageUrl,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  AssetManager.largeLogo,
+                                  fit: BoxFit.cover,
+                                ),
+                          height: _deviceSize.height * 0.4,
+                          width: _deviceSize.width,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      post.title,
-                      style: AppFonts.title.copyWith(
-                        color: AppColors.activeBlueColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    post.title,
+                    style: AppFonts.title.copyWith(
+                      color: AppColors.activeBlueColor,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      '${AppStrings.author}: ${post.author.username}',
-                      style: AppFonts.TextField.copyWith(
-                        color: AppColors.activeBlueColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    '${AppStrings.author}: ${post.author.username}',
+                    style: AppFonts.TextField.copyWith(
+                      color: AppColors.activeBlueColor,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      '${AppStrings.labelEmail}: ${post.author.email}',
-                      style: AppFonts.TextField.copyWith(
-                        color: AppColors.activeBlueColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    '${AppStrings.labelEmail}: ${post.author.email}',
+                    style: AppFonts.TextField.copyWith(
+                      color: AppColors.activeBlueColor,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      '${AppStrings.labelPhone}: ${post.author.phone}',
-                      style: AppFonts.TextField.copyWith(
-                        color: AppColors.activeBlueColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    '${AppStrings.labelPhone}: ${post.author.phone}',
+                    style: AppFonts.TextField.copyWith(
+                      color: AppColors.activeBlueColor,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      //'${AppStrings.authorComent}: ${post.additionalComment}',
-                      "Comentario del autor:",
-                      style: AppFonts.TextField.copyWith(
-                        color: AppColors.activeBlueColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    //'${AppStrings.authorComent}: ${post.additionalComment}',
+                    "Comentario del autor:",
+                    style: AppFonts.TextField.copyWith(
+                      color: AppColors.activeBlueColor,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 4.0),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: _footer(context, _deviceSize, post),
-                      ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _footer(context, _deviceSize, post),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-        );
-      },
-    );
+        ),
+      );
   }
 
   List<Widget> _footer(BuildContext context, Size _deviceSize, SavePost post) {

@@ -2,11 +2,14 @@ import 'dart:io';
 import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
+import 'package:familylost_faan/ServiciosApp/dto/reset_password_request.dart';
 import 'package:familylost_faan/ServiciosApp/dto/user_dto.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
-import 'package:familylost_faan/ServiciosApp/models/user_update.dart';
 import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:familylost_faan/environment/environment.dart';
+import 'package:familylost_faan/pages/pages.dart';
+import 'package:familylost_faan/utilities/enum/dialog_type.dart';
+import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -20,8 +23,6 @@ class UserService {
 
   String endPointUrl = baseUrl + '/user';
 
-  String endPointUrlPhoto = baseUrl + '/file';
-
   Future<UserDTO> getUserById(String id, BuildContext context) async {
     var url = '$endPointUrl/get/$id';
 
@@ -32,7 +33,6 @@ class UserService {
           extra: {'context': context},
         ),
       );
-      print(response.data);
 
       if (response.statusCode == 200) {
         final userResponse = UserDTO.fromJson(response.data);
@@ -64,23 +64,31 @@ class UserService {
     }
   }
 
-  //This method is working fine, or I think so :D
-  Future<String> updateUser(String id, UpdateUser user) async {
-    var url = '$endPointUrl/actualizarUser/$id';
+  Future<void> updateUser(String id, UserDTO user, BuildContext context) async {
+    var url = '$endPointUrl/update/$id';
     final response = await _dio.put(url, data: json.encode(user.toJson()));
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to update user');
-    }
+   response.statusCode == 200 ? 
+    CustomMaterialDialog.successOrError(
+            context: context,
+            type: DialogType.success,
+            title: AppStrings.successTitle,
+            message: AppStrings.successUserUpdate,
+            dismissAndPop: true,
+          )
+        : CustomMaterialDialog.successOrError(
+            context: context,
+            type: DialogType.error,
+            title: AppStrings.error,
+            message: AppStrings.errorUpdateUser,
+          );
   }
 
-  Future<void> updatePhoto(String username, File photo) async {
-    var url = '$endPointUrlPhoto/update-user/$username';
+  Future<void> updatePhoto(String userId, File photo, BuildContext context) async {
+    var url = '$endPointUrl/$userId';
 
     var formData = FormData.fromMap({
-      'photo': await MultipartFile.fromFile(photo.path,
+      'file': await MultipartFile.fromFile(photo.path,
           filename: photo.path.split('/').last),
     });
 
@@ -94,11 +102,20 @@ class UserService {
             },
           ));
 
-      if (response.statusCode == 200) {
-        print('Photo uploaded successfully');
-      } else {
-        throw Exception('Failed to update photo');
-      }
+      response.statusCode == 200 ?
+      CustomMaterialDialog.successOrError(
+            context: context,
+            type: DialogType.success,
+            title: AppStrings.successTitle,
+            message: AppStrings.successUserUpdate,
+          )
+        : CustomMaterialDialog.successOrError(
+            context: context,
+            type: DialogType.error,
+            title: AppStrings.error,
+            message: AppStrings.errorUpdateUser,
+          );
+
     } catch (e) {
       rethrow;
     }
@@ -116,10 +133,10 @@ class UserService {
     }
   }
 
-  Future<bool> updatePassword(String id, String password) async {
-    var url = '$endPointUrl/update-password/$id';
+  Future<bool> updatePassword(String id, ResetPasswordRequest request) async {
+    var url = '$endPointUrl/profile-update-password/$id';
     final response =
-        await _dio.put(url, queryParameters: {'password': password});
+        await _dio.put(url, data: json.encode(request.toJson()));
 
     if (response.statusCode == 200) {
       return true;

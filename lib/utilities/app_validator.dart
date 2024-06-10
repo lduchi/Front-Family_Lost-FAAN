@@ -24,14 +24,21 @@ class AppValidator {
     if (password == null || password.isEmpty) {
       return AppStrings.errorEmptyPassword;
     }
-    if (password.length < 6) {
+
+    if (password.length < 8) {
       return AppStrings.errorPasswordLength;
     }
-    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$').hasMatch(password)) {
-      return AppStrings
-          .errorPassword; // Needs to be define correctly in the AppStrings class, the message is not clear.
+
+    bool hasUppercase = password.contains(RegExp(r'[A-Z]'));
+    bool hasLowercase = password.contains(RegExp(r'[a-z]'));
+    bool hasDigit = password.contains(RegExp(r'\d'));
+    bool hasSpecialChar = password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+
+    if (!hasUppercase || !hasLowercase || !hasDigit || !hasSpecialChar) {
+      return AppStrings.errorFormatPassword;
     }
-    return null;
+
+    return null; // Contraseña válida
   }
 
   static String? validateConfirmPassword(

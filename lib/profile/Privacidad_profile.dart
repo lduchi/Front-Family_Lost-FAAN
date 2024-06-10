@@ -1,8 +1,14 @@
+import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
+import 'package:familylost_faan/ServiciosApp/dto/reset_password_request.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/models/user.dart';
+import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
+import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
+import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/app_validator.dart';
+import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -30,17 +36,62 @@ class _PrivacidadProfileState extends State<PrivacidadProfile> {
     _getStoredId();
   }
 
+  @override
+  void dispose() {
+    _passwordTextController.dispose();
+    _repeatPasswordTextController.dispose();
+    super.dispose();
+  }
+
   Future<String?> _getStoredId() async {
     userId = await Store.getUserId();
     return userId;
   }
 
+  Future<void> _logout(BuildContext context) async {
+    Store.removeToken();
+
+    cancelScheduledNotification;
+
+    WebSocketChnl.instance.disconnect();
+
+    CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.success,
+        title: '¡Hasta pronto!',
+        message: 'Sesión cerrada correctamente');
+
+    _navToSignIn(context);
+  }
+
+  void _navToSignIn(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignIn(),
+      ),
+    );
+  }
+
+  Future<void> _showErrorDialog(BuildContext context) async {
+    CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.error,
+        title: AppStrings.error,
+        message: AppStrings.errorUpdatePassword);
+  }
+
   Future<bool> _updatePassword() async {
-    var newPassword = _passwordTextController.text;
+    ResetPasswordRequest resetPasswordRequest = ResetPasswordRequest(
+      newPassword: _passwordTextController.text,
+      newRepeatedPassword: _repeatPasswordTextController.text,
+    );
+
     if (_formKey.currentState!.validate()) {
-      if (newPassword == _repeatPasswordTextController.text) {
+      if (resetPasswordRequest.newPassword ==
+          resetPasswordRequest.newRepeatedPassword) {
         bool response =
-            await UserService().updatePassword(userId!, newPassword);
+            await UserService().updatePassword(userId!, resetPasswordRequest);
         return response;
       }
     }
@@ -76,7 +127,7 @@ class _PrivacidadProfileState extends State<PrivacidadProfile> {
                   AppStrings.newPassword,
                   AppFonts.TextField,
                   _passwordTextController,
-                  //validator: AppValidator.validatePassword,
+                  validator: AppValidator.validatePassword,
                 ),
                 SizedBox(height: 10),
                 _buildPasswordFieldWithIcon(
@@ -88,6 +139,7 @@ class _PrivacidadProfileState extends State<PrivacidadProfile> {
                     if (value != _passwordTextController.text) {
                       return AppStrings.errorConfirmPassword;
                     }
+                    return null;
                   },
                 ),
                 SizedBox(height: 20),
@@ -97,17 +149,9 @@ class _PrivacidadProfileState extends State<PrivacidadProfile> {
                     onPressed: () {
                       _updatePassword().then((value) {
                         if (value) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Password updated'),
-                            ),
-                          );
+                          _logout(context);
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Error updating password'),
-                            ),
-                          );
+                          _showErrorDialog(context);
                         }
                       });
                     },

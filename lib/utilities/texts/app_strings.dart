@@ -25,6 +25,7 @@ class AppStrings {
   static const String currentPassword = 'Contraseña Actual';
   static const String newPassword = 'Contraseña Nueva';
   static const String repeatPassword = 'Repetir Contraseña';
+  static const String successUserUpdate = 'Usuario actualizado con éxito';
 
   //Text for labels in navigation
   static const String navigationHome = 'Inicio';
@@ -101,6 +102,8 @@ class AppStrings {
   static const String errorLogin =
       'Correo electrónico o contraseña incorrectos';
   static String errorConnection = 'Revise su conexión a internet';
+  static String errorUpdatePassword = 'Error al actualizar la contraseña';
+  static String errorUpdateUser = 'Error al actualizar el usuario';
 
   //Text for errors with empty fields
   static const String errorEmptyEmail =
@@ -135,7 +138,7 @@ class AppStrings {
 
   //Text for errors with invalid length fields
   static const String errorPasswordLength =
-      'La contraseña debe tener al menos 6 caracteres';
+      'La contraseña debe tener al menos 8 caracteres';
   static const String errorNameLength =
       'El nombre debe tener al menos 3 caracteres';
   static const String errorLastNameLength =
@@ -152,6 +155,8 @@ class AppStrings {
       'El nombre de usuario debe tener al menos 3 caracteres';
 
   //Text for errors with invalid format fields
+  static const String errorFormatPassword =
+      'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.';
 
   //Text for errors with duplicated fields
   static const String errorDuplicatedEmail =

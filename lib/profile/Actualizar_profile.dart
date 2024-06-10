@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 import 'package:familylost_faan/ServiciosApp/dto/user_dto.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
-import 'package:familylost_faan/ServiciosApp/models/user.dart';
-import 'package:familylost_faan/ServiciosApp/models/user_update.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
@@ -12,6 +12,8 @@ import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ActualizarProfile extends StatefulWidget {
@@ -27,6 +29,8 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
   UserDTO? user;
   late File? _selectedImage = null;
   String? userId;
+  Marker? _userMarker;
+  late GoogleMapController _mapController;
 
   final _imagePicker = ImagePicker();
   final _nameTextController = TextEditingController();
@@ -42,6 +46,16 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
       userId = value;
       _getUser();
     });
+  }
+
+  @override
+  void dispose() {
+    _nameTextController.dispose();
+    _lastNameTextController.dispose();
+    _phoneTextController.dispose();
+    _emailTextController.dispose();
+    _usernameTextController.dispose();
+    super.dispose();
   }
 
   void _initControllers() {
@@ -66,30 +80,37 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
     });
   }
 
-  void _updatePhoto(String username, File file) async {
-    await UserService().updatePhoto(username, file);
+  void _updatePhoto(String username, File file, BuildContext context) async {
+    await UserService().updatePhoto(username, file, context);
   }
 
-  void _updateUser() async {
+  void _updateUser(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      // UpdateUser updateUser = UpdateUser(
-      //   id: user!.id,
-      //   //verificationToken: user!.verificationToken ?? '',
-      //   nombre: _nameTextController.text,
-      //   apellido: _lastNameTextController.text,
-      //   username: _usernameTextController.text,
-      //   password: user!.password,
-      //   email: _emailTextController.text,
-      //   direccion: user!.direccion,
-      //   telefono: _phoneTextController.text,
-      // );
-      // if (_selectedImage != null) {
-      //   _updatePhoto(updateUser.username, _selectedImage!);
-      // }
-      // await UserService().updateUser(updateUser.id, updateUser);
-      // setState(() {
-      //   _getUser();
-      // });
+      UserDTO updateUser = UserDTO(
+        id: user!.id,
+        name: _nameTextController.text,
+        lastname: _lastNameTextController.text,
+        username: _usernameTextController.text,
+        location: GeoJson(
+          x: 2,
+          y: 3,
+          type: 'Point',
+          coordinates: [
+            _userMarker!.position.longitude,
+            _userMarker!.position.latitude,
+          ],
+        ),
+        email: _emailTextController.text,
+        phone: _phoneTextController.text,
+        imageUrl: user!.imageUrl,
+      );
+      if (_selectedImage != null) {
+        _updatePhoto(updateUser.username, _selectedImage!, context);
+      }
+      await UserService().updateUser(updateUser.id, updateUser, context);
+      setState(() {
+        _getUser();
+      });
     }
   }
 
@@ -143,73 +164,13 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
             iconSize: _deviceSize.width * 0.4,
           ),
           SizedBox(height: _deviceSize.height * 0.01),
-          Form(
-              key: _formKey,
-              //autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                children: [
-                  _buildTextFieldWithIcon(
-                    CupertinoIcons.person,
-                    TextInputType.name,
-                    AppStrings.labelName,
-                    AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                    ),
-                    _nameTextController,
-                    validator: AppValidator.validateName,
-                  ),
-                  SizedBox(height: _deviceSize.height * 0.01),
-                  _buildTextFieldWithIcon(
-                    CupertinoIcons.person,
-                    TextInputType.name,
-                    AppStrings.labelLastName,
-                    AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                    ),
-                    _lastNameTextController,
-                    validator: AppValidator.validateLastName,
-                  ),
-                  SizedBox(height: _deviceSize.height * 0.01),
-                  _buildTextFieldWithIcon(
-                    CupertinoIcons.phone,
-                    TextInputType.phone,
-                    AppStrings.labelPhone,
-                    AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                    ),
-                    _phoneTextController,
-                    validator: AppValidator.validatePhone,
-                  ),
-                  SizedBox(height: _deviceSize.height * 0.01),
-                  _buildTextFieldWithIcon(
-                    CupertinoIcons.mail,
-                    TextInputType.emailAddress,
-                    AppStrings.labelEmail,
-                    AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                    ),
-                    _emailTextController,
-                    validator: AppValidator.validateEmail,
-                  ),
-                  SizedBox(height: _deviceSize.height * 0.01),
-                  _buildTextFieldWithIcon(
-                    CupertinoIcons.at,
-                    TextInputType.name,
-                    AppStrings.username,
-                    AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                    ),
-                    _usernameTextController,
-                    validator: AppValidator.validateUsername,
-                  ),
-                ],
-              )),
+          _updateForm(),
           SizedBox(height: _deviceSize.height * 0.01),
           SizedBox(
             height: _deviceSize.height * 0.08,
             child: ElevatedButton(
               onPressed: () {
-                _updateUser();
+                _updateUser(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.mainColor,
@@ -223,6 +184,75 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Form _updateForm() {
+    return Form(
+      key: _formKey,
+      //autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Column(
+        children: [
+          _buildTextFieldWithIcon(
+            CupertinoIcons.person,
+            TextInputType.name,
+            AppStrings.labelName,
+            AppFonts.TextField.copyWith(
+              color: AppColors.activeBlueColor,
+            ),
+            _nameTextController,
+            validator: AppValidator.validateName,
+          ),
+          SizedBox(height: _deviceSize.height * 0.01),
+          _buildTextFieldWithIcon(
+            CupertinoIcons.person,
+            TextInputType.name,
+            AppStrings.labelLastName,
+            AppFonts.TextField.copyWith(
+              color: AppColors.activeBlueColor,
+            ),
+            _lastNameTextController,
+            validator: AppValidator.validateLastName,
+          ),
+          SizedBox(height: _deviceSize.height * 0.01),
+          _buildTextFieldWithIcon(
+            CupertinoIcons.phone,
+            TextInputType.phone,
+            AppStrings.labelPhone,
+            AppFonts.TextField.copyWith(
+              color: AppColors.activeBlueColor,
+            ),
+            _phoneTextController,
+            validator: AppValidator.validatePhone,
+          ),
+          SizedBox(height: _deviceSize.height * 0.01),
+          _buildTextFieldWithIcon(
+            CupertinoIcons.mail,
+            TextInputType.emailAddress,
+            AppStrings.labelEmail,
+            AppFonts.TextField.copyWith(
+              color: AppColors.activeBlueColor,
+            ),
+            _emailTextController,
+            validator: AppValidator.validateEmail,
+          ),
+          SizedBox(height: _deviceSize.height * 0.01),
+          _buildTextFieldWithIcon(
+            CupertinoIcons.at,
+            TextInputType.name,
+            AppStrings.username,
+            AppFonts.TextField.copyWith(
+              color: AppColors.activeBlueColor,
+            ),
+            _usernameTextController,
+            validator: AppValidator.validateUsername,
+          ),
+          SizedBox(height: _deviceSize.height * 0.01),
+          ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: _deviceSize.height * 0.3),
+              child: _buildMap(user!.location)),
         ],
       ),
     );
@@ -254,5 +284,66 @@ class _ActualizarProfileState extends State<ActualizarProfile> {
         validator: validator,
       ),
     );
+  }
+
+  Widget _buildMap(GeoJson location) {
+    LatLng userLocation =
+        LatLng(location.coordinates[1], location.coordinates[0]);
+    Set<Marker> markers = {};
+    if (_userMarker != null) {
+      markers.add(_userMarker!);
+    } else {
+      _userMarker = Marker(
+        markerId: MarkerId('user_location'),
+        position: userLocation,
+        infoWindow: InfoWindow(
+          title: 'Your Location',
+        ),
+      );
+      markers.add(_userMarker!);
+    }
+
+    return GoogleMap(
+      initialCameraPosition: CameraPosition(
+        target: userLocation,
+        zoom: 15,
+      ),
+      markers: markers,
+      onMapCreated: (controller) {
+        _mapController = controller;
+      },
+      onTap: (LatLng tappedPoint) {
+        setState(
+          () {
+            _userMarker = Marker(
+              markerId: MarkerId('user_location'),
+              position: tappedPoint,
+              infoWindow: InfoWindow(
+                title: 'Selected Location',
+              ),
+            );
+            markers.clear();
+            markers.add(_userMarker!);
+            print('Tapped Point');
+            print(tappedPoint);
+          },
+        );
+      },
+    );
+  }
+
+  Future<String> getAddressFromCoordinates(
+      double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        return '${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}';
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+    return '';
   }
 }

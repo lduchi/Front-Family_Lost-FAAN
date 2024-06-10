@@ -17,7 +17,7 @@ class UserDTO {
     required this.lastname,
     required this.email,
     required this.username,
-    required this.imagePath,
+    this.imagePath,
     required this.location,
     required this.phone,
     required this.imageUrl,
