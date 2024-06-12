@@ -74,8 +74,11 @@ class AppStrings {
   static const String formGender = 'Género';
   static const String formAdress = 'Dirección';
   static const String formLocation = 'Selecciona la ubicación en el mapa';
+  static const String formLocationUser = 'Selecciona tu dirección en el mapa';
   static const String formLocationSelected = 'Ubicación seleccionada:';
+  static const String formLocationSelectedUser = 'Dirección seleccionada:';
   static const String formEmptyLocationSelected = 'Sin ubicación seleccionada';
+  static const String formEmptyLocationSelectedUser = 'Sin dirección seleccionada';
   static const String formViewedDate = 'Fecha de avistamiento';
   static const String formLostDate = 'Fecha de extravío';
   static const String formDescription = 'Agregar un comentario adicional';

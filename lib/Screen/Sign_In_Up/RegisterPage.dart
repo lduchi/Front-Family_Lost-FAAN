@@ -1,13 +1,19 @@
+import 'dart:async';
 import 'dart:io';
-import 'package:familylost_faan/ServiciosApp/models/usuarios.dart';
+import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
+import 'package:familylost_faan/ServiciosApp/models/NewUser.dart';
 import 'package:familylost_faan/ServiciosApp/services/register_service.dart';
-import 'package:familylost_faan/core/utils/show_messages.dart';
 import 'package:familylost_faan/core/utils/text_input.dart';
+import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
+import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:familylost_faan/widgets/RegisterPageAppBar.dart';
 import 'package:familylost_faan/widgets/custom_quick_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -24,7 +30,10 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController passRepeatController = TextEditingController();
+  TextEditingController passRepeadController = TextEditingController();
+  Completer<GoogleMapController> _controller = Completer();
+  LatLng? currentCenterPosition;
+
   bool isLoading = false;
   @override
   void dispose() {
@@ -35,9 +44,14 @@ class _RegisterPageState extends State<RegisterPage> {
     emailController.dispose();
     usernameController.dispose();
     passwordController.dispose();
-    passRepeatController.dispose();
+    passRepeadController.dispose();
     super.dispose();
   }
+
+  static final CameraPosition _cameraPosition = CameraPosition(
+    target: LatLng(-2.8973852640959343, -79.00446994564442),
+    zoom: 14.4746,
+  );
 
   File? imageFile;
   final picker = ImagePicker();
@@ -130,37 +144,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   }),
               SizedBox(height: 10),
               CustomTextInput(
-                  controller: direccionController,
-                  label: "Dirección",
-                  icon: CupertinoIcons.location,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de dirección vacio";
-                    }
-                    final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
-                    if (!nameRegex.hasMatch(value)) {
-                      return 'Dirección solo debe contener letras';
-                    }
-                    return null;
-                  }),
-              SizedBox(height: 10),
-              CustomTextInput(
-                  controller: telefonoController,
-                  label: "Telefono",
-                  icon: CupertinoIcons.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de telefono vacio";
-                    }
-                    final RegExp phoneRegex = RegExp(r'^[0-9]{10,13}$');
-                    if (!phoneRegex.hasMatch(value)) {
-                      return 'Telefono solo debe contener numeros';
-                    }
-
-                    return null;
-                  }),
-              SizedBox(height: 10),
-              CustomTextInput(
                   controller: emailController,
                   label: "Correo Electronico",
                   icon: CupertinoIcons.mail,
@@ -189,7 +172,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (!usernameRegex.hasMatch(value)) {
                       return 'Username solo contener letras y numeros';
                     }
-
                     return null;
                   }),
               SizedBox(height: 10),
@@ -208,7 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(height: 10),
               CustomTextInput(
-                controller: passRepeatController,
+                controller: passRepeadController,
                 label: "Repetir Contraseña",
                 icon: CupertinoIcons.lock,
                 isShow: true,
@@ -224,6 +206,83 @@ class _RegisterPageState extends State<RegisterPage> {
                   return passwordError ?? passwordMatchError;
                 },
               ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  _openMapScreen(context);
+                },
+                child: Text(AppStrings.formLocationUser),
+              ),
+              SizedBox(height: 5),
+              FutureBuilder<String>(
+                future: currentCenterPosition != null
+                    ? getAddressFromCoordinates(currentCenterPosition!.latitude,
+                        currentCenterPosition!.longitude)
+                    : null,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    return TextFormField(
+                      readOnly: true,
+                      controller: TextEditingController(text: snapshot.data),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return AppStrings.errorLocation;
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: currentCenterPosition != null
+                            ? AppStrings.formLocationSelectedUser
+                            : AppStrings.formEmptyLocationSelectedUser,
+                        border: InputBorder.none,
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Icon(Icons.location_on),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return TextFormField(
+                      readOnly: true,
+                      controller: TextEditingController(text: ''),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return AppStrings.errorLocation;
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: AppStrings.formEmptyLocationSelectedUser,
+                        border: InputBorder.none,
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Icon(Icons.location_on),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              SizedBox(height: 10),
+              CustomTextInput(
+                  controller: telefonoController,
+                  label: "Telefono",
+                  icon: CupertinoIcons.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Campo de telefono vacio";
+                    }
+                    final RegExp phoneRegex = RegExp(r'^[0-9]{10,13}$');
+                    if (!phoneRegex.hasMatch(value)) {
+                      return 'Telefono solo debe contener numeros';
+                    }
+
+                    return null;
+                  }),
               SizedBox(height: 20),
               SizedBox(
                 height: 50,
@@ -279,27 +338,106 @@ class _RegisterPageState extends State<RegisterPage> {
     return null;
   }
 
+  void _openMapScreen(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              AppStrings.messageMapLocation,
+              style: AppFonts.TitlePost,
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              color: AppColors.icnColor,
+            ),
+            backgroundColor: AppColors.secondaryMainColor,
+          ),
+          body: Stack(
+            children: [
+              GoogleMap(
+                initialCameraPosition: _cameraPosition,
+                mapType: MapType.terrain,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                onCameraMove: (CameraPosition position) {
+                  currentCenterPosition = position.target;
+                },
+              ),
+              Center(
+                child: Icon(
+                  Icons.gps_not_fixed_sharp,
+                  color: AppColors.icnColor,
+                  size: 25,
+                ),
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              if (currentCenterPosition != null) {
+                _saveLocation(currentCenterPosition!);
+              }
+            },
+            label: Text(AppStrings.messageSelectLocation),
+            icon: Icon(Icons.location_on_outlined),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+        );
+      }),
+    );
+  }
+
+  void _saveLocation(LatLng location) {
+    print('Ubicación seleccionada: $location');
+    setState(() {
+      currentCenterPosition = location;
+      Navigator.pop(context);
+    });
+  }
+
   void SaveUser() async {
-    String nombre_ = nombreController.text;
-    String apellido_ = apellidoController.text;
-    String direccion_ = direccionController.text;
-    String telefono_ = telefonoController.text;
+    double longitude = currentCenterPosition!.longitude;
+    double latitude = currentCenterPosition!.latitude;
+
+    GeoJson geoJsonLocation = GeoJson(
+      x: 2,
+      y: 3,
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    );
+
+    String name_ = nombreController.text;
+    String lastname_ = apellidoController.text;
     String email_ = emailController.text;
     String username_ = usernameController.text;
-    String password_ = passRepeatController.text;
+    String password_ = passwordController.text;
+    String repeatPassword_ = passRepeadController.text;
+    String phone_ = telefonoController.text;
 
     if (imageFile == null) {
-      showFieldError(context, "Image");
+      CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.error,
+        title: AppStrings.textErrorTitle,
+        message: 'Por favor selecciona una foto',
+      );
       return;
     } else {
-      Usuarios userNuevo = Usuarios(
-        nombre: nombre_,
-        apellido: apellido_,
-        direccion: direccion_,
-        telefono: telefono_,
+      NewUser userNuevo = NewUser(
+        name: name_,
+        lastname: lastname_,
         email: email_,
         username: username_,
         password: password_,
+        repeatPassword: repeatPassword_,
+        location: geoJsonLocation,
+        phone: phone_,
       );
 
       final UsuariosService apiService = UsuariosService();
@@ -308,7 +446,7 @@ class _RegisterPageState extends State<RegisterPage> {
         isLoading = true;
       });
       try {
-        await apiService.saveUser(userNuevo, imageFile!, context);
+        await apiService.Register(userNuevo, imageFile!, context);
         setState(() {
           isLoading = false;
         });
@@ -329,5 +467,20 @@ class _RegisterPageState extends State<RegisterPage> {
             message: "Estamos teniendo problemas una disculpa ");
       }
     }
+  }
+
+  Future<String> getAddressFromCoordinates(
+      double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        return '${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}';
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+    return '';
   }
 }

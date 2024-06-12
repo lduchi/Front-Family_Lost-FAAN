@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:familylost_faan/ServiciosApp/models/usuarios.dart';
+import 'package:familylost_faan/ServiciosApp/models/NewUser.dart';
 import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -89,17 +88,14 @@ class UsuariosService {
     }
   }*/
 
-  Future<Usuarios> saveUser(
-    Usuarios usuario,
-    File photo,
-    BuildContext context,
+  Future<NewUser> Register( NewUser newUser, File photo, BuildContext context,
   ) async {
     final String url = '$endPointUrlPhoto/register';
 
     final formData = FormData.fromMap(
       {
-        'usuario': await MultipartFile.fromString(
-          jsonEncode(usuario.toJson()),
+        'NewUser': await MultipartFile.fromString(
+          jsonEncode(newUser.toJson()),
           filename: 'user.json',
           contentType: MediaType('application', 'json'),
         ),
@@ -130,7 +126,7 @@ class UsuariosService {
         );
 
         final savedUser =
-            await Usuarios.fromJson(response.data as Map<String, dynamic>);
+            await NewUser.fromJson(response.data as Map<String, dynamic>);
 
         return savedUser;
       } else if (response.statusCode == 500) {
@@ -142,7 +138,6 @@ class UsuariosService {
           dismissAndPop: true,
         );
 
-        // throw an exception to propagate the error to the caller
         throw Exception('Server Error');
       } else {
         CustomMaterialDialog.successOrError(
@@ -153,11 +148,9 @@ class UsuariosService {
           dismissAndPop: true,
         );
 
-        // throw an exception to propagate the error to the caller
         throw Exception('An error occurred while saving the user');
       }
     } catch (e) {
-      // handle the exception
       rethrow;
     }
   }
