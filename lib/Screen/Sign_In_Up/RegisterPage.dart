@@ -411,13 +411,6 @@ class _RegisterPageState extends State<RegisterPage> {
       type: 'Point',
       coordinates: [longitude, latitude],
     );
-
-    String name_ = nombreController.text;
-    String lastname_ = apellidoController.text;
-    String email_ = emailController.text;
-    String username_ = usernameController.text;
-    String password_ = passwordController.text;
-    String repeatPassword_ = passRepeadController.text;
     String phone_ = telefonoController.text;
 
     if (imageFile == null) {
@@ -430,14 +423,14 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     } else {
       NewUser userNuevo = NewUser(
-        name: name_,
-        lastname: lastname_,
-        email: email_,
-        username: username_,
-        password: password_,
-        repeatPassword: repeatPassword_,
+        name: nombreController.text,
+        lastname: apellidoController.text,
+        email: emailController.text,
+        username: usernameController.text,
+        password: passwordController.text,
+        repeatedPassword: passRepeadController.text,
         location: geoJsonLocation,
-        phone: phone_,
+        phone: telefonoController.text,
       );
 
       final UsuariosService apiService = UsuariosService();

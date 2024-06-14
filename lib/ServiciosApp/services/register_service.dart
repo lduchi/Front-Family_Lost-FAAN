@@ -15,7 +15,6 @@ class UsuariosService {
   UsuariosService() {
     _dio = DioClient().instance;
   }
- 
 
   final String endPointUrlPhoto = baseUrl + '/auth';
 
@@ -88,21 +87,24 @@ class UsuariosService {
     }
   }*/
 
-  Future<NewUser> Register( NewUser newUser, File photo, BuildContext context,
+  Future<NewUser> Register(
+    NewUser newUser,
+    File image,
+    BuildContext context,
   ) async {
     final String url = '$endPointUrlPhoto/register';
 
     final formData = FormData.fromMap(
       {
-        'NewUser': await MultipartFile.fromString(
+        'newUser': await MultipartFile.fromString(
           jsonEncode(newUser.toJson()),
-          filename: 'user.json',
+          filename: 'newUser.json',
           contentType: MediaType('application', 'json'),
         ),
-        'photo': await MultipartFile.fromFile(
-          photo.path,
-          filename: photo.path.split('/').last,
-          contentType: MediaType('image', photo.path.split('.').last),
+        'image': await MultipartFile.fromFile(
+          image.path,
+          filename: image.path.split('/').last,
+          contentType: MediaType('image',image.path.split('.').last),
         ),
       },
     );
@@ -112,7 +114,9 @@ class UsuariosService {
         url,
         data: formData,
         options: Options(
-          extra: {'context': context},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         ),
       );
 
@@ -126,8 +130,7 @@ class UsuariosService {
         );
 
         final savedUser =
-            await NewUser.fromJson(response.data as Map<String, dynamic>);
-
+            NewUser.fromJson(response.data as Map<String, dynamic>);
         return savedUser;
       } else if (response.statusCode == 500) {
         CustomMaterialDialog.successOrError(

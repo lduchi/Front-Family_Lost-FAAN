@@ -6,7 +6,7 @@ class NewUser {
   String email;
   String username;
   String password;
-  String repeatPassword;
+  String repeatedPassword;
   GeoJson location;
   String phone;
 
@@ -16,7 +16,7 @@ class NewUser {
     required this.email,
     required this.username,
     required this.password,
-    required this.repeatPassword,
+    required this.repeatedPassword,
     required this.location,
     required this.phone,
   });
@@ -28,7 +28,7 @@ class NewUser {
       email: json['email'] as String,
       username: json['username'] as String,
       password: json['password'] as String,
-      repeatPassword: json['repeatPassword'] as String,
+      repeatedPassword: json['repeatedPassword'] as String,
       location: json['location'],
       phone: json['phone'] as String,
     );
@@ -41,7 +41,7 @@ class NewUser {
       'email': email,
       'username': username,
       'password': password,
-      'repeadPassword': repeatPassword,
+      'repeatedPassword': repeatedPassword,
       'location': location,
       'phone': phone,
     };
