@@ -17,75 +17,7 @@ class UsuariosService {
   }
 
   final String endPointUrlPhoto = baseUrl + '/auth';
-
-  /*Future<Usuarios> saveUser(
-      Usuarios saveUser, File photo, BuildContext context) async {
-    final String url = '$endPointUrlPhoto/register-user';
-
-    final formData = FormData.fromMap(
-      {
-        'saveUser': await MultipartFile.fromString(
-          jsonEncode(saveUser.toJson()),
-          filename: 'saveUser.json',
-          contentType: MediaType('application', 'json'),
-        ),
-        'photo': await MultipartFile.fromFile(
-          photo.path,
-          filename: photo.path.split('/').last,
-          contentType: MediaType('image', photo.path.split('.').last),
-        ),
-      },
-    );
-
-    try {
-      final response = await _dio.post(
-        url,
-        data: formData,
-        options: Options(
-          extra: {'context': context},
-        ),
-      );
-
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        CustomMaterialDialog.successOrError(
-          context: context,
-          type: DialogType.success,
-          title: 'User saved',
-          message: 'User has been saved successfully',
-          dismissAndPop: true,
-        );
-
-        final savedUser = await Usuarios.fromJson(response.data);
-
-        return savedUser;
-      } else if (response.statusCode == 500) {
-        CustomMaterialDialog.successOrError(
-          context: context,
-          type: DialogType.error,
-          title: 'Server Error',
-          message: 'An error occurred on the server while saving the user',
-          dismissAndPop: true,
-        );
-
-        // throw an exception to propagate the error to the caller
-        throw Exception('Server Error');
-      } else {
-        CustomMaterialDialog.successOrError(
-          context: context,
-          type: DialogType.error,
-          title: 'Error',
-          message: 'An error occurred while saving the user',
-          dismissAndPop: true,
-        );
-
-        // throw an exception to propagate the error to the caller
-        throw Exception('An error occurred while saving the user');
-      }
-    } catch (e) {
-      // handle the exception
-      rethrow;
-    }
-  }*/
+  final String urlUsernamer = baseUrl + '/user';
 
   Future<NewUser> Register(
     NewUser newUser,
@@ -104,7 +36,7 @@ class UsuariosService {
         'image': await MultipartFile.fromFile(
           image.path,
           filename: image.path.split('/').last,
-          contentType: MediaType('image',image.path.split('.').last),
+          contentType: MediaType('image', image.path.split('.').last),
         ),
       },
     );
@@ -155,6 +87,24 @@ class UsuariosService {
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<bool> isUsernameAvailable(String username) async {
+    try {
+      final String url = '$endPointUrlPhoto/exists-username/$username';
+      final response = await _dio.get(url);
+
+      if (response.statusCode == 200) {
+        // El backend indica que el nombre de usuario no está disponible
+        return !response.data;
+      } else {
+        // El backend indica que el nombre de usuario está disponible
+        return true;
+      }
+    } catch (e) {
+      print('Error al verificar disponibilidad de username: $e');
+      return false;
     }
   }
 }

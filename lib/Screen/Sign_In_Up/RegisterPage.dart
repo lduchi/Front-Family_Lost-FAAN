@@ -23,6 +23,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController nombreController = TextEditingController();
   TextEditingController apellidoController = TextEditingController();
   TextEditingController direccionController = TextEditingController();
@@ -101,7 +102,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                 ),
               ),
-              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _getImage,
                 child: Text("Seleccionar foto de perfil"),
@@ -113,100 +113,124 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               SizedBox(height: 20),
-              CustomTextInput(
-                  controller: nombreController,
-                  label: "Nombre",
-                  icon: CupertinoIcons.person,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de nombre vacio";
-                    }
-                    final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
-                    if (!nameRegex.hasMatch(value)) {
-                      return 'Nombre solo debe contener letras';
-                    }
-                    return null;
-                  }),
-              SizedBox(height: 10),
-              CustomTextInput(
-                  controller: apellidoController,
-                  label: "Apellido",
-                  icon: CupertinoIcons.person,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de apellidos vacio";
-                    }
-                    final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
-                    if (!nameRegex.hasMatch(value)) {
-                      return 'Apellido solo debe contener letras';
-                    }
-                    return null;
-                  }),
-              SizedBox(height: 10),
-              CustomTextInput(
-                  controller: emailController,
-                  label: "Correo Electronico",
-                  icon: CupertinoIcons.mail,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de email vacio";
-                    }
-                    final RegExp emailRegex =
-                        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                    if (!emailRegex.hasMatch(value)) {
-                      return 'Formato de email incorrecto';
-                    }
+              Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      CustomTextInput(
+                          controller: nombreController,
+                          label: "Nombre",
+                          icon: CupertinoIcons.person,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Campo de nombre vacio";
+                            }
+                            final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
+                            if (!nameRegex.hasMatch(value)) {
+                              return 'Nombre solo debe contener letras';
+                            }
+                            return null;
+                          }),
+                      SizedBox(height: 10),
+                      CustomTextInput(
+                          controller: apellidoController,
+                          label: "Apellido",
+                          icon: CupertinoIcons.person,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Campo de apellidos vacio";
+                            }
+                            final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
+                            if (!nameRegex.hasMatch(value)) {
+                              return 'Apellido solo debe contener letras';
+                            }
+                            return null;
+                          }),
+                      SizedBox(height: 10),
+                      CustomTextInput(
+                          controller: emailController,
+                          label: "Correo Electronico",
+                          icon: CupertinoIcons.mail,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Campo de email vacio";
+                            }
+                            final RegExp emailRegex =
+                                RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                            if (!emailRegex.hasMatch(value)) {
+                              return 'Formato de email incorrecto';
+                            }
 
-                    return null;
-                  }),
-              SizedBox(height: 10),
-              CustomTextInput(
-                  controller: usernameController,
-                  label: "Username",
-                  icon: CupertinoIcons.at,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de username vacio";
-                    }
-                    final RegExp usernameRegex = RegExp(r'^[a-zA-Z0-9]+$');
-                    if (!usernameRegex.hasMatch(value)) {
-                      return 'Username solo contener letras y numeros';
-                    }
-                    return null;
-                  }),
-              SizedBox(height: 10),
-              CustomTextInput(
-                controller: passwordController,
-                label: "Contraseña",
-                icon: CupertinoIcons.lock,
-                isShow: true,
-                isPassword: isPasswordVisible,
-                onChanges: () {
-                  setState(() {
-                    isPasswordVisible = !isPasswordVisible;
-                  });
-                },
-                validator: _validatePassword,
-              ),
-              SizedBox(height: 10),
-              CustomTextInput(
-                controller: passRepeadController,
-                label: "Repetir Contraseña",
-                icon: CupertinoIcons.lock,
-                isShow: true,
-                isPassword: isPasswordVisible,
-                onChanges: () {
-                  setState(() {
-                    isPasswordVisible = !isPasswordVisible;
-                  });
-                },
-                validator: (value) {
-                  String? passwordError = _validatePassword(value);
-                  String? passwordMatchError = _validatePasswordMatch(value);
-                  return passwordError ?? passwordMatchError;
-                },
-              ),
-              SizedBox(height: 10),
+                            return null;
+                          }),
+                      SizedBox(height: 10),
+                      CustomTextInput(
+                          controller: usernameController,
+                          label: "Username",
+                          icon: CupertinoIcons.at,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Campo de username vacio";
+                            }
+                            final RegExp usernameRegex =
+                                RegExp(r'^[a-zA-Z0-9]+$');
+                            if (!usernameRegex.hasMatch(value)) {
+                              return 'Username solo contener letras y numeros';
+                            }
+                            return null;
+                          }),
+                      SizedBox(height: 10),
+                      CustomTextInput(
+                        controller: passwordController,
+                        label: "Contraseña",
+                        icon: CupertinoIcons.lock,
+                        isShow: true,
+                        isPassword: isPasswordVisible,
+                        onChanges: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        validator: _validatePassword,
+                      ),
+                      SizedBox(height: 10),
+                      CustomTextInput(
+                        controller: passRepeadController,
+                        label: "Repetir Contraseña",
+                        icon: CupertinoIcons.lock,
+                        isShow: true,
+                        isPassword: isPasswordVisible,
+                        onChanges: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        validator: (value) {
+                          String? passwordError = _validatePassword(value);
+                          String? passwordMatchError =
+                              _validatePasswordMatch(value);
+                          return passwordError ?? passwordMatchError;
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      CustomTextInput(
+                          controller: telefonoController,
+                          label: "Telefono",
+                          icon: CupertinoIcons.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Campo de telefono vacio";
+                            }
+                            final RegExp phoneRegex = RegExp(r'^[0-9]{10,13}$');
+                            if (!phoneRegex.hasMatch(value)) {
+                              return 'Telefono solo debe contener numeros';
+                            }
+
+                            return null;
+                          }),
+                      SizedBox(height: 10),
+                    ],
+                  )),
               ElevatedButton(
                 onPressed: () {
                   _openMapScreen(context);
@@ -267,22 +291,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   }
                 },
               ),
-              SizedBox(height: 10),
-              CustomTextInput(
-                  controller: telefonoController,
-                  label: "Telefono",
-                  icon: CupertinoIcons.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Campo de telefono vacio";
-                    }
-                    final RegExp phoneRegex = RegExp(r'^[0-9]{10,13}$');
-                    if (!phoneRegex.hasMatch(value)) {
-                      return 'Telefono solo debe contener numeros';
-                    }
-
-                    return null;
-                  }),
               SizedBox(height: 20),
               SizedBox(
                 height: 50,
@@ -300,6 +308,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     "Registrarse",
                     style: TextStyle(
                       color: Colors.white,
+                      fontSize: 12,
                     ),
                   ),
                 ),
@@ -402,66 +411,84 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void SaveUser() async {
-    double longitude = currentCenterPosition!.longitude;
-    double latitude = currentCenterPosition!.latitude;
+  double longitude = currentCenterPosition!.longitude;
+  double latitude = currentCenterPosition!.latitude;
 
-    GeoJson geoJsonLocation = GeoJson(
-      x: 2,
-      y: 3,
-      type: 'Point',
-      coordinates: [longitude, latitude],
-    );
-    String phone_ = telefonoController.text;
+  GeoJson geoJsonLocation = GeoJson(
+    x: 2,
+    y: 3,
+    type: 'Point',
+    coordinates: [longitude, latitude],
+  );
 
-    if (imageFile == null) {
+  if (_formKey.currentState!.validate()) {
+    // Verificar disponibilidad de username
+    final String username = usernameController.text.trim();
+    final bool isUsernameAvailable = await _isUsernameAvailable(username);
+    if (!isUsernameAvailable) {
+      // Mostrar error de username no disponible
       CustomMaterialDialog.successOrError(
         context: context,
         type: DialogType.error,
-        title: AppStrings.textErrorTitle,
-        message: 'Por favor selecciona una foto',
+        title: "Whoops..",
+        message: "El nombre de usuario ya está en uso. Por favor, elige otro.",
       );
       return;
-    } else {
-      NewUser userNuevo = NewUser(
-        name: nombreController.text,
-        lastname: apellidoController.text,
-        email: emailController.text,
-        username: usernameController.text,
-        password: passwordController.text,
-        repeatedPassword: passRepeadController.text,
-        location: geoJsonLocation,
-        phone: telefonoController.text,
-      );
+    }
 
-      final UsuariosService apiService = UsuariosService();
-      FocusScope.of(context).unfocus();
+    // Crear el objeto NewUser
+    NewUser userNuevo = NewUser(
+      name: nombreController.text,
+      lastname: apellidoController.text,
+      email: emailController.text,
+      username: username,
+      password: passwordController.text,
+      repeatedPassword: passRepeadController.text,
+      location: geoJsonLocation,
+      phone: telefonoController.text,
+    );
+
+    final UsuariosService apiService = UsuariosService();
+    FocusScope.of(context).unfocus();
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await apiService.Register(userNuevo, imageFile!, context);
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
-      try {
-        await apiService.Register(userNuevo, imageFile!, context);
-        setState(() {
-          isLoading = false;
-        });
-        CustomMaterialDialog.successOrError(
-            context: context,
-            type: DialogType.loading,
-            title: "¡Hey!",
-            message: "Gracias por registrarte ");
-      } catch (e) {
-        print('Error al guardar al registro: $e');
-        setState(() {
-          isLoading = false;
-        });
-        CustomMaterialDialog.successOrError(
-            context: context,
-            type: DialogType.error,
-            title: "Whoops..",
-            message: "Estamos teniendo problemas una disculpa ");
-      }
+      CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.success,
+        title: "¡Hey!",
+        message: "Gracias por registrarte ",
+      );
+    } catch (e) {
+      print('Error al guardar el registro: $e');
+      setState(() {
+        isLoading = false;
+      });
+      CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.error,
+        title: "Whoops..",
+        message: "Estamos teniendo problemas, disculpe ",
+      );
     }
   }
+}
 
+Future<bool> _isUsernameAvailable(String username) async {
+  try {
+    final UsuariosService apiService = UsuariosService();
+    return await apiService.isUsernameAvailable(username);
+  } catch (e) {
+    print('Error al verificar disponibilidad de username: $e');
+    return false;
+  }
+}
   Future<String> getAddressFromCoordinates(
       double latitude, double longitude) async {
     try {
