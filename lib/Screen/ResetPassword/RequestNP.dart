@@ -1,4 +1,5 @@
 import 'package:familylost_faan/Screen/ResetPassword/VerifyC.dart';
+import 'package:familylost_faan/ServiciosApp/services/Pass_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
@@ -6,14 +7,18 @@ import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../Utils/colors.dart';
 import '../../widgets/main_wrapper.dart';
 
 class RequestNP extends StatelessWidget {
   const RequestNP({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final emailController = TextEditingController();
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +44,7 @@ class RequestNP extends StatelessWidget {
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
         ),
-       // backgroundColor: AppColors.secondaryMainColor,
+        // backgroundColor: AppColors.secondaryMainColor,
         actions: [
           IconButton(
             icon: AppIcons.closeIconBlack,
@@ -59,7 +64,6 @@ class RequestNP extends StatelessWidget {
         ],
       ),
       body: Container(
-        
         child: SafeArea(
             child: ListView(
           children: [
@@ -86,7 +90,6 @@ class RequestNP extends StatelessWidget {
 
             SizedBox(height: size.height * 0.03),
 
-
             const SizedBox(height: 15),
             Text(
               "Ingrese su correo si ha olvidado su contraseña ",
@@ -95,8 +98,8 @@ class RequestNP extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.04),
             // for username and password
-            myTextField(
-                "Ingresa tu email", Colors.black26, Icons.email_outlined, null),
+            myTextField("Ingresa tu email", Colors.black26,
+                Icons.email_outlined, null, emailController),
 
             SizedBox(height: size.height * 0.04),
             Padding(
@@ -105,12 +108,17 @@ class RequestNP extends StatelessWidget {
                 children: [
                   // for sign in button
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const VerifyC(),
-                          ));
+                    onTap: () async {
+                      String email = emailController.text;
+                      bool success =
+                          await PassService().sendEmailResetPassword(email);
+                      if (success) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const VerifyC(),
+                            ));
+                      }
                     },
                     child: Container(
                       width: size.width,
@@ -159,49 +167,51 @@ class RequestNP extends StatelessWidget {
     );
   }
 
-  Container myTextField(
-  String hint, Color color, IconData icono1, IconData? icono2) {
-  return Container(
-    padding: const EdgeInsets.symmetric(
-      horizontal: 25,
-      vertical: 15,
-    ),
-    child: TextField(
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 22,
-        ),
-        fillColor: Colors.white,
-        filled: true,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: color, // Establece el color del borde
-            width: 2.0, // Establece el ancho del borde
+  Container myTextField(String hint, Color color, IconData icono1,
+      IconData? icono2, TextEditingController controller) {
+    // Agrega el parámetro del controlador aquí
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 25,
+        vertical: 15,
+      ),
+      child: TextField(
+        controller: controller, // Asigna el controlador al TextField
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 22,
           ),
-          borderRadius: BorderRadius.circular(50),
-        ),
-        hintText: hint,
-        hintStyle: const TextStyle(
-          color: Colors.black45,
-          fontSize: 19,
-        ),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Icon(
-            icono1,
-            color: color,
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: color, // Establece el color del borde
+              width: 2.0, // Establece el ancho del borde
+            ),
+            borderRadius: BorderRadius.circular(50),
           ),
-        ),
-        suffixIcon: Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: Icon(
-            icono2,
-            color: color,
+          hintText: hint,
+          hintStyle: const TextStyle(
+            color: Colors.black45,
+            fontSize: 19,
+          ),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Icon(
+              icono1,
+              color: color,
+            ),
+          ),
+          suffixIcon: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Icon(
+              icono2,
+              color: color,
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

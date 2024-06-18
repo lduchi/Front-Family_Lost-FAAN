@@ -1,4 +1,5 @@
 import 'package:familylost_faan/Screen/ResetPassword/ResetP.dart';
+import 'package:familylost_faan/ServiciosApp/services/Pass_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
@@ -12,9 +13,11 @@ import '../../widgets/main_wrapper.dart';
 
 class VerifyC extends StatelessWidget {
   const VerifyC({super.key});
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final tokenController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -94,7 +97,7 @@ class VerifyC extends StatelessWidget {
             SizedBox(height: size.height * 0.04),
             // for username and password
             myTextField("Ingresa el codigo", Colors.black26,
-                Icons.security_rounded, null),
+                Icons.security_rounded, null, tokenController),
 
             SizedBox(height: size.height * 0.04),
             Padding(
@@ -103,12 +106,16 @@ class VerifyC extends StatelessWidget {
                 children: [
                   // for sign in button
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ResetP(),
-                          ));
+                    onTap: () async {
+                      String token = tokenController.text;
+                      bool success = await PassService().validateToken(token);
+                      if (success) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ResetP(),
+                            ));
+                      }
                     },
                     child: Container(
                       width: size.width,
@@ -157,14 +164,15 @@ class VerifyC extends StatelessWidget {
     );
   }
 
-  Container myTextField(
-      String hint, Color color, IconData icono1, IconData? icono2) {
+  Container myTextField(String hint, Color color, IconData icono1,
+      IconData? icono2, TextEditingController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 25,
         vertical: 15,
       ),
       child: TextField(
+        controller: controller, // Asigna el controlador al TextField
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,

@@ -177,4 +177,18 @@ class UserService {
       throw Exception('Failed to check phone');
     }
   }
+
+  Future<bool> changePassword(String uID, ResetPasswordRequest passwords) async {
+    final url = '$endPointUrl/reset-password/$uID';
+    try {
+        final response = await _dio.put(url, data: json.encode(passwords.toJson()));
+        if(response.statusCode == 200){
+          return true;
+        }else{
+          return false;
+        }
+    }catch(e){
+      return false;
+    }
+  }
 }

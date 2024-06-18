@@ -1,12 +1,17 @@
 import 'package:familylost_faan/Screen/ResetPassword/RequestNP.dart';
+import 'package:familylost_faan/ServiciosApp/dto/reset_password_request.dart';
+import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
+import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/colors.dart';
 import '../../widgets/main_wrapper.dart';
 
@@ -15,6 +20,8 @@ class ResetP extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final password1 = TextEditingController();
+    final password2 = TextEditingController();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -103,10 +110,10 @@ class ResetP extends StatelessWidget {
             SizedBox(height: size.height * 0.04),
             // for username and password
             myTextField("Nueva Contraseña", Colors.black26, Icons.password,
-                Icons.visibility_off_outlined),
+                Icons.visibility_off_outlined, password1),
 
             myTextField("Repita su contraseña", Colors.black26, Icons.password,
-                Icons.visibility_off_outlined),
+                Icons.visibility_off_outlined, password2),
 
             SizedBox(height: size.height * 0.04),
             Padding(
@@ -115,16 +122,39 @@ class ResetP extends StatelessWidget {
                 children: [
                   // for sign in button
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BlocProvider(
-                                    create: (context) => BottomNavCubit(),
-                                    child: const MainWrapper(
-                                      isLoggedIn: true,
-                                    ),
-                                  )));
+                    onTap: () async {
+                      final sfps = await SharedPreferences.getInstance();
+                      String uID = sfps.getString("userId").toString();
+
+                      ResetPasswordRequest resetPasswordRequest =
+                          ResetPasswordRequest(
+                        newPassword: password1.text,
+                        newRepeatedPassword: password2.text,
+                      );
+
+                      if (password1.text == password2.text) {
+                        bool success = await UserService()
+                            .changePassword(uID, resetPasswordRequest);
+                        CustomMaterialDialog.successOrError(
+                            context: context,
+                            type: DialogType.success,
+                            title: "¡Hey!",
+                            message: "Tu contraseña ha sido cambiada correctamente");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                      create: (context) => BottomNavCubit(),
+                                      child: const MainWrapper(
+                                        isLoggedIn: true,
+                                      ),
+                                    )));
+                      }else{
+                        CustomMaterialDialog.successOrError(
+                            context: context,
+                            type: DialogType.error,
+                            title: "¡Hey!",
+                            message: "Las contraseñas deben ser iguales");                      }
                     },
                     child: Container(
                       width: size.width,
@@ -173,14 +203,15 @@ class ResetP extends StatelessWidget {
     );
   }
 
-  Container myTextField(
-      String hint, Color color, IconData icono1, IconData? icono2) {
+  Container myTextField(String hint, Color color, IconData icono1,
+      IconData? icono2, TextEditingController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 25,
         vertical: 15,
       ),
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
