@@ -17,7 +17,7 @@ class UsuariosService {
   }
 
   final String endPointUrlPhoto = baseUrl + '/auth';
-  final String urlUsernamer = baseUrl + '/user';
+  final String urlUsername = baseUrl + '/user';
 
   Future<NewUser> Register(
     NewUser newUser,
@@ -92,7 +92,7 @@ class UsuariosService {
 
   Future<bool> isUsernameAvailable(String username) async {
     try {
-      final String url = '$endPointUrlPhoto/exists-username/$username';
+      final String url = '$urlUsername/exists-username/$username';
       final response = await _dio.get(url);
 
       if (response.statusCode == 200) {
