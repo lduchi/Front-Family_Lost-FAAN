@@ -335,7 +335,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final RegExp passwordRegex = RegExp(
         r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
     if (!passwordRegex.hasMatch(value)) {
-      return 'La contraseña debe contener al menos una letra en mayúscula, un número y un carácter especial, y tener al menos 8 caracteres';
+      return 'La contraseña debe contener al menos una letra \n en mayúscula,  un número y un carácter especial, \n y tener al menos 8 caracteres';
     }
     return null;
   }

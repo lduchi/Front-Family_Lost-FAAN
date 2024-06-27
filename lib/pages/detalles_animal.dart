@@ -9,11 +9,6 @@ class DetallesAnimal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //DateTime date = DateTime.parse('2024-04-20');
-    //String formattedDate = Date('dd/MM/yyyy').format(date);
-
-    //DateTime date = DateTime.parse('2024-04-20');
-    //String formattedDate = formatDate(date);
 
     return Scaffold(
       appBar: AppBar(

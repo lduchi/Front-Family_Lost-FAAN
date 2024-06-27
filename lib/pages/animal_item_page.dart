@@ -1,13 +1,20 @@
-import 'package:familylost_faan/ServiciosApp/models/animal.dart';
+import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
+import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
+import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/pages/detalles_animal.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
+import 'package:familylost_faan/utilities/enum/post_type.dart';
 import 'package:flutter/material.dart';
 
 class AnimalItemPage extends StatefulWidget {
-  const AnimalItemPage({super.key, required this.image, required this.animalData, });
+  const AnimalItemPage({
+    super.key,
+    required this.image,
+    required this.animalData,
+  });
 
   final String image;
   final Animal animalData;
@@ -36,14 +43,6 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
               builder: (context) => DetallesAnimal(image: widget.image)),
         );
       },
-      /*onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DetallesAnimal(image: widget.image),
-          ),
-        );
-      },*/
       child: Container(
         color: Colors.white,
         child: Row(
@@ -64,21 +63,22 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
               height: _deviceHeight * 0.2,
             ),
             const SizedBox(width: 16),
+            /*MICHIS*/
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.animalData.nombre,
+                    widget.animalData.name,
                     style: AppFonts.title,
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    widget.animalData.raza,
+                    widget.animalData.race,
                     style: AppFonts.primary,
                   ),
                   const SizedBox(height: 2),
-                  Row(
+                  /* Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       AppIcons.locationIcon,
@@ -88,8 +88,8 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                         style: AppFonts.primary,
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 6),
+                  ),*/
+                  const SizedBox(height: 2),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -128,4 +128,6 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
       ),
     );
   }
+
+ 
 }

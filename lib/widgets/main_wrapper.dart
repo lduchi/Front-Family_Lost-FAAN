@@ -1,11 +1,13 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
+import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
+import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
+import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/pages/information_faan.dart';
 import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
 import 'package:familylost_faan/profile/Menu_profile.dart';
-import 'package:familylost_faan/ServiciosApp/models/animal.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import '../Utils/colors.dart';
 
-late Animal animalDatas = Animal(id: 1, nombre: "", raza: "", ubicacion: "");
+final postService = PostService();
+late SavePost posts;
+
+late Animal animalDatas = Animal(name: "", type: "", race: "", gender: "");
 
 class MainWrapper extends StatefulWidget {
   final bool isLoggedIn;
@@ -38,6 +43,7 @@ class _MainWrapperState extends State<MainWrapper> {
   var _deviceWidth;
   late PageController pageController;
   late WebSocketChnl webSocket;
+
 
   _MainWrapperState({required this.isLoggedIn});
 
@@ -143,7 +149,8 @@ class _MainWrapperState extends State<MainWrapper> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NotificationPage()));
           },
           icon: AppIcons.notificationIconFill,
           color: AppColors.mainColor,
@@ -183,9 +190,7 @@ class _MainWrapperState extends State<MainWrapper> {
             children: [
               _buildOutlinedButton(
                 AppStrings.navigationLost,
-                () {
-                  // TODO: Implementar filtro de "Lost"
-                },
+                () {},
               ),
               const SizedBox(width: 8),
               const Spacer(),
@@ -201,10 +206,10 @@ class _MainWrapperState extends State<MainWrapper> {
                 AppStrings.navigationAdoption,
                 () {
                   animalDatas = Animal(
-                      id: 1,
-                      nombre: "AS",
-                      raza: "raza",
-                      ubicacion: "nueva"); // Inicializar aquí
+                      name: "",
+                      type: "",
+                      race: "",
+                      gender: ""); // Inicializar+ aquí
 
                   // Navegar a la página HomePage con los nuevos datos
                   Navigator.push(
@@ -225,7 +230,8 @@ class _MainWrapperState extends State<MainWrapper> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NotificationPage()));
           },
           icon: AppIcons.notificationIconFill,
           color: AppColors.mainColor,
@@ -274,28 +280,28 @@ class _MainWrapperState extends State<MainWrapper> {
           padding: EdgeInsets.all(_deviceWidth * 0.04),
           child: Row(
             children: [
-              _buildOutlinedButton(
+              /*   _buildOutlinedButton(
                 AppStrings.navigationLost,
                 () {
                   // TODO: Implementar filtro de "Lost"
                 },
-              ),
+              ),*/
               const SizedBox(width: 5),
-              const Spacer(),
+              /* const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationFound,
                 () {
                   // TODO: Implementar filtro de "Found"
                 },
-              ),
+              ),*/
               const SizedBox(width: 5),
               const Spacer(),
-              _buildOutlinedButton(
+              /*_buildOutlinedButton(
                 AppStrings.navigationAdoption,
                 () {
                   // TODO: Implementar filtro de "Adoption"
                 },
-              ),
+              ),*/
             ],
           ),
         ),
@@ -305,7 +311,7 @@ class _MainWrapperState extends State<MainWrapper> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const InformationFaan ()),
+              MaterialPageRoute(builder: (context) => const InformationFaan()),
             );
           },
           child: Padding(
@@ -565,9 +571,10 @@ class _MainWrapperState extends State<MainWrapper> {
       onTap: () {
         BlocProvider.of<BottomNavCubit>(context).changeSelectedIndex(page);
 
-        pageController.animateToPage(page,
-            duration: const Duration(milliseconds: 10),
-            curve: Curves.fastLinearToSlowEaseIn,
+        pageController.animateToPage(
+          page,
+          duration: const Duration(milliseconds: 10),
+          curve: Curves.fastLinearToSlowEaseIn,
         );
       },
       child: Container(

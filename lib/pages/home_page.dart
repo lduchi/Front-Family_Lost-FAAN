@@ -1,3 +1,4 @@
+import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/models/animal.dart';
 import 'package:familylost_faan/Utils/colors.dart';
 import 'package:familylost_faan/pages/animal_item_page.dart';
@@ -41,12 +42,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    print(widget.animalData.ubicacion);
+   // print(widget.animalData.ubicacion);
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.animalData.ubicacion);
+  //  print(widget.animalData.ubicacion);
 
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;

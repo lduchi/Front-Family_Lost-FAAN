@@ -1,12 +1,12 @@
-class Animal {
-  int id = 1;
-  String nombre = "null";
-  String raza = "null";
-  String ubicacion = "null";
+/*class Animal {
+  String? name;
+  String? type;
+  String? race;
+  String? gender;
   Animal({
-    required this.id,
-    required this.nombre,
-    required this.raza,
-    required this.ubicacion,
+    required this.name,
+    required this.type,
+    required this.race,
+    required this.gender,
   });
-}
+}*/

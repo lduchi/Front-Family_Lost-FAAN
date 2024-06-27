@@ -25,13 +25,13 @@ class UpdateUser {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'nombre': name,
-      'apellido': lastname,
+      'name': name,
+      'lastname': lastname,
       'username': username,
       'password': password,
       'email': email,
-      'direccion': location,
-      'telefono': phone,
+      'location': location,
+      'phone': phone,
     };
   }
 }

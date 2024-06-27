@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/dto/page_response.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
@@ -9,6 +8,7 @@ import 'package:familylost_faan/ServiciosApp/utils/form_data_helper.dart';
 import 'package:familylost_faan/environment/environment.dart';
 import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
+import 'package:familylost_faan/utilities/enum/post_type.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -156,4 +156,56 @@ class PostService {
 
     return response.data;
   }
+
+  Future<List<SavePost>> getPostsByTypeLost(PostType postType,
+      {int pageNumber = 0}) async {
+    final String url = '$endPointUrl/type';
+    try {
+      final dio = Dio();
+      final response = await dio.get(
+        url,
+        queryParameters: {
+          'postType':   PostType.LOST.index,
+          'pageNumber': pageNumber,
+          'pageSize': 10,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final PageResponse pageResponse = PageResponse.fromJson(response.data);
+        return pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
+      } else {
+        throw Exception('Error al obtener las publicaciones');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+   Future<List<SavePost>> getPostsByTypeFound(PostType postType,
+      {int pageNumber = 0}) async {
+    final String url = '$endPointUrl/type';
+    try {
+      final dio = Dio();
+      final response = await dio.get(
+        url,
+        queryParameters: {
+          'postType':   PostType.FOUND.index,
+          'pageNumber': pageNumber,
+          'pageSize': 10,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final PageResponse pageResponse = PageResponse.fromJson(response.data);
+        return pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
+      } else {
+        throw Exception('Error al obtener las publicaciones');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 }

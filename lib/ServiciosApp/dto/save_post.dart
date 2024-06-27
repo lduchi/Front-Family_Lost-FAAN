@@ -15,6 +15,8 @@ class SavePost {
   String imageUrl;
   DateTime? date;
 
+  
+
   SavePost({
     this.id,
     required this.title,
@@ -28,6 +30,8 @@ class SavePost {
     this.imagePath = '',
     this.imageUrl = '',
   });
+
+  
 
   factory SavePost.fromJson(Map<String, dynamic> json) {
     return SavePost(
