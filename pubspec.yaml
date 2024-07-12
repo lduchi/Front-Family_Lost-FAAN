@@ -46,6 +46,7 @@ dependencies:
   stomp_dart_client: ^2.0.0
   awesome_notifications: ^0.7.4
   geocoding: ^3.0.0
+  sembast: 3.4.9
 
 
   # The following adds the Cupertino Icons font to your application.
