@@ -212,68 +212,69 @@ class MySplashScreen2 extends StatelessWidget {
             height: 180,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 4.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 3),
-              Container(
-                decoration: BoxDecoration(
-                  color: general,
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: general,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 2,
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                  child: Text(
+                    titulo,
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
+                  ),
+                  width: 180,
+                  height: 40,
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-                child: Text(
-                  titulo,
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 2,
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
                   ),
-                ),
-                width: 180,
-                height: 40,
-              ),
-              const SizedBox(height: 10),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                  child: Text(
+                    descripcion,
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.normal,
                     ),
-                  ],
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-                child: Text(
-                  descripcion,
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.normal,
                   ),
+                  width: 220,
+                  height: 115,
                 ),
-                width: 220,
-                height: 115,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

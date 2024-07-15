@@ -197,7 +197,6 @@ class _MainWrapperState extends State<MainWrapper> {
                 () {},
               ),
               const SizedBox(width: 8),
-              const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationFound,
                 () {
@@ -205,7 +204,6 @@ class _MainWrapperState extends State<MainWrapper> {
                 },
               ),
               const SizedBox(width: 8),
-              const Spacer(),
               _buildOutlinedButton(
                 AppStrings.navigationAdoption,
                 () {
