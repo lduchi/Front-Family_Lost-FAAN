@@ -1,5 +1,4 @@
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
-import 'package:familylost_faan/ServiciosApp/models/animal.dart';
 import 'package:familylost_faan/Utils/colors.dart';
 import 'package:familylost_faan/pages/animal_item_page.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
@@ -8,10 +7,10 @@ import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  //cambiar pa' json
   final Animal animalData;
+  final bool isLogin;
 
-  const HomePage({Key? key, required this.animalData}) : super(key: key);
+  const HomePage({Key? key, required this.animalData,required this.isLogin}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -19,7 +18,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _deviceHeight;
-  var _deviceWidth;
 
   ButtonStyle enabledFilledButtonStyle(bool selected, ColorScheme colors) {
     return IconButton.styleFrom(
@@ -42,44 +40,39 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-   // print(widget.animalData.ubicacion);
   }
 
   @override
   Widget build(BuildContext context) {
-  //  print(widget.animalData.ubicacion);
-
     _deviceHeight = MediaQuery.of(context).size.height;
-    _deviceWidth = MediaQuery.of(context).size.width;
-    return Container(
-      child: CustomScrollView(
-        slivers: [
-          _horizontalCardsList(),
-          _titleHandler(),
-          _verticalCardList(),
-        ],
-      ),
-    );
-  }
-
-  Widget _titleHandler() {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text(
-          '!El regreso a casa comienza aqui!',
-          style: AppFonts.primary,
-        ),
-      ),
-    );
-  }
-
-  //List of vertical cards with the animals information
-  Widget _verticalCardList() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final String image = AssetManager.exampleImage;
+    return ListView.builder(
+      itemCount: 7,
+      physics: BouncingScrollPhysics(),
+      itemBuilder: (context, index) {
+        final String image = AssetManager.exampleImage;
+        if (index == 0) {
+          final String image = AssetManager.exampleImage2;
+          final String title = 'Hola, soy Pepito!';
+          final String description =
+              'Me perdi el dia 24/12/2021 cerca del Batan Shopping ¡Ayudame volver a casa! ';
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _cardList(image, description, title,widget.isLogin),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(
+                  '!El regreso a casa comienza aqui!',
+                  style: AppFonts.primary.copyWith(fontSize: 19.0),
+                ),
+              ),
+            ],
+          );
+        } else {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Card(
@@ -90,101 +83,77 @@ class _HomePageState extends State<HomePage> {
                 child: AnimalItemPage(
                   image: image,
                   animalData: widget.animalData,
+                  isLogin:widget.isLogin,
                 ),
               ),
             ),
           );
-        },
-        childCount: 6,
-      ),
+        }
+      },
     );
   }
 
-  //List of horizontal cards with the animals information
-  SliverToBoxAdapter _horizontalCardsList() {
-    return SliverToBoxAdapter(
-      child: SizedBox(
-        height: _deviceHeight * 0.3,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            final String image = AssetManager.exampleImage2;
-            final String text =
-                'Hola, soy Pepito! \nMe perdi el dia 24/12/2021 cerca del Batan Shopping ¡Ayudame volver a casa! ';
-
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: _cardList(image, text),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Card _cardList(String image, String text) {
+  Card _cardList(String image, String description, String title, bool isLogin) {
     return Card(
-      child: Container(
-        width: _deviceWidth * 0.95,
-        height: _deviceHeight * 0.2,
-        child: Stack(
-          children: [
-            Column(
+      elevation: 10,
+      child: Column(
+        children: [
+          Container(
+            height: _deviceHeight * 0.20,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              image: DecorationImage(
+                image: AssetImage(image),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  height: _deviceHeight * 0.16,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    image: DecorationImage(
-                      image: AssetImage(image),
-                      fit: BoxFit.cover,
-                    ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          title,
+                          style: AppFonts.title.copyWith(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700,
+                            color: textColor1,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          description,
+                          style: AppFonts.caption.copyWith(
+                            fontSize: 15.5,
+                            color: textColor1,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.start,
-                    style: AppFonts.caption.copyWith(
-                      fontSize: 15.5,
-                      color: textColor1,
-                    ),
+                IconButton(
+                  onPressed: () {
+                    // Handle button press
+                  },
+                  icon: Icon(
+                    Icons.add_circle,
+                    color: AppColors.mainColor,
+                    size: 30,
                   ),
                 ),
               ],
             ),
-            Positioned(
-              top: 167,
-              right: 1,
-              child: IconButton(
-                onPressed: () {
-                  // Handle button press
-                },
-                icon: Icon(Icons.add_circle,
-                    color: AppColors.mainColor, size: 30),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-//Scroll position widget - Not implemented yet because needs API data
-  Widget _scrollPositionWidget() {
-    return SizedBox(
-      height: _deviceHeight * 0.1,
-      width: _deviceWidth,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //TODO: Implement this widget
+          ),
         ],
       ),
     );

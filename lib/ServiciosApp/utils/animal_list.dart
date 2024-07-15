@@ -49,7 +49,7 @@ List<AnimalList> animalLists = [
       'Birmano',
     ],
   ),
-  AnimalList(
+/*  AnimalList(
     name: 'Bird',
     breeds: [
       'Canario',
@@ -153,7 +153,7 @@ List<AnimalList> animalLists = [
       'Chinchilla Wilson White',
       'Chinchilla Royal Persian',
     ],
-  ),
+  ),*/
   AnimalList(
     name: 'Other',
     breeds: [

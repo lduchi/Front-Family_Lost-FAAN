@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/models/NewUser.dart';
+import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -19,7 +21,7 @@ class UsuariosService {
   final String endPointUrlPhoto = baseUrl + '/auth';
   final String urlUsername = baseUrl + '/user';
 
-  Future<NewUser> Register(
+  Future<User> Register(
     NewUser newUser,
     File image,
     BuildContext context,
@@ -62,7 +64,8 @@ class UsuariosService {
         );
 
         final savedUser =
-            NewUser.fromJson(response.data as Map<String, dynamic>);
+            User.fromJson(response.data as Map<String, dynamic>);
+        await Store.setAccessToken(savedUser.jwt);
         return savedUser;
       } else if (response.statusCode == 500) {
         CustomMaterialDialog.successOrError(

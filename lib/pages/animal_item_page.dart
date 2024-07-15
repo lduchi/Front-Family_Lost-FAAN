@@ -1,12 +1,9 @@
+import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
-import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
-import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/pages/detalles_animal.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
-import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
-import 'package:familylost_faan/utilities/enum/post_type.dart';
 import 'package:flutter/material.dart';
 
 class AnimalItemPage extends StatefulWidget {
@@ -14,10 +11,12 @@ class AnimalItemPage extends StatefulWidget {
     super.key,
     required this.image,
     required this.animalData,
+    required this.isLogin,
   });
 
   final String image;
   final Animal animalData;
+  final bool isLogin;
 
   @override
   _AnimalItemPageState createState() => _AnimalItemPageState();
@@ -40,94 +39,93 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => DetallesAnimal(image: widget.image)),
+              builder: (context) => widget.isLogin
+                  ? DetallesAnimal(image: widget.image)
+                  : SignIn()),
         );
       },
       child: Container(
         color: Colors.white,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(5),
-                  bottomLeft: Radius.circular(5),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    bottomLeft: Radius.circular(5),
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage(widget.image),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                image: DecorationImage(
-                  image: AssetImage(widget.image),
-                  fit: BoxFit.cover,
-                ),
+                width: _deviceWidth * 0.3,
+                height: _deviceHeight * 0.2,
               ),
-              width: _deviceWidth * 0.3,
-              height: _deviceHeight * 0.2,
-            ),
-            const SizedBox(width: 16),
-            /*MICHIS*/
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.animalData.name,
-                    style: AppFonts.title,
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    widget.animalData.race,
-                    style: AppFonts.primary,
-                  ),
-                  const SizedBox(height: 2),
-                  /* Row(
-                    mainAxisSize: MainAxisSize.min,
+              /*MICHIS*/
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AppIcons.locationIcon,
-                      const SizedBox(width: 2),
                       Text(
-                        widget.animalData.ubicacion,
-                        style: AppFonts.primary,
+                        widget.animalData.name,
+                        style: AppFonts.title,
                       ),
-                    ],
-                  ),*/
-                  const SizedBox(height: 2),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isContactButtonPressed = !_isContactButtonPressed;
-                      });
-                      // TODO: Implement contact action
-                    },
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      backgroundColor: MaterialStateProperty.all(
-                        AppColors.transparentBackgroundColor,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: AppColors.secondaryColor,
+                            size: 21.0,
+                          ),
+                          Text(
+                            'Cuenca',
+                            style: AppFonts.caption,
+                          ),
+                        ],
                       ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          AppIcons.whatsAppIcon.icon,
-                          color: AppColors.whatsAppGreen,
+                      TextButton.icon(
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0),
+                          minimumSize: MaterialStateProperty.all(Size(0, 0)),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          backgroundColor: MaterialStateProperty.all(
+                            AppColors.transparentBackgroundColor,
+                          ),
                         ),
-                        const SizedBox(width: 4),
-                        Text(
+                        onPressed: () {
+                          setState(() {
+                            _isContactButtonPressed = !_isContactButtonPressed;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.phone,
+                          color: AppColors.whatsAppGreen,
+                          size: 16.0,
+                        ),
+                        label: Text(
                           AppStrings.labelContact,
                           style: AppFonts.caption.copyWith(
                             color: AppColors.whatsAppGreen,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
-
- 
 }

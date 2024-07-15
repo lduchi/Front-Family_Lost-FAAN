@@ -260,18 +260,10 @@ class _SavePostFormState extends State<SavePostForm> {
                   onChanged: (value) {
                     setState(() {
                       _typeController.text = value!;
-                      if (value.toLowerCase() == 'other') {
-                        _raceController.text = 'Other';
-                        showOtherBreedTextField = true;
-                      } else {
-                        showOtherBreedTextField = false;
-                        _raceController.clear();
-                      }
                     });
                   },
                 ),
                 SizedBox(height: 16),
-                if (showOtherBreedTextField)
                   TextFormField(
                     controller: _raceController,
                     decoration: InputDecoration(
@@ -286,49 +278,6 @@ class _SavePostFormState extends State<SavePostForm> {
                         return AppStrings.errorBreed;
                       }
                       return null;
-                    },
-                  ),
-                if (!showOtherBreedTextField)
-                  DropdownButtonFormField<String>(
-                    value: _raceController.text.isNotEmpty
-                        ? _raceController.text
-                        : null,
-                    validator: (value) {
-                      if (!showOtherBreedTextField &&
-                          (value == null || value.isEmpty)) {
-                        return AppStrings.errorBreed;
-                      }
-                      return null;
-                    },
-                    autovalidateMode: showOtherBreedTextField
-                        ? AutovalidateMode.disabled
-                        : AutovalidateMode.onUserInteraction,
-                    decoration: InputDecoration(
-                      labelText: AppStrings.formBreed,
-                      border: InputBorder.none,
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: Icon(Icons.pets),
-                      ),
-                    ),
-                    items: _typeController.text.isNotEmpty &&
-                            !showOtherBreedTextField
-                        ? animalLists
-                            .firstWhere((animal) =>
-                                animal.name.toLowerCase() ==
-                                _typeController.text.toLowerCase())
-                            .breeds
-                            .map((breed) {
-                            return DropdownMenuItem<String>(
-                              value: breed,
-                              child: Text(breed),
-                            );
-                          }).toList()
-                        : [],
-                    onChanged: (value) {
-                      setState(() {
-                        _raceController.text = value!;
-                      });
                     },
                   ),
                 SizedBox(height: 16),

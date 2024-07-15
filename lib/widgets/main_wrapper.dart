@@ -5,29 +5,32 @@ import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
 import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
-import 'package:familylost_faan/pages/information_faan.dart';
 import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
+import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
+import 'package:familylost_faan/pages/information_faan.dart';
+import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/profile/Menu_profile.dart';
+import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
+import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
-import 'package:flutter/material.dart';
-import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
-import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
-import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
-import 'package:familylost_faan/pages/pages.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
+
 import '../Utils/colors.dart';
 
 final postService = PostService();
 late SavePost posts;
 
-late Animal animalDatas = Animal(name: "", type: "", race: "", gender: "");
-
+Animal animalDatas = Animal(name: "Otis", type: "Dog", race: "Bulldog", gender: "Macho");
+//tipo de p[ost en home lost, found,adoption y el estado lost
+// estaod de la publicacion found (rescatados)
+///revisar si adpodet se puede integrar en rescatos
 class MainWrapper extends StatefulWidget {
   final bool isLoggedIn;
 
@@ -43,7 +46,7 @@ class _MainWrapperState extends State<MainWrapper> {
   var _deviceWidth;
   late PageController pageController;
   late WebSocketChnl webSocket;
-
+  late List<Widget> pages;
 
   _MainWrapperState({required this.isLoggedIn});
 
@@ -97,6 +100,18 @@ class _MainWrapperState extends State<MainWrapper> {
         }
       });
     }
+    pages = [
+      HomePage(
+        animalData: animalDatas,
+        isLogin: isLoggedIn,
+      ),
+      FavoritePage(),
+      HomePage(
+        animalData: animalDatas,
+        isLogin: isLoggedIn,
+      ),
+      ProfilePage(),
+    ];
   }
 
   @override
@@ -105,17 +120,6 @@ class _MainWrapperState extends State<MainWrapper> {
     super.dispose();
   }
 
-  // List of Pages: Home, Search, Profile
-  final List<Widget> pages = [
-    HomePage(
-      animalData: animalDatas,
-    ),
-    FavoritePage(),
-    HomePage(
-      animalData: animalDatas,
-    ),
-    ProfilePage(),
-  ];
   void onPageChanged(int page) {
     BlocProvider.of<BottomNavCubit>(context).changeSelectedIndex(page);
   }
@@ -123,9 +127,9 @@ class _MainWrapperState extends State<MainWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isLoggedIn
-          ? _appBarBuilder(context.watch<BottomNavCubit>().state.toDouble())
-          : _mainUnloggedWrapperAppBar(),
+      appBar: //isLoggedIn
+           _appBarBuilder(context.watch<BottomNavCubit>().state.toDouble()),
+          //: _mainUnloggedWrapperAppBar(),
       drawer: MenuProfile(isLogged: isLoggedIn),
       body: CustomPaint(
         child: _mainWrapperBody(),
@@ -174,8 +178,8 @@ class _MainWrapperState extends State<MainWrapper> {
           ),
         ],
       ),
-      automaticallyImplyLeading:
-          false, // Delete white space in the left side of the AppBar - If you want to add a leading widget, set it to true
+      automaticallyImplyLeading: false,
+      // Delete white space in the left side of the AppBar - If you want to add a leading widget, set it to true
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: Brightness.light,
         statusBarColor: Colors.transparent,
@@ -227,7 +231,7 @@ class _MainWrapperState extends State<MainWrapper> {
           ),
         ),
       ),
-      actions: [
+     /* actions: [
         IconButton(
           onPressed: () {
             Navigator.push(context,
@@ -236,7 +240,7 @@ class _MainWrapperState extends State<MainWrapper> {
           icon: AppIcons.notificationIconFill,
           color: AppColors.mainColor,
         ),
-      ],
+      ],*/
     );
   }
 

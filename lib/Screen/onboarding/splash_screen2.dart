@@ -1,3 +1,5 @@
+import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
+import 'package:familylost_faan/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,8 +43,8 @@ class MySplashScreen2 extends StatelessWidget {
             ),
           ),
           iconTheme: IconThemeData(
-          color: AppColors.mainColor,
-        ),
+            color: AppColors.mainColor,
+          ),
           backgroundColor: AppColors.secondaryMainColor,
           elevation: 0,
         ),
@@ -77,92 +79,96 @@ class MySplashScreen2 extends StatelessWidget {
             ),
           ),
         ),
-        
-floatingActionButton: Padding(
-  padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
-  child: Container(
-    height: size.height * 0.07,
-    width: size.width,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(50),
-      color: backgroundColor3.withOpacity(0.9),
-      border: Border.all(
-        color: general,
-      ),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black12.withOpacity(0.05),
-          spreadRadius: 1,
-          blurRadius: 7,
-          offset: const Offset(0, -1),
-        ),
-      ],
-    ),
-    child: Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => BottomNavCubit(),
-                  child: const MainWrapper(isLoggedIn: false),
-                ),
-              ),
-            );
-          },
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
           child: Container(
-            height: size.height * 0.07,  // Adjust height to match parent container
-            width: (size.width - 60) / 2,  // Adjust width considering padding
+            height: size.height * 0.07,
+            width: size.width,
             decoration: BoxDecoration(
-              color: general,
               borderRadius: BorderRadius.circular(50),
-            ),
-            child: Center(
-              child: Text(
-                "Omitir",
-                style: AppFonts.button.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: textColor3,
+              color: backgroundColor3.withOpacity(0.9),
+              border: Border.all(
+                color: general,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12.withOpacity(0.05),
+                  spreadRadius: 1,
+                  blurRadius: 7,
+                  offset: const Offset(0, -1),
                 ),
-              ),
+              ],
+            ),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => BottomNavCubit(),
+                          child: const MainWrapper(isLoggedIn: false),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: size.height * 0.07,
+                    // Adjust height to match parent container
+                    width: (size.width - 60) / 2,
+                    // Adjust width considering padding
+                    decoration: BoxDecoration(
+                      color: general,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Omitir",
+                        style: AppFonts.button.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: textColor3,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => BottomNavCubit(),
+                          child: const MainWrapper(isLoggedIn: false),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Siguiente",
+                    style: AppFonts.button.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: textColor1,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+              ],
             ),
           ),
         ),
-        const Spacer(),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SignIn(),
-              ),
-            );
-          },
-          child: Text(
-            "Siguiente",
-            style: AppFonts.button.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: textColor1,
-            ),
-          ),
-        ),
-        const Spacer(),
-                ],
-              ),
-            ),
-          ),
-        ),
-      
+      ),
     );
   }
 
-  Widget _buildRowContainer(String titulo, String descripcion, String imagePath, String caption) {
+  Widget _buildRowContainer(
+      String titulo, String descripcion, String imagePath, String caption) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.all(5.0),
@@ -225,7 +231,8 @@ floatingActionButton: Padding(
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                 child: Text(
                   titulo,
                   textAlign: TextAlign.left,
@@ -252,7 +259,8 @@ floatingActionButton: Padding(
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                 child: Text(
                   descripcion,
                   textAlign: TextAlign.left,

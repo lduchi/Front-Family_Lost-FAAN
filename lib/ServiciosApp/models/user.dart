@@ -1,42 +1,42 @@
 import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 
 class User {
-  String id;
-  String name;
-  String lastname;
-  String email;
-  String username;
-  String password;
-  String? imagePath;
-  GeoJson location;
-  String phone;
-  String role;
+  final String id;
+  final String name;
+  final String lastName;
+  final String username;
+  final String imageUrl;
+  final String role;
+  final String phone;
+  final String email;
+  final GeoJson location;
+  final String jwt;
 
-  User({
+  const User({
     required this.id,
     required this.name,
-    required this.lastname,
-    required this.email,
+    required this.lastName,
     required this.username,
-    required this.password,
-    required this.imagePath,
-    required this.location,
-    required this.phone,
+    required this.imageUrl,
     required this.role,
+    required this.phone,
+    required this.email,
+    required this.location,
+    required this.jwt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
-      name: json['name'],
-      lastname: json['lastname'],
-      email: json['email'],
-      username: json['username'],
-      password: json['password'],
-      imagePath: json['imagePath'],
+      id: json['id'] as String,
+      name: json['name'] as String,
+      lastName: json['lastname'] as String,
+      username: json['username'] as String,
+      imageUrl: json['imageUrl'] as String,
+      role: json['role'] as String,
+      phone: json['phone'] as String,
+      email: json['email'] as String,
       location: GeoJson.fromJson(json['location']),
-      phone: json['phone'],
-      role: json['role'],
+      jwt: json['jwt'] as String,
     );
   }
 
@@ -44,14 +44,14 @@ class User {
     return {
       'id': id,
       'name': name,
-      'lastname': lastname,
-      'email': email,
+      'lastName': lastName,
       'username': username,
-      'password': password,
-      'imagePath': imagePath,
-      'location': location.toJson(),
-      'phone': phone,
+      'imageUrl': imageUrl,
       'role': role,
+      'phone': phone,
+      'email': email,
+      'location': location.toJson(),
+      'jwt': jwt,
     };
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 import 'package:familylost_faan/ServiciosApp/models/NewUser.dart';
+import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/services/register_service.dart';
 import 'package:familylost_faan/core/utils/text_input.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
@@ -332,11 +333,11 @@ class _RegisterPageState extends State<RegisterPage> {
     if (value == null || value.isEmpty) {
       return "Campo de contraseña vacio";
     }
-    final RegExp passwordRegex = RegExp(
+  /*  final RegExp passwordRegex = RegExp(
         r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
     if (!passwordRegex.hasMatch(value)) {
       return 'La contraseña debe contener al menos una letra \n en mayúscula,  un número y un carácter especial, \n y tener al menos 8 caracteres';
-    }
+    }*/
     return null;
   }
 
@@ -459,12 +460,12 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         isLoading = false;
       });
-      CustomMaterialDialog.successOrError(
+ /*     CustomMaterialDialog.successOrError(
         context: context,
         type: DialogType.success,
         title: "¡Hey!",
         message: "Gracias por registrarte ",
-      );
+      );*/
     } catch (e) {
       print('Error al guardar el registro: $e');
       setState(() {
