@@ -16,7 +16,7 @@ class AuthService {
 
   String endPointUrl = baseUrl + '/auth';
 
-  login(AuthenticationRequest loginRequest, BuildContext context) async {
+  Future<Map<String, dynamic>?> login(AuthenticationRequest loginRequest, BuildContext context) async {
     var url = '$endPointUrl/authenticate';
     try {
       final response = await _dio.post(
@@ -27,9 +27,7 @@ class AuthService {
         ),
       );
 
-
       if (response.statusCode == 200) {
-        print(response.data);
         return response.data;
       }
     } on DioException catch (e) {
@@ -63,5 +61,6 @@ class AuthService {
       debugPrint('Stack trace: $stackTrace');
       throw Exception('Failed to login: $e');
     }
+    return null;  // no aseguramos que retorne null
   }
 }
