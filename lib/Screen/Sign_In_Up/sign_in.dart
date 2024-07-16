@@ -292,6 +292,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  //codigo que controla el mensaje de notificaciones de contrasena o error en campos incompletos 
   Future<void> _login(loginRequest, BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       loginRequest = AuthenticationRequest(
@@ -318,12 +319,22 @@ class _SignInState extends State<SignIn> {
           ),
         );
       } else {
+        // Mostrar mensaje de error si la autenticación falla
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Usuario o contraseña incorrectos'),
           ),
         );
       }
+    } else {
+      // Mostrar mensaje de error si la validación del formulario falla
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor complete todos los campos'),
+        ),
+      );
     }
+  }
+  
   }
 }
