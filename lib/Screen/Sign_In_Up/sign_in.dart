@@ -3,6 +3,7 @@ import 'package:familylost_faan/Screen/ResetPassword/RequestNP.dart';
 import 'package:familylost_faan/ServiciosApp/dto/login_request.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/auth_service.dart';
+import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../Utils/colors.dart';
 import '../../widgets/main_wrapper.dart';
 
@@ -63,9 +65,13 @@ class _SignInState extends State<SignIn> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => BottomNavCubit(),
-                    child: const MainWrapper(isLoggedIn: false),
+                  builder: (context) => MultiProvider(
+                    providers: [
+                      BlocProvider(create: (context) => BottomNavCubit()),
+                      ChangeNotifierProvider(
+                          create: (_) => HomePageProvider('LOST')),
+                    ],
+                    child: MainWrapper(isLoggedIn: false),
                   ),
                 ),
               );
@@ -74,9 +80,7 @@ class _SignInState extends State<SignIn> {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.white
-        ),
+        decoration: BoxDecoration(color: Colors.white),
         child: SafeArea(
             child: ListView(
           children: [
@@ -264,7 +268,8 @@ class _SignInState extends State<SignIn> {
             borderSide: BorderSide(
               color: Colors.grey, // Borde gris
             ),
-            borderRadius: BorderRadius.circular(40), // Ajuste del radio del borde
+            borderRadius:
+                BorderRadius.circular(40), // Ajuste del radio del borde
           ),
           hintText: hint,
           hintStyle: const TextStyle(
@@ -292,7 +297,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  //codigo que controla el mensaje de notificaciones de contrasena o error en campos incompletos 
+  //codigo que controla el mensaje de notificaciones de contrasena o error en campos incompletos
   Future<void> _login(loginRequest, BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       loginRequest = AuthenticationRequest(
@@ -312,9 +317,12 @@ class _SignInState extends State<SignIn> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BlocProvider(
-              create: (context) => BottomNavCubit(),
-              child: const MainWrapper(isLoggedIn: true),
+            builder: (context) => MultiProvider(
+              providers: [
+                BlocProvider(create: (context) => BottomNavCubit()),
+                ChangeNotifierProvider(create: (_) => HomePageProvider('LOST')),
+              ],
+              child: MainWrapper(isLoggedIn: true),
             ),
           ),
         );
@@ -334,7 +342,5 @@ class _SignInState extends State<SignIn> {
         ),
       );
     }
-  }
-  
   }
 }

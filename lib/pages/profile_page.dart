@@ -285,7 +285,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                   const SizedBox(height: 8.0),
                   Text(
                     //'${AppStrings.authorComent}: ${post.additionalComment}',
-                    "Comentario del autor:",
+                    "Comentario del autor: ${post.additionalComment}",
                     style: AppFonts.TextField.copyWith(
                       color: AppColors.activeBlueColor,
                       fontWeight: FontWeight.bold,

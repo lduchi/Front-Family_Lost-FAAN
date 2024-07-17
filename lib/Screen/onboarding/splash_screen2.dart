@@ -1,12 +1,12 @@
-import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
-import 'package:familylost_faan/pages/home_page.dart';
+import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
+import 'package:familylost_faan/utilities/Colors/app_colors.dart';
+import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
+import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
-import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
-import 'package:familylost_faan/utilities/Colors/app_colors.dart';
-import 'package:familylost_faan/utilities/texts/app_strings.dart';
+import 'package:provider/provider.dart';
+
 import '../../Utils/colors.dart';
 import '../../pages/cubit/bottom_nav_cubit.dart';
 import '../../widgets/main_wrapper.dart';
@@ -106,9 +106,13 @@ class MySplashScreen2 extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BlocProvider(
-                          create: (context) => BottomNavCubit(),
-                          child: const MainWrapper(isLoggedIn: false),
+                        builder: (context) => MultiProvider(
+                          providers: [
+                            BlocProvider(create: (context) => BottomNavCubit()),
+                            ChangeNotifierProvider(
+                                create: (_) => HomePageProvider('LOST')),
+                          ],
+                          child: MainWrapper(isLoggedIn: false),
                         ),
                       ),
                     );
@@ -140,9 +144,13 @@ class MySplashScreen2 extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BlocProvider(
-                          create: (context) => BottomNavCubit(),
-                          child: const MainWrapper(isLoggedIn: false),
+                        builder: (context) => MultiProvider(
+                          providers: [
+                            BlocProvider(create: (context) => BottomNavCubit()),
+                            ChangeNotifierProvider(
+                                create: (_) => HomePageProvider('LOST')),
+                          ],
+                          child: MainWrapper(isLoggedIn: false),
                         ),
                       ),
                     );
@@ -231,8 +239,8 @@ class MySplashScreen2 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 6.0),
                   child: Text(
                     titulo,
                     textAlign: TextAlign.left,
@@ -259,8 +267,8 @@ class MySplashScreen2 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 6.0),
                   child: Text(
                     descripcion,
                     textAlign: TextAlign.left,

@@ -31,6 +31,8 @@ class _AppBarPageState extends State<AppBarPage> {
             child: Container(
               padding: const EdgeInsets.all(16),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   OutlinedButton(
                     onPressed: () {

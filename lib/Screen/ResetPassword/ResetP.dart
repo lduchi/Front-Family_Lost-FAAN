@@ -1,17 +1,18 @@
-import 'package:familylost_faan/Screen/ResetPassword/RequestNP.dart';
 import 'package:familylost_faan/ServiciosApp/dto/reset_password_request.dart';
+import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
-import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../Utils/colors.dart';
 import '../../widgets/main_wrapper.dart';
 
@@ -56,9 +57,13 @@ class ResetP extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => BottomNavCubit(),
-                    child: const MainWrapper(isLoggedIn: false),
+                  builder: (context) => MultiProvider(
+                    providers: [
+                      BlocProvider(create: (context) => BottomNavCubit()),
+                      ChangeNotifierProvider(
+                          create: (_) => HomePageProvider('LOST')),
+                    ],
+                    child: MainWrapper(isLoggedIn: false),
                   ),
                 ),
               );
@@ -139,22 +144,29 @@ class ResetP extends StatelessWidget {
                             context: context,
                             type: DialogType.success,
                             title: "¡Hey!",
-                            message: "Tu contraseña ha sido cambiada correctamente");
+                            message:
+                                "Tu contraseña ha sido cambiada correctamente");
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                      create: (context) => BottomNavCubit(),
-                                      child: const MainWrapper(
-                                        isLoggedIn: true,
-                                      ),
-                                    )));
-                      }else{
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MultiProvider(
+                              providers: [
+                                BlocProvider(
+                                    create: (context) => BottomNavCubit()),
+                                ChangeNotifierProvider(
+                                    create: (_) => HomePageProvider('LOST')),
+                              ],
+                              child: MainWrapper(isLoggedIn: true),
+                            ),
+                          ),
+                        );
+                      } else {
                         CustomMaterialDialog.successOrError(
                             context: context,
                             type: DialogType.error,
                             title: "¡Hey!",
-                            message: "Las contraseñas deben ser iguales");                      }
+                            message: "Las contraseñas deben ser iguales");
+                      }
                     },
                     child: Container(
                       width: size.width,
