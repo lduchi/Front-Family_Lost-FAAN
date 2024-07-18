@@ -26,7 +26,7 @@ class AppStrings {
   static const String newPassword = 'Contraseña Nueva';
   static const String repeatPassword = 'Repetir Contraseña';
   static const String successUserUpdate = 'Usuario actualizado con éxito';
-
+  static const String noComment = 'Sin comentario adicional';
   //Text for labels in navigation
   static const String navigationHome = 'Inicio';
   static const String navigationProfile = 'Perfil';

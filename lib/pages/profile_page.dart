@@ -300,8 +300,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                 ),
                 const SizedBox(height: 8.0),
                 Text(
-                  //'${AppStrings.authorComent}: ${post.additionalComment}',
-                  "Comentario del autor: ${post.additionalComment}",
+                  '${AppStrings.authorComment}: ${post.additionalComment ?? AppStrings.noComment}',
                   style: AppFonts.TextField.copyWith(
                     color: AppColors.activeBlueColor,
                     fontWeight: FontWeight.bold,
@@ -311,7 +310,15 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: _footer(context, _deviceSize, post, user),
+                    children: [
+                      if (!widget.likedPosts)
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: _footer(context, _deviceSize, post, user),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],

@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'Screen/onboarding/splash_screen.dart';
+import 'ServiciosApp/services/liked_post_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -89,6 +90,7 @@ class _LostFamilyAppState extends State<LostFamilyApp> {
               providers: [
                 BlocProvider(create: (context) => BottomNavCubit()),
                 ChangeNotifierProvider(create: (_) => HomePageProvider('LOST')),
+                ChangeNotifierProvider(create: (_) => LikePostProvider()),
                 ChangeNotifierProvider(create: (_) => SearchService()),
               ],
               child: MainWrapper(isLoggedIn: isLoggedIn!),
