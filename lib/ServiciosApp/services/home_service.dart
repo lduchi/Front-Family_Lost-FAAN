@@ -16,7 +16,7 @@ class HomePageProvider with ChangeNotifier {
     getPostsByTypeLost(type);
   }
 
-  void getPostsByTypeLost(String postType) async {
+  Future<void> getPostsByTypeLost(String postType) async {
     final String endPointUrl = baseUrl + '/post';
     final String url = '$endPointUrl/type';
     try {
@@ -30,11 +30,7 @@ class HomePageProvider with ChangeNotifier {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final PageResponse pageResponse = PageResponse.fromJson(response.data);
-        result = pageResponse.content
-            .map((e) => SavePost.fromJson(e))
-            .toList()
-            .reversed
-            .toList();
+        result = pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
         notifyListeners();
       } else {
         throw Exception('Error al obtener las publicaciones');

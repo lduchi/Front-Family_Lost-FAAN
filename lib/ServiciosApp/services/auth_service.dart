@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/dto/login_request.dart';
-import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:familylost_faan/environment/environment.dart';
 import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
@@ -11,7 +10,7 @@ class AuthService {
   late final Dio _dio;
 
   AuthService() {
-    _dio = DioClient().instance;
+    _dio = Dio();
   }
 
   String endPointUrl = baseUrl + '/auth';
