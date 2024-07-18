@@ -1,21 +1,28 @@
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
+import 'package:familylost_faan/ServiciosApp/dto/author.dart';
+import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/pages/detalles_animal.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AnimalItemPage extends StatefulWidget {
   const AnimalItemPage({
     super.key,
     required this.image,
     required this.animalData,
+    required this.author,
+    required this.post,
     required this.isLogin,
   });
 
   final String image;
   final Animal animalData;
+  final Author author;
+  final SavePost post;
   final bool isLogin;
 
   @override
@@ -39,9 +46,15 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => widget.isLogin
-                  ? DetallesAnimal(image: widget.image)
-                  : SignIn()),
+            builder: (context) => widget.isLogin
+                ? DetallesAnimal(
+                    image: widget.image,
+                    animalData: widget.animalData,
+                    author: widget.author,
+                    post: widget.post,
+                  )
+                : SignIn(),
+          ),
         );
       },
       child: Container(
@@ -58,7 +71,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                     bottomLeft: Radius.circular(5),
                   ),
                   image: DecorationImage(
-                    image: AssetImage(widget.image),
+                    image: NetworkImage(widget.image),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -101,10 +114,17 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                             AppColors.transparentBackgroundColor,
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             _isContactButtonPressed = !_isContactButtonPressed;
                           });
+                          if (widget.isLogin) {
+                            await launchUrl(
+                              Uri.parse(
+                                "https://wa.me/${widget.author.phone}?text=Hola yo vi a ${widget.animalData.name}",
+                              ),
+                            );
+                          }
                         },
                         icon: Icon(
                           Icons.phone,

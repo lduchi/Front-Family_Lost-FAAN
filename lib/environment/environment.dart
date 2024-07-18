@@ -5,6 +5,6 @@
  */
 final String baseUrl = 'https://fannok-production.up.railway.app/api/v1';
 
-final String wsUrl = 'ws://fannok-production.up.railway.app/api/v1';
+final String wsUrl = 'wss://fannok-production.up.railway.app/api/v1';
 
 final String APIGoogleMapsKey = 'QUl6YVN5Qk52V2xTUWJhV0dOcExoOEJmU0JVelNUODFqSUJtUm93';

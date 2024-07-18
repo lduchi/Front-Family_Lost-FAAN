@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
+import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
 import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/widgets/main_wrapper.dart';
@@ -47,7 +48,6 @@ void main() async {
 }
 
 class LostFamilyApp extends StatefulWidget {
-
   const LostFamilyApp({super.key});
 
   @override
@@ -84,7 +84,15 @@ class _LostFamilyAppState extends State<LostFamilyApp> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: isLoggedIn! ? MainWrapper(isLoggedIn: isLoggedIn!) : MySplashScreen(),
+      home: isLoggedIn!
+          ? MultiProvider(
+              providers: [
+                BlocProvider(create: (context) => BottomNavCubit()),
+                ChangeNotifierProvider(create: (_) => HomePageProvider('LOST')),
+              ],
+              child: MainWrapper(isLoggedIn: isLoggedIn!),
+            )
+          : MySplashScreen(),
     );
   }
 

@@ -25,7 +25,7 @@ class Store {
 
   static Future<String?> getAccessToken() async {
     final preferences = await SharedPreferences.getInstance();
-
+print(preferences.getString(_tokenAccessKey));
     return preferences.getString(_tokenAccessKey);
   }
 

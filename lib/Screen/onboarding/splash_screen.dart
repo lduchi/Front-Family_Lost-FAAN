@@ -1,7 +1,9 @@
 import 'package:familylost_faan/Screen/onboarding/splash_screen2.dart';
+import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../Utils/colors.dart';
 import '../../pages/cubit/bottom_nav_cubit.dart';
@@ -128,11 +130,17 @@ class _MySplashScreenState extends State<MySplashScreen>
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => BlocProvider(
-                                            create: (context) =>
-                                                BottomNavCubit(),
-                                            child: const MainWrapper(
-                                                isLoggedIn: false),
+                                          builder: (context) => MultiProvider(
+                                            providers: [
+                                              BlocProvider(
+                                                  create: (context) =>
+                                                      BottomNavCubit()),
+                                              ChangeNotifierProvider(
+                                                  create: (_) =>
+                                                      HomePageProvider('LOST')),
+                                            ],
+                                            child:
+                                                MainWrapper(isLoggedIn: false),
                                           ),
                                         ),
                                       );

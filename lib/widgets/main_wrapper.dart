@@ -1,9 +1,9 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
-import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
+import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
@@ -21,13 +21,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
 import '../Utils/colors.dart';
 
 final postService = PostService();
 late SavePost posts;
 
-Animal animalDatas = Animal(name: "Otis", type: "Dog", race: "Bulldog", gender: "Macho");
 //tipo de p[ost en home lost, found,adoption y el estado lost
 // estaod de la publicacion found (rescatados)
 ///revisar si adpodet se puede integrar en rescatos
@@ -102,12 +102,10 @@ class _MainWrapperState extends State<MainWrapper> {
     }
     pages = [
       HomePage(
-        animalData: animalDatas,
         isLogin: isLoggedIn,
       ),
       FavoritePage(),
       HomePage(
-        animalData: animalDatas,
         isLogin: isLoggedIn,
       ),
       ProfilePage(),
@@ -120,19 +118,16 @@ class _MainWrapperState extends State<MainWrapper> {
     super.dispose();
   }
 
-  void onPageChanged(int page) {
-    BlocProvider.of<BottomNavCubit>(context).changeSelectedIndex(page);
-  }
-
   @override
   Widget build(BuildContext context) {
+    var bottomCubit = context.watch<BottomNavCubit>();
     return Scaffold(
       appBar: //isLoggedIn
-           _appBarBuilder(context.watch<BottomNavCubit>().state.toDouble()),
-          //: _mainUnloggedWrapperAppBar(),
+          _appBarBuilder(bottomCubit.state),
+      //: _mainUnloggedWrapperAppBar(),
       drawer: MenuProfile(isLogged: isLoggedIn),
       body: CustomPaint(
-        child: _mainWrapperBody(),
+        child: _mainWrapperBody(bottomCubit),
       ),
       bottomNavigationBar: _mainWrapperBottomNavBar(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -140,7 +135,7 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  AppBar _appBarBuilder(double indexPage) {
+  AppBar _appBarBuilder(int indexPage) {
     return indexPage == 3 ? _profileAppBar() : _mainLoggedWrapperAppBar();
   }
 
@@ -191,30 +186,33 @@ class _MainWrapperState extends State<MainWrapper> {
         child: Container(
           padding: EdgeInsets.all(_deviceWidth * 0.04),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildOutlinedButton(
                 AppStrings.navigationLost,
-                () {},
+                () {
+                  Provider.of<HomePageProvider>(context, listen: false)
+                      .getPostsByTypeLost('LOST');
+                },
               ),
               const SizedBox(width: 8),
               _buildOutlinedButton(
                 AppStrings.navigationFound,
                 () {
-                  // TODO: Implementar filtro de "Found"
+                  Provider.of<HomePageProvider>(context, listen: false)
+                      .getPostsByTypeLost('FOUND');
                 },
               ),
               const SizedBox(width: 8),
               _buildOutlinedButton(
                 AppStrings.navigationAdoption,
                 () {
-                  animalDatas = Animal(
-                      name: "",
-                      type: "",
-                      race: "",
-                      gender: ""); // Inicializar+ aquí
+                  Provider.of<HomePageProvider>(context, listen: false)
+                      .getPostsByTypeLost('ADOPTION');
 
                   // Navegar a la página HomePage con los nuevos datos
-                  Navigator.push(
+                  /* Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BlocProvider(
@@ -222,14 +220,14 @@ class _MainWrapperState extends State<MainWrapper> {
                         child: const MainWrapper(isLoggedIn: true),
                       ),
                     ),
-                  );
+                  );*/
                 },
               ),
             ],
           ),
         ),
       ),
-     /* actions: [
+      /* actions: [
         IconButton(
           onPressed: () {
             Navigator.push(context,
@@ -553,9 +551,9 @@ class _MainWrapperState extends State<MainWrapper> {
   }
 
   // Body - MainWrapper Widget
-  PageView _mainWrapperBody() {
+  PageView _mainWrapperBody(BottomNavCubit bottomCubit) {
     return PageView(
-      onPageChanged: (int page) => onPageChanged(page),
+      onPageChanged: (int page) => bottomCubit.changeSelectedIndex(page),
       controller: pageController,
       children: pages,
     );
