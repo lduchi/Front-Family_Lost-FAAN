@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 class login {
   int id;
   String nombre;
@@ -21,8 +19,9 @@ class login {
       nombre: json['nombre'] as String,
       username: json['username'] as String,
       password: json['password'] as String,
-
-      tokenPassword: json['tokenPassword'] != null ? json['tokenPassword'] as String : null,
+      tokenPassword: json['tokenPassword'] != null
+          ? json['tokenPassword'] as String
+          : null,
     );
   }
 

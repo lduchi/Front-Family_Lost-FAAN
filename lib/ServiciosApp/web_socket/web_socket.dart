@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
 import 'package:familylost_faan/environment/environment.dart';

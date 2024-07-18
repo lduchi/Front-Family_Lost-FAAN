@@ -61,6 +61,7 @@ class AppStrings {
 
   //Text for labels in forms
   static const String formTitle = 'Crear Publicación';
+  static const String formEditTitle = 'Editar Publicación';
   static const String formTitlePost = 'Título de la publicación';
   static const String formPhoto = 'Selecciona una foto';
   static const String formName = 'Nombre del animal';

@@ -1,8 +1,5 @@
-import 'package:familylost_faan/core/utils/size_utils.dart';
+import 'package:familylost_faan/core/app_export.dart';
 import 'package:flutter/material.dart';
-import '../core/app_export.dart';
-import '../theme/custom_text_style.dart';
-import '../theme/theme_helper.dart';
 
 extension TextFormFieldStyleHelper on CustomTextFormField {
   static OutlineInputBorder get fillPrimary => OutlineInputBorder(
@@ -117,6 +114,7 @@ class CustomTextFormField extends StatelessWidget {
           validator: validator,
         ),
       );
+
   InputDecoration get decoration => InputDecoration(
         hintText: hintText ?? "",
         hintStyle: hintStyle ?? theme.textTheme.bodyMedium,

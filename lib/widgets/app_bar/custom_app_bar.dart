@@ -1,7 +1,5 @@
+import 'package:familylost_faan/core/app_export.dart';
 import 'package:flutter/material.dart';
-import '../../core/app_export.dart';
-import '../../core/utils/size_utils.dart';
-import '../../theme/theme_helper.dart';
 
 enum Style { bgFill }
 
@@ -56,6 +54,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         SizeUtils.width,
         height ?? 88.v,
       );
+
   _getStyle() {
     switch (styleType) {
       case Style.bgFill:

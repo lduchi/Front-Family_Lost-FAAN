@@ -1,7 +1,5 @@
-import 'package:familylost_faan/core/utils/size_utils.dart';
+import 'package:familylost_faan/core/app_export.dart';
 import 'package:flutter/material.dart';
-import '../../core/app_export.dart';
-import '../custom_image_view.dart'; // ignore: must_be_immutable
 // ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable

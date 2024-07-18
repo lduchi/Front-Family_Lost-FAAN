@@ -2,8 +2,6 @@ import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class AppBarPage extends StatefulWidget {
   const AppBarPage({super.key});
@@ -18,7 +16,8 @@ class _AppBarPageState extends State<AppBarPage> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          backgroundColor: Colors.transparent, // Hace la AppBar transparente
+          backgroundColor: Colors.transparent,
+          // Hace la AppBar transparente
           title: const Text('Hola, Usuario!'),
           leading: Center(
             child: CircleAvatar(
@@ -67,10 +66,10 @@ class _AppBarPageState extends State<AppBarPage> {
               icon: AppIcons.notificationIcon,
             ),
           ],
-          pinned:
-              false, // Hace que el SliverAppBar permanezca fijo en la parte superior
-          floating:
-              true, // Hace que el SliverAppBar se muestre nuevamente al desplazarse hacia arriba
+          pinned: false,
+          // Hace que el SliverAppBar permanezca fijo en la parte superior
+          floating: true,
+          // Hace que el SliverAppBar se muestre nuevamente al desplazarse hacia arriba
           snap: true,
         ),
       ],

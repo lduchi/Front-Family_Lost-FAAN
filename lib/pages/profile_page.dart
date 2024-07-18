@@ -120,8 +120,16 @@ class _ProfilePageState extends State<ProfilePage> {
             height: MediaQuery.of(context).size.height * 0.48,
             child: TabBarView(
               children: [
-                _ProfileGridView(userId: userId!, likedPosts: false),
-                _ProfileGridView(userId: userId!, likedPosts: true),
+                _ProfileGridView(
+                  userId: userId!,
+                  likedPosts: false,
+                  user: user!,
+                ),
+                _ProfileGridView(
+                  userId: userId!,
+                  likedPosts: true,
+                  user: user!,
+                ),
               ],
             ),
           ),
@@ -134,8 +142,13 @@ class _ProfilePageState extends State<ProfilePage> {
 class _ProfileGridView extends StatefulWidget {
   final String userId;
   final bool likedPosts;
+  final UserDTO user;
+
   const _ProfileGridView(
-      {Key? key, required this.userId, required this.likedPosts})
+      {Key? key,
+      required this.userId,
+      required this.likedPosts,
+      required this.user})
       : super(key: key);
 
   @override
@@ -145,6 +158,7 @@ class _ProfileGridView extends StatefulWidget {
 class __ProfileGridViewState extends State<_ProfileGridView> {
   late Paginator<SavePost> paginator;
   List<SavePost> myPosts = [];
+
   @override
   void initState() {
     super.initState();
@@ -177,7 +191,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
       itemBuilder: (BuildContext context, SavePost post) {
         return GestureDetector(
           onTap: () {
-            _showPostBottomSheet(context, post);
+            _showPostBottomSheet(context, post, widget.user);
           },
           child: Container(
             color: AppColors.mainColor,
@@ -198,7 +212,8 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
     );
   }
 
-  Future<void> _showPostBottomSheet(BuildContext context, SavePost post) async {
+  Future<void> _showPostBottomSheet(
+      BuildContext context, SavePost post, UserDTO user) async {
     var _deviceSize = MediaQuery.of(context).size;
     await showModalBottomSheet(
       context: context,
@@ -209,104 +224,106 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
         ),
       ),
       builder: (context) {
-        return bottomSheetDetail(context, _deviceSize, post);
+        return bottomSheetDetail(context, _deviceSize, post, user);
       },
     );
   }
 
-  Padding bottomSheetDetail(BuildContext context, Size _deviceSize, SavePost post) {
+  Padding bottomSheetDetail(
+      BuildContext context, Size _deviceSize, SavePost post, UserDTO user) {
     return Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: ClipRRect(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(16.0),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(_deviceSize.width * 0.05),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Center(
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(_deviceSize.width * 0.02),
+      padding: MediaQuery.of(context).viewInsets,
+      child: ClipRRect(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16.0),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(_deviceSize.width * 0.05),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(_deviceSize.width * 0.02),
+                    child: Container(
+                      color: AppColors.mainColor,
                       child: Container(
-                        color: AppColors.mainColor,
-                        child: Container(
-                          child: post.imageUrl.isNotEmpty
-                              ? CachedNetworkImage(
-                                  imageUrl: post.imageUrl,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  AssetManager.largeLogo,
-                                  fit: BoxFit.cover,
-                                ),
-                          height: _deviceSize.height * 0.4,
-                          width: _deviceSize.width,
-                        ),
+                        child: post.imageUrl.isNotEmpty
+                            ? CachedNetworkImage(
+                                imageUrl: post.imageUrl,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                AssetManager.largeLogo,
+                                fit: BoxFit.cover,
+                              ),
+                        height: _deviceSize.height * 0.4,
+                        width: _deviceSize.width,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    post.title,
-                    style: AppFonts.title.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  post.title,
+                  style: AppFonts.title.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    '${AppStrings.author}: ${post.author.username}',
-                    style: AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${AppStrings.author}: ${post.author.username}',
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    '${AppStrings.labelEmail}: ${post.author.email}',
-                    style: AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${AppStrings.labelEmail}: ${post.author.email}',
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    '${AppStrings.labelPhone}: ${post.author.phone}',
-                    style: AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${AppStrings.labelPhone}: ${post.author.phone}',
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    //'${AppStrings.authorComent}: ${post.additionalComment}',
-                    "Comentario del autor: ${post.additionalComment}",
-                    style: AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  //'${AppStrings.authorComent}: ${post.additionalComment}',
+                  "Comentario del autor: ${post.additionalComment}",
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 4.0),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: _footer(context, _deviceSize, post),
-                    ),
+                ),
+                const SizedBox(height: 4.0),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _footer(context, _deviceSize, post, user),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 
-  List<Widget> _footer(BuildContext context, Size _deviceSize, SavePost post) {
+  List<Widget> _footer(
+      BuildContext context, Size _deviceSize, SavePost post, UserDTO user) {
     return [
       Container(
         child: _footerButton(
@@ -315,7 +332,7 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
           AppColors.mainColor,
           AppStrings.buttonEdit,
           onPressed: () {
-            _editPost(context, post);
+            _editPost(context, post, user);
           },
         ),
       ),
@@ -351,10 +368,18 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
     );
   }
 
-  void _editPost(BuildContext context, SavePost post) {
+  void _editPost(BuildContext context, SavePost post, UserDTO user) {
     Navigator.pop(context);
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EditPostFormPage(post: post);
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return EditPostFormPage(
+            post: post,
+            user: user,
+          );
+        },
+      ),
+    );
   }
 }

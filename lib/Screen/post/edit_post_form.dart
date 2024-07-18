@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:familylost_faan/ServiciosApp/utils/animal_list.dart';
-import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
-import 'package:familylost_faan/ServiciosApp/dto/author.dart';
-import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
+
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
+import 'package:familylost_faan/ServiciosApp/dto/user_dto.dart';
 import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
+import 'package:familylost_faan/ServiciosApp/utils/animal_list.dart';
 import 'package:familylost_faan/pages/pages.dart';
-import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/enum/post_type.dart';
@@ -21,7 +19,9 @@ import 'package:intl/intl.dart';
 
 class EditPostFormPage extends StatefulWidget {
   final SavePost post;
-  const EditPostFormPage({super.key, required this.post});
+  final UserDTO user;
+
+  const EditPostFormPage({super.key, required this.post, required this.user});
 
   @override
   State<EditPostFormPage> createState() => _EditPostFormPageState();
@@ -61,8 +61,8 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
     _nameController.text = widget.post.animal.name;
     _typeController.text = widget.post.animal.type;
     _raceController.text = widget.post.animal.race;
-    //_genderController.text = widget.post.animal.gender;
-    //_additionalCommentController.text = widget.post.additionalComment!;
+    _genderController.text = widget.post.animal.gender;
+    _additionalCommentController.text = widget.post.additionalComment??'';
     _currentCenterPosition = LatLng(
       widget.post.location.coordinates[1],
       widget.post.location.coordinates[0],
@@ -94,11 +94,13 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final post = widget.post;
+    final user = widget.user;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.secondaryMainColor,
         title: Text(
-          AppStrings.formTitle,
+          AppStrings.formEditTitle,
           style: AppFonts.TitlePost,
         ),
         leading: IconButton(
@@ -144,7 +146,7 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
                       height: 90,
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage(AssetManager.largeLogo),
+                        backgroundImage: Image.network(post.imageUrl).image,
                       ),
                     ),
                     SizedBox(width: 30),
@@ -153,8 +155,7 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'ELIZABETH PEÑAFIEL',
-                            // Cambiar por el nombre del usuario
+                            '${user.name} ${user.lastname}',
                             style: AppFonts.TitlePost,
                           ),
                           SizedBox(height: 5),
@@ -292,49 +293,23 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
                       return null;
                     },
                   ),
-                if (!showOtherBreedTextField)
-                  DropdownButtonFormField<String>(
-                    value: _raceController.text.isNotEmpty
-                        ? _raceController.text
-                        : null,
-                    validator: (value) {
-                      if (!showOtherBreedTextField &&
-                          (value == null || value.isEmpty)) {
-                        return AppStrings.errorBreed;
-                      }
-                      return null;
-                    },
-                    autovalidateMode: showOtherBreedTextField
-                        ? AutovalidateMode.disabled
-                        : AutovalidateMode.onUserInteraction,
-                    decoration: InputDecoration(
-                      labelText: AppStrings.formBreed,
-                      border: InputBorder.none,
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: Icon(Icons.pets),
-                      ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: _raceController,
+                  decoration: InputDecoration(
+                    labelText: AppStrings.formBreed,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(right: 15),
+                      child: Icon(Icons.pets),
                     ),
-                    items: _typeController.text.isNotEmpty &&
-                            !showOtherBreedTextField
-                        ? animalLists
-                            .firstWhere((animal) =>
-                                animal.name.toLowerCase() ==
-                                _typeController.text.toLowerCase())
-                            .breeds
-                            .map((breed) {
-                            return DropdownMenuItem<String>(
-                              value: breed,
-                              child: Text(breed),
-                            );
-                          }).toList()
-                        : [],
-                    onChanged: (value) {
-                      setState(() {
-                        _raceController.text = value!;
-                      });
-                    },
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppStrings.errorBreed;
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   value: _genderController.text.isNotEmpty
@@ -351,7 +326,7 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
                     border: InputBorder.none,
                     prefixIcon: Padding(
                       padding: EdgeInsets.only(right: 15),
-                      child: Icon(Icons.wc),
+                      child: Icon(Icons.pets),
                     ),
                   ),
                   items: [

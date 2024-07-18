@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 import 'package:familylost_faan/ServiciosApp/models/NewUser.dart';
-import 'package:familylost_faan/ServiciosApp/models/user.dart';
 import 'package:familylost_faan/ServiciosApp/services/register_service.dart';
 import 'package:familylost_faan/core/utils/text_input.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
@@ -11,8 +11,8 @@ import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:familylost_faan/widgets/RegisterPageAppBar.dart';
 import 'package:familylost_faan/widgets/custom_quick_alert.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -37,6 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
   LatLng? currentCenterPosition;
 
   bool isLoading = false;
+
   @override
   void dispose() {
     nombreController.dispose();
@@ -333,7 +334,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (value == null || value.isEmpty) {
       return "Campo de contraseña vacio";
     }
-  /*  final RegExp passwordRegex = RegExp(
+    /*  final RegExp passwordRegex = RegExp(
         r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
     if (!passwordRegex.hasMatch(value)) {
       return 'La contraseña debe contener al menos una letra \n en mayúscula,  un número y un carácter especial, \n y tener al menos 8 caracteres';
@@ -412,84 +413,86 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void SaveUser() async {
-  double longitude = currentCenterPosition!.longitude;
-  double latitude = currentCenterPosition!.latitude;
+    double longitude = currentCenterPosition!.longitude;
+    double latitude = currentCenterPosition!.latitude;
 
-  GeoJson geoJsonLocation = GeoJson(
-    x: 2,
-    y: 3,
-    type: 'Point',
-    coordinates: [longitude, latitude],
-  );
-
-  if (_formKey.currentState!.validate()) {
-    // Verificar disponibilidad de username
-    final String username = usernameController.text.trim();
-    final bool isUsernameAvailable = await _isUsernameAvailable(username);
-    if (!isUsernameAvailable) {
-      // Mostrar error de username no disponible
-      CustomMaterialDialog.successOrError(
-        context: context,
-        type: DialogType.error,
-        title: "Whoops..",
-        message: "El nombre de usuario ya está en uso. Por favor, elige otro.",
-      );
-      return;
-    }
-
-    // Crear el objeto NewUser
-    NewUser userNuevo = NewUser(
-      name: nombreController.text,
-      lastname: apellidoController.text,
-      email: emailController.text,
-      username: username,
-      password: passwordController.text,
-      repeatedPassword: passRepeadController.text,
-      location: geoJsonLocation,
-      phone: telefonoController.text,
+    GeoJson geoJsonLocation = GeoJson(
+      x: 2,
+      y: 3,
+      type: 'Point',
+      coordinates: [longitude, latitude],
     );
 
-    final UsuariosService apiService = UsuariosService();
-    FocusScope.of(context).unfocus();
-    setState(() {
-      isLoading = true;
-    });
+    if (_formKey.currentState!.validate()) {
+      // Verificar disponibilidad de username
+      final String username = usernameController.text.trim();
+      final bool isUsernameAvailable = await _isUsernameAvailable(username);
+      if (!isUsernameAvailable) {
+        // Mostrar error de username no disponible
+        CustomMaterialDialog.successOrError(
+          context: context,
+          type: DialogType.error,
+          title: "Whoops..",
+          message:
+              "El nombre de usuario ya está en uso. Por favor, elige otro.",
+        );
+        return;
+      }
 
-    try {
-      await apiService.Register(userNuevo, imageFile!, context);
+      // Crear el objeto NewUser
+      NewUser userNuevo = NewUser(
+        name: nombreController.text,
+        lastname: apellidoController.text,
+        email: emailController.text,
+        username: username,
+        password: passwordController.text,
+        repeatedPassword: passRepeadController.text,
+        location: geoJsonLocation,
+        phone: telefonoController.text,
+      );
+
+      final UsuariosService apiService = UsuariosService();
+      FocusScope.of(context).unfocus();
       setState(() {
-        isLoading = false;
+        isLoading = true;
       });
- /*     CustomMaterialDialog.successOrError(
+
+      try {
+        await apiService.Register(userNuevo, imageFile!, context);
+        setState(() {
+          isLoading = false;
+        });
+        /*     CustomMaterialDialog.successOrError(
         context: context,
         type: DialogType.success,
         title: "¡Hey!",
         message: "Gracias por registrarte ",
       );*/
-    } catch (e) {
-      print('Error al guardar el registro: $e');
-      setState(() {
-        isLoading = false;
-      });
-      CustomMaterialDialog.successOrError(
-        context: context,
-        type: DialogType.error,
-        title: "Whoops..",
-        message: "Estamos teniendo problemas, disculpe ",
-      );
+      } catch (e) {
+        print('Error al guardar el registro: $e');
+        setState(() {
+          isLoading = false;
+        });
+        CustomMaterialDialog.successOrError(
+          context: context,
+          type: DialogType.error,
+          title: "Whoops..",
+          message: "Estamos teniendo problemas, disculpe ",
+        );
+      }
     }
   }
-}
 
-Future<bool> _isUsernameAvailable(String username) async {
-  try {
-    final UsuariosService apiService = UsuariosService();
-    return await apiService.isUsernameAvailable(username);
-  } catch (e) {
-    print('Error al verificar disponibilidad de username: $e');
-    return false;
+  Future<bool> _isUsernameAvailable(String username) async {
+    try {
+      final UsuariosService apiService = UsuariosService();
+      return await apiService.isUsernameAvailable(username);
+    } catch (e) {
+      print('Error al verificar disponibilidad de username: $e');
+      return false;
+    }
   }
-}
+
   Future<String> getAddressFromCoordinates(
       double latitude, double longitude) async {
     try {

@@ -1,11 +1,10 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
-import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
-import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
+import 'package:familylost_faan/Utils/colors.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/pages/information_faan.dart';
 import 'package:familylost_faan/pages/pages.dart';
@@ -16,17 +15,13 @@ import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
 import 'package:familylost_faan/utilities/texts/app_strings.dart';
+import 'package:familylost_faan/widgets/app_bar/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
-
-import '../Utils/colors.dart';
-
-final postService = PostService();
-late SavePost posts;
 
 //tipo de p[ost en home lost, found,adoption y el estado lost
 // estaod de la publicacion found (rescatados)
@@ -47,6 +42,7 @@ class _MainWrapperState extends State<MainWrapper> {
   late PageController pageController;
   late WebSocketChnl webSocket;
   late List<Widget> pages;
+  int _selectedIndex = 0;
 
   _MainWrapperState({required this.isLoggedIn});
 
@@ -104,7 +100,7 @@ class _MainWrapperState extends State<MainWrapper> {
       HomePage(
         isLogin: isLoggedIn,
       ),
-      FavoritePage(),
+      SearchPage(),
       HomePage(
         isLogin: isLoggedIn,
       ),
@@ -136,7 +132,9 @@ class _MainWrapperState extends State<MainWrapper> {
   }
 
   AppBar _appBarBuilder(int indexPage) {
-    return indexPage == 3 ? _profileAppBar() : _mainLoggedWrapperAppBar();
+    return indexPage == 3
+        ? _profileAppBar()
+        : _mainLoggedWrapperAppBar(indexPage == 1);
   }
 
   AppBar _profileAppBar() {
@@ -158,7 +156,7 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  AppBar _mainLoggedWrapperAppBar() {
+  AppBar _mainLoggedWrapperAppBar(bool isSearch) {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return AppBar(
@@ -185,34 +183,48 @@ class _MainWrapperState extends State<MainWrapper> {
         preferredSize: Size.fromHeight(_deviceHeight * 0.1),
         child: Container(
           padding: EdgeInsets.all(_deviceWidth * 0.04),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildOutlinedButton(
-                AppStrings.navigationLost,
-                () {
-                  Provider.of<HomePageProvider>(context, listen: false)
-                      .getPostsByTypeLost('LOST');
-                },
-              ),
-              const SizedBox(width: 8),
-              _buildOutlinedButton(
-                AppStrings.navigationFound,
-                () {
-                  Provider.of<HomePageProvider>(context, listen: false)
-                      .getPostsByTypeLost('FOUND');
-                },
-              ),
-              const SizedBox(width: 8),
-              _buildOutlinedButton(
-                AppStrings.navigationAdoption,
-                () {
-                  Provider.of<HomePageProvider>(context, listen: false)
-                      .getPostsByTypeLost('ADOPTION');
+          child: isSearch
+              ? SearchBar()
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildOutlinedButton(
+                      AppStrings.navigationLost,
+                      0,
+                      () {
+                        setState(() {
+                          _selectedIndex = 0;
+                        });
+                        Provider.of<HomePageProvider>(context, listen: false)
+                            .getPostsByTypeLost('LOST');
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    _buildOutlinedButton(
+                      AppStrings.navigationFound,
+                      1,
+                      () {
+                        setState(() {
+                          _selectedIndex = 1;
+                        });
+                        Provider.of<HomePageProvider>(context, listen: false)
+                            .getPostsByTypeLost('FOUND');
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    _buildOutlinedButton(
+                      AppStrings.navigationAdoption,
+                      2,
+                      () {
+                        setState(() {
+                          _selectedIndex = 2;
+                        });
+                        Provider.of<HomePageProvider>(context, listen: false)
+                            .getPostsByTypeLost('ADOPTION');
 
-                  // Navegar a la página HomePage con los nuevos datos
-                  /* Navigator.push(
+                        // Navegar a la página HomePage con los nuevos datos
+                        /* Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BlocProvider(
@@ -221,10 +233,10 @@ class _MainWrapperState extends State<MainWrapper> {
                       ),
                     ),
                   );*/
-                },
-              ),
-            ],
-          ),
+                      },
+                    ),
+                  ],
+                ),
         ),
       ),
       /* actions: [
@@ -338,19 +350,25 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  OutlinedButton _buildOutlinedButton(String text, VoidCallback onPressed) {
+  OutlinedButton _buildOutlinedButton(
+      String text, int index, VoidCallback onPressed) {
     return OutlinedButton(
       onPressed: onPressed,
       child: Text(
         text,
         style: AppFonts.primary.copyWith(
-          color: AppColors.secondaryMainColor,
+          color: _selectedIndex == index
+              ? AppColors.secondaryMainColor
+              : AppColors.mainColor.withOpacity(0.6),
         ),
       ),
       style: ButtonStyle(
         minimumSize: MaterialStateProperty.all(Size(60, 45)),
         backgroundColor: MaterialStateProperty.all<Color>(
-            AppColors.mainColor.withOpacity(0.6)),
+          _selectedIndex == index
+              ? AppColors.mainColor.withOpacity(0.6)
+              : AppColors.secondaryMainColor,
+        ),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
@@ -407,7 +425,7 @@ class _MainWrapperState extends State<MainWrapper> {
                 context,
                 defaultIcon: IconlyLight.search,
                 page: 1,
-                label: "Search",
+                label: "Buscar",
                 filledIcon: IconlyBold.search,
               ),
             ],
@@ -437,7 +455,7 @@ class _MainWrapperState extends State<MainWrapper> {
                 context,
                 defaultIcon: IconlyLight.profile,
                 page: 3,
-                label: "Profile",
+                label: "Perfil",
                 filledIcon: IconlyBold.profile,
               ),
             ],

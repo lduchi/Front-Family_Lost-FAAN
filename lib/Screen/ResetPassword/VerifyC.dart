@@ -1,6 +1,7 @@
 import 'package:familylost_faan/Screen/ResetPassword/ResetP.dart';
 import 'package:familylost_faan/ServiciosApp/services/Pass_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
+import 'package:familylost_faan/ServiciosApp/services/search_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/icons/app_icons.dart';
@@ -58,6 +59,7 @@ class VerifyC extends StatelessWidget {
                       BlocProvider(create: (context) => BottomNavCubit()),
                       ChangeNotifierProvider(
                           create: (_) => HomePageProvider('LOST')),
+                      ChangeNotifierProvider(create: (_) => SearchService()),
                     ],
                     child: MainWrapper(isLoggedIn: false),
                   ),

@@ -1,6 +1,4 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import '../app_export.dart'; // These are the Viewport values of your Figma Design.
 
 // These are used in the code as a reference to create your UI Responsively.
 const num FIGMA_DESIGN_WIDTH = 430;
@@ -9,10 +7,14 @@ const num FIGMA_DESIGN_STATUS_BAR = 0;
 
 extension ResponsiveExtension on num {
   double get _width => SizeUtils.width;
+
   double get _height => SizeUtils.height;
+
   double get h => ((this * _width) / FIGMA_DESIGN_WIDTH);
+
   double get v =>
       (this * _height) / (FIGMA_DESIGN_HEIGHT - FIGMA_DESIGN_STATUS_BAR);
+
   double get adaptSize {
     var height = v;
     var width = h;

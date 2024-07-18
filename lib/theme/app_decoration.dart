@@ -1,19 +1,20 @@
-import 'package:familylost_faan/core/utils/size_utils.dart';
-import 'package:familylost_faan/theme/theme_helper.dart';
+import 'package:familylost_faan/core/app_export.dart';
 import 'package:flutter/material.dart';
-import '../core/app_export.dart';
 
 class AppDecoration {
   // Fill decorations
   static BoxDecoration get fillBlueGray => BoxDecoration(
         color: appTheme.blueGray100,
       );
+
   static BoxDecoration get fillPrimary => BoxDecoration(
         color: theme.colorScheme.primary,
       );
+
   static BoxDecoration get fillWhiteA => BoxDecoration(
         color: appTheme.whiteA700,
       );
+
 // Outline decorations
   static BoxDecoration get outlineBlack => BoxDecoration(
         color: appTheme.cyan70001,
@@ -29,6 +30,7 @@ class AppDecoration {
           )
         ],
       );
+
   static BoxDecoration get outlineBlack900 => BoxDecoration(
         color: appTheme.gray5001,
         boxShadow: [
@@ -43,6 +45,7 @@ class AppDecoration {
           )
         ],
       );
+
   static BoxDecoration get outlineBlack9001 => BoxDecoration(
         color: theme.colorScheme.primary,
         boxShadow: [
@@ -64,9 +67,11 @@ class BorderRadiusStyle {
   static BorderRadius get roundedBorder15 => BorderRadius.circular(
         15.h,
       );
+
   static BorderRadius get roundedBorder20 => BorderRadius.circular(
         20.h,
       );
+
   static BorderRadius get roundedBorder5 => BorderRadius.circular(
         5.h,
       );

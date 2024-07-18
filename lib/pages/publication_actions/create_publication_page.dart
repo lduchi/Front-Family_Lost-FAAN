@@ -1,4 +1,3 @@
-import 'package:familylost_faan/utilities/texts/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class CreatePublicationPage extends StatefulWidget {

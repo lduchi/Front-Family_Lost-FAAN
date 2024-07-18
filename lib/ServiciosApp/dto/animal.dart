@@ -16,7 +16,7 @@ class Animal {
       name: json['name'],
       type: json['type'],
       race: json['race'],
-      gender: json['race'],
+      gender: json['gender'],
     );
   }
 

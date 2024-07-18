@@ -1,8 +1,8 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/dto/page_response.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
-import 'package:familylost_faan/ServiciosApp/interceptors/dio_interceptor.dart';
 import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:familylost_faan/ServiciosApp/utils/form_data_helper.dart';
 import 'package:familylost_faan/environment/environment.dart';
@@ -98,10 +98,10 @@ class PostService {
     return pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
   }
 
-/**
- * Method to delete a post
- * Works weirdly, deletes the post but doesn't show the success message and throws an error message related to the response
- */
+  /**
+   * Method to delete a post
+   * Works weirdly, deletes the post but doesn't show the success message and throws an error message related to the response
+   */
   Future<void> deletePost(String postId, BuildContext context) async {
     final String url = '$endPointUrl/delete/$postId';
 
@@ -165,7 +165,7 @@ class PostService {
       final response = await dio.get(
         url,
         queryParameters: {
-          'postType':   PostType.LOST.index,
+          'postType': PostType.LOST.index,
           'pageNumber': pageNumber,
           'pageSize': 10,
         },
@@ -182,7 +182,7 @@ class PostService {
     }
   }
 
-   Future<List<SavePost>> getPostsByTypeFound(PostType postType,
+  Future<List<SavePost>> getPostsByTypeFound(PostType postType,
       {int pageNumber = 0}) async {
     final String url = '$endPointUrl/type';
     try {
@@ -190,7 +190,7 @@ class PostService {
       final response = await dio.get(
         url,
         queryParameters: {
-          'postType':   PostType.FOUND.index,
+          'postType': PostType.FOUND.index,
           'pageNumber': pageNumber,
           'pageSize': 10,
         },
@@ -206,6 +206,4 @@ class PostService {
       rethrow;
     }
   }
-
-
 }

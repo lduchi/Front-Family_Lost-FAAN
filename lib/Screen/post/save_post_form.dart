@@ -6,7 +6,6 @@ import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
 import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
-import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
 import 'package:familylost_faan/ServiciosApp/utils/animal_list.dart';
 import 'package:familylost_faan/utilities/AssetManager/asset_manager.dart';
@@ -20,7 +19,6 @@ import 'package:familylost_faan/widgets/custom_quick_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -264,22 +262,22 @@ class _SavePostFormState extends State<SavePostForm> {
                   },
                 ),
                 SizedBox(height: 16),
-                  TextFormField(
-                    controller: _raceController,
-                    decoration: InputDecoration(
-                      labelText: AppStrings.formBreed,
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: Icon(Icons.pets),
-                      ),
+                TextFormField(
+                  controller: _raceController,
+                  decoration: InputDecoration(
+                    labelText: AppStrings.formBreed,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(right: 15),
+                      child: Icon(Icons.pets),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return AppStrings.errorBreed;
-                      }
-                      return null;
-                    },
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppStrings.errorBreed;
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   value: _genderController.text.isNotEmpty
@@ -325,7 +323,9 @@ class _SavePostFormState extends State<SavePostForm> {
                 SizedBox(height: 5),
                 FutureBuilder<String>(
                   future: _currentCenterPosition != null
-                      ? getAddressFromCoordinates(_currentCenterPosition!.latitude, _currentCenterPosition!.longitude)
+                      ? getAddressFromCoordinates(
+                          _currentCenterPosition!.latitude,
+                          _currentCenterPosition!.longitude)
                       : null,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -541,9 +541,11 @@ class _SavePostFormState extends State<SavePostForm> {
     print('Publicacion guardada ${savePost.id}');
   }
 
-  Future<String> getAddressFromCoordinates(double latitude, double longitude) async {
+  Future<String> getAddressFromCoordinates(
+      double latitude, double longitude) async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
         return '${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}';

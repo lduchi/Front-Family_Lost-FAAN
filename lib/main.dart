@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
-import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
+import 'package:familylost_faan/ServiciosApp/services/search_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/widgets/main_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -89,6 +89,7 @@ class _LostFamilyAppState extends State<LostFamilyApp> {
               providers: [
                 BlocProvider(create: (context) => BottomNavCubit()),
                 ChangeNotifierProvider(create: (_) => HomePageProvider('LOST')),
+                ChangeNotifierProvider(create: (_) => SearchService()),
               ],
               child: MainWrapper(isLoggedIn: isLoggedIn!),
             )
