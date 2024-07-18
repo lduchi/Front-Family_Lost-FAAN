@@ -11,7 +11,7 @@ class AuthService {
   late final Dio _dio;
 
   AuthService() {
-    _dio = DioClient().instance;
+    _dio = Dio();
   }
 
   String endPointUrl = baseUrl + '/auth';

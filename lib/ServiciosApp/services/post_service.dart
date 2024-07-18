@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/dto/page_response.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
-import 'package:familylost_faan/ServiciosApp/interceptors/dio_interceptor.dart';
 import 'package:familylost_faan/ServiciosApp/utils/dio_client.dart';
 import 'package:familylost_faan/ServiciosApp/utils/form_data_helper.dart';
 import 'package:familylost_faan/environment/environment.dart';
@@ -128,12 +127,12 @@ class PostService {
           );
   }
 
-  Future<String> updatePost(SavePost savePost, BuildContext context) async {
+  Future<String> updatePost(SavePost updatedPost, BuildContext context) async {
     final String url = '$endPointUrl/update';
 
     final response = await _dio.put(
       url,
-      data: savePost.toJson(),
+      data: updatedPost.toJson(),
       options: Options(
         extra: {'context': context},
       ),
@@ -157,6 +156,42 @@ class PostService {
     return response.data;
   }
 
+  Future<String> updateImagePost(
+      String postId, File photo, BuildContext context) async {
+    final String url = '$endPointUrl/update-image-post/${postId}';
+    try {
+      final response = await _dio.put(
+        url,
+        data: FormData.fromMap({
+          'file': await MultipartFile.fromFile(photo.path,
+              filename: photo.path.split('/').last),
+        }),
+        options: Options(
+          extra: {'context': context, 'image': photo},
+        ),
+      );
+
+      response.statusCode == 200
+          ? CustomMaterialDialog.successOrError(
+              context: context,
+              type: DialogType.success,
+              title: 'Post updated',
+              message: 'Your post has been updated successfully',
+              dismissAndPop: true,
+            )
+          : CustomMaterialDialog.successOrError(
+              context: context,
+              type: DialogType.error,
+              title: 'Error',
+              message: 'An error occurred while updating the post',
+            );
+
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<SavePost>> getPostsByTypeLost(PostType postType,
       {int pageNumber = 0}) async {
     final String url = '$endPointUrl/type';
@@ -165,7 +200,7 @@ class PostService {
       final response = await dio.get(
         url,
         queryParameters: {
-          'postType':   PostType.LOST.index,
+          'postType': PostType.LOST.index,
           'pageNumber': pageNumber,
           'pageSize': 10,
         },
@@ -182,7 +217,7 @@ class PostService {
     }
   }
 
-   Future<List<SavePost>> getPostsByTypeFound(PostType postType,
+  Future<List<SavePost>> getPostsByTypeFound(PostType postType,
       {int pageNumber = 0}) async {
     final String url = '$endPointUrl/type';
     try {
@@ -190,7 +225,7 @@ class PostService {
       final response = await dio.get(
         url,
         queryParameters: {
-          'postType':   PostType.FOUND.index,
+          'postType': PostType.FOUND.index,
           'pageNumber': pageNumber,
           'pageSize': 10,
         },
@@ -206,6 +241,4 @@ class PostService {
       rethrow;
     }
   }
-
-
 }

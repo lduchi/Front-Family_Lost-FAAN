@@ -6,7 +6,6 @@ class Author {
   String username;
   String email;
   String phone;
-  String imagePath;
   String imageUrl;
 
   Author({
@@ -14,7 +13,6 @@ class Author {
     required this.username,
     required this.email,
     required this.phone,
-    this.imagePath = '',
     this.imageUrl = '',
   });
 
@@ -24,7 +22,6 @@ class Author {
       username: json['username'],
       email: json['email'],
       phone: json['phone'],
-      imagePath: json['imagePath'] != null ? json['imagePath'] : '',
       imageUrl: json['imageUrl'] != null ? json['imageUrl'] : '',
     );
   }
@@ -36,7 +33,11 @@ class Author {
     data['email'] = this.email;
     data['phone'] = this.phone;
     data['imageUrl'] = this.imageUrl;
-    data['imagePath'] = this.imagePath;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'id: $id, username: $username, email: $email, phone: $phone, imageUrl: $imageUrl';
   }
 }

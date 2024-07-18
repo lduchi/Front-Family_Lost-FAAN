@@ -14,8 +14,7 @@ class SavePost {
   String imagePath;
   String imageUrl;
   DateTime? date;
-
-  
+  List<String>? likes;
 
   SavePost({
     this.id,
@@ -29,9 +28,8 @@ class SavePost {
     this.date,
     this.imagePath = '',
     this.imageUrl = '',
+    this.likes,
   });
-
-  
 
   factory SavePost.fromJson(Map<String, dynamic> json) {
     return SavePost(
@@ -46,6 +44,9 @@ class SavePost {
       date: json['date'] != null ? DateTime.parse(json['date']) : null,
       imagePath: json['imagePath'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
+      likes: json['likes'] != null
+          ? List<String>.from(json['likes'].map((x) => x))
+          : List.empty(growable: true),
     );
   }
 
@@ -62,6 +63,7 @@ class SavePost {
       'date': date?.toIso8601String(),
       'imagePath': imagePath,
       'imageUrl': imageUrl,
+      'likes': likes,
     };
   }
 }

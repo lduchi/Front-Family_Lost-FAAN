@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../ServiciosApp/services/like_post_service.dart';
 import '../../Utils/colors.dart';
 import '../../widgets/main_wrapper.dart';
 
@@ -321,6 +322,7 @@ class _SignInState extends State<SignIn> {
               providers: [
                 BlocProvider(create: (context) => BottomNavCubit()),
                 ChangeNotifierProvider(create: (_) => HomePageProvider('LOST')),
+                ChangeNotifierProvider(create: (_) => LikePostProvider()),
               ],
               child: MainWrapper(isLoggedIn: true),
             ),

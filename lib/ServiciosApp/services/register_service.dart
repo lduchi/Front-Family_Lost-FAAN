@@ -15,7 +15,7 @@ class UsuariosService {
   late final Dio _dio;
 
   UsuariosService() {
-    _dio = DioClient().instance;
+    _dio = Dio();
   }
 
   final String endPointUrlPhoto = baseUrl + '/auth';

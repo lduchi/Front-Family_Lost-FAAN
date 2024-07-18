@@ -26,6 +26,7 @@ class AppStrings {
   static const String newPassword = 'Contraseña Nueva';
   static const String repeatPassword = 'Repetir Contraseña';
   static const String successUserUpdate = 'Usuario actualizado con éxito';
+  static const String noComment = 'Sin comentario adicional';
 
   //Text for labels in navigation
   static const String navigationHome = 'Inicio';
@@ -61,6 +62,7 @@ class AppStrings {
 
   //Text for labels in forms
   static const String formTitle = 'Crear Publicación';
+  static const String formEdit = 'Editar Publicación';
   static const String formTitlePost = 'Título de la publicación';
   static const String formPhoto = 'Selecciona una foto';
   static const String formName = 'Nombre del animal';

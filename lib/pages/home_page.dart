@@ -1,6 +1,8 @@
+import 'package:animated_react_button/animated_react_button.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
+import 'package:familylost_faan/ServiciosApp/dto/liked_post.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
@@ -11,6 +13,8 @@ import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../ServiciosApp/services/like_post_service.dart';
 
 class HomePage extends StatefulWidget {
   final bool isLogin;
@@ -51,8 +55,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
-    return Consumer<HomePageProvider>(
-      builder: (context, provider, child) {
+    return Consumer2<HomePageProvider, LikePostProvider?>(
+      builder: (context, provider, likeProvider, child) {
         return ListView.builder(
           itemCount: provider.result.length,
           physics: BouncingScrollPhysics(),
@@ -95,12 +99,77 @@ class _HomePageState extends State<HomePage> {
                 child: Card(
                   elevation: 10,
                   shape: RoundedRectangleBorder(),
-                  child: AnimalItemPage(
-                    image: provider.result[index].imageUrl,
-                    animalData: provider.result[index].animal,
-                    author: provider.result[index].author,
-                    isLogin: widget.isLogin,
-                    post: provider.result[index],
+                  child: Column(
+                    children: [
+                      AnimalItemPage(
+                        image: provider.result[index].imageUrl,
+                        animalData: provider.result[index].animal,
+                        author: provider.result[index].author,
+                        isLogin: widget.isLogin,
+                        post: provider.result[index],
+                      ),
+                      Row(
+                        children: [
+                          FutureBuilder(
+                              future: Store.getAuthor(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError || !snapshot.hasData) {
+                                  return Icon(Icons.favorite,
+                                      color: Colors.grey);
+                                }
+
+                                final currentAuthor = snapshot.data!;
+
+                                return AnimatedReactButton(
+                                  defaultColor: provider.result[index].likes
+                                              ?.contains(
+                                                  currentAuthor.username) ??
+                                          false
+                                      ? Colors.red
+                                      : Colors.grey,
+                                  onPressed: () async {
+                                    if (widget.isLogin) {
+                                      final likePost = LikedPost(
+                                        postId: provider.result[index].id ?? '',
+                                        author: currentAuthor,
+                                      );
+
+                                      final list = await likeProvider!
+                                          .likePost(likePost);
+
+                                      setState(() {
+                                        provider.result[index].likes = list;
+                                      });
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SignIn(),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  reactColor: provider.result[index].likes
+                                              ?.contains(
+                                                  currentAuthor.username) ??
+                                          false
+                                      ? Colors.grey
+                                      : Colors.red,
+                                );
+                              }),
+                          Text(
+                            '${provider.result[index].likes?.length ?? 0} ' +
+                                (provider.result[index].likes?.length == 1
+                                    ? 'like'
+                                    : 'likes'),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               );

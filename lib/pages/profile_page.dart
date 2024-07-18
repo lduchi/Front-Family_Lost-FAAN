@@ -12,6 +12,9 @@ import 'package:familylost_faan/widgets/custom_paginator.dart';
 import 'package:flutter/material.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
+import 'package:provider/provider.dart';
+
+import '../ServiciosApp/services/profile_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -27,76 +30,70 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _getStoredId().then((value) {
-      userId = value;
-      _getUser();
-    });
-  }
-
-  Future<String?> _getStoredId() async {
-    userId = await Store.getUserId();
-    return userId;
-  }
-
-  Future<void> _getUser() async {
-    user = await UserService().getUserById(userId!, context);
-    setState(() {
-      user = user;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProfileProvider>().getUserById(context);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (user == null) {
-      return Container();
-    }
+    return Consumer<ProfileProvider>(builder: (context, provider, child) {
+      if (provider.user == null) {
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
 
-    return Scaffold(
-      body: Container(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    radius: 100,
-                    backgroundImage: CachedNetworkImageProvider(
-                      user!.imageUrl.isNotEmpty
-                          ? user!.imageUrl
-                          : AssetManager.largeLogo,
+      return Scaffold(
+        body: Container(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 100,
+                      backgroundImage: CachedNetworkImageProvider(
+                        provider.user!.imageUrl.isNotEmpty
+                            ? provider.user!.imageUrl
+                            : AssetManager.largeLogo,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  user!.name + ' ' + user!.lastname,
-                  style: AppFonts.title.copyWith(
-                    fontSize: 24,
-                    color: AppColors.activeBlueColor,
-                    fontWeight: FontWeight.bold,
+                  SizedBox(height: 8),
+                  Text(
+                    provider.user!.name + ' ' + provider.user!.lastname,
+                    style: AppFonts.title.copyWith(
+                      fontSize: 24,
+                      color: AppColors.activeBlueColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-                  user!.email,
-                  style: AppFonts.caption.copyWith(
-                    fontSize: 14,
-                    color: AppColors.secondaryColor,
+                  Text(
+                    provider.user!.email,
+                    style: AppFonts.caption.copyWith(
+                      fontSize: 14,
+                      color: AppColors.secondaryColor,
+                    ),
                   ),
-                ),
-                SizedBox(height: 16),
-                _profileTabBar(context),
-              ],
+                  SizedBox(height: 16),
+                  _profileTabBar(context, provider),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
-  DefaultTabController _profileTabBar(BuildContext context) {
+  DefaultTabController _profileTabBar(
+      BuildContext context, ProfileProvider provider) {
     return DefaultTabController(
       length: 2,
       child: Column(
@@ -120,8 +117,8 @@ class _ProfilePageState extends State<ProfilePage> {
             height: MediaQuery.of(context).size.height * 0.48,
             child: TabBarView(
               children: [
-                _ProfileGridView(userId: userId!, likedPosts: false),
-                _ProfileGridView(userId: userId!, likedPosts: true),
+                _ProfileGridView(provider: provider, likedPosts: false),
+                _ProfileGridView(provider: provider, likedPosts: true),
               ],
             ),
           ),
@@ -132,10 +129,11 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class _ProfileGridView extends StatefulWidget {
-  final String userId;
   final bool likedPosts;
+  final ProfileProvider provider;
+
   const _ProfileGridView(
-      {Key? key, required this.userId, required this.likedPosts})
+      {Key? key, required this.provider, required this.likedPosts})
       : super(key: key);
 
   @override
@@ -156,11 +154,11 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
       fetchPage: (int page) async {
         List<SavePost> newPosts;
         if (widget.likedPosts) {
-          newPosts = await PostService()
-              .getLikedPostsByUser(widget.userId, context, pageNumber: page);
+          newPosts = await widget.provider
+              .getLikedPostsByUser(context, pageNumber: page);
         } else {
-          newPosts = await PostService()
-              .getPostsByUser(widget.userId, context, pageNumber: page);
+          newPosts =
+              await widget.provider.getPostsByUser(context, pageNumber: page);
         }
         setState(() {
           myPosts.addAll(newPosts);
@@ -177,7 +175,10 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
       itemBuilder: (BuildContext context, SavePost post) {
         return GestureDetector(
           onTap: () {
-            _showPostBottomSheet(context, post);
+            _showPostBottomSheet(
+              context,
+              post,
+            );
           },
           child: Container(
             color: AppColors.mainColor,
@@ -214,96 +215,112 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
     );
   }
 
-  Padding bottomSheetDetail(BuildContext context, Size _deviceSize, SavePost post) {
+  Padding bottomSheetDetail(
+      BuildContext context, Size _deviceSize, SavePost post) {
     return Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: ClipRRect(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(16.0),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(_deviceSize.width * 0.05),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Center(
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(_deviceSize.width * 0.02),
+      padding: MediaQuery.of(context).viewInsets,
+      child: ClipRRect(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16.0),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(_deviceSize.width * 0.05),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(_deviceSize.width * 0.02),
+                    child: Container(
+                      color: AppColors.mainColor,
                       child: Container(
-                        color: AppColors.mainColor,
-                        child: Container(
-                          child: post.imageUrl.isNotEmpty
-                              ? CachedNetworkImage(
-                                  imageUrl: post.imageUrl,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  AssetManager.largeLogo,
-                                  fit: BoxFit.cover,
-                                ),
-                          height: _deviceSize.height * 0.4,
-                          width: _deviceSize.width,
-                        ),
+                        child: post.imageUrl.isNotEmpty
+                            ? CachedNetworkImage(
+                                imageUrl: post.imageUrl,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                AssetManager.largeLogo,
+                                fit: BoxFit.cover,
+                              ),
+                        height: _deviceSize.height * 0.4,
+                        width: _deviceSize.width,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    post.title,
-                    style: AppFonts.title.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  post.title,
+                  style: AppFonts.title.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    '${AppStrings.author}: ${post.author.username}',
-                    style: AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${AppStrings.author}: ${post.author.username}',
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    '${AppStrings.labelEmail}: ${post.author.email}',
-                    style: AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${AppStrings.labelEmail}: ${post.author.email}',
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    '${AppStrings.labelPhone}: ${post.author.phone}',
-                    style: AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${AppStrings.labelPhone}: ${post.author.phone}',
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    //'${AppStrings.authorComent}: ${post.additionalComment}',
-                    "Comentario del autor: ${post.additionalComment}",
-                    style: AppFonts.TextField.copyWith(
-                      color: AppColors.activeBlueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${AppStrings.postType}: ${post.typePost}',
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 4.0),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: _footer(context, _deviceSize, post),
-                    ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${AppStrings.authorComment}: ${post.additionalComment ?? AppStrings.noComment}',
+                  style: AppFonts.TextField.copyWith(
+                    color: AppColors.activeBlueColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 4.0),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (!widget.likedPosts)
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: _footer(context, _deviceSize, post),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 
   List<Widget> _footer(BuildContext context, Size _deviceSize, SavePost post) {
@@ -328,7 +345,6 @@ class __ProfileGridViewState extends State<_ProfileGridView> {
           AppStrings.buttonDelete,
           onPressed: () {
             var data = PostService().deletePost(post.id ?? '', context);
-            print(data);
             Navigator.pop(context);
           },
         ),
