@@ -93,7 +93,6 @@ class _MainWrapperState extends State<MainWrapper> {
         }
       });
     }
-
   }
 
   @override
@@ -132,7 +131,7 @@ class _MainWrapperState extends State<MainWrapper> {
   AppBar _appBarBuilder(int indexPage) {
     return indexPage == 3
         ? _profileAppBar()
-        : _mainLoggedWrapperAppBar(indexPage == 1);
+        : _mainLoggedWrapperAppBar(indexPage == 1, indexPage == 2);
   }
 
   AppBar _profileAppBar() {
@@ -154,7 +153,7 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  AppBar _mainLoggedWrapperAppBar(bool isSearch) {
+  AppBar _mainLoggedWrapperAppBar(bool isSearch, bool isRescue) {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return AppBar(
@@ -194,8 +193,14 @@ class _MainWrapperState extends State<MainWrapper> {
                         setState(() {
                           _selectedIndex = 0;
                         });
-                        Provider.of<HomePageProvider>(context, listen: false)
-                            .getPostsByType('LOST');
+                        !isRescue
+                            ? Provider.of<HomePageProvider>(context,
+                                    listen: false)
+                                .getPostsByType('LOST')
+                            : Provider.of<HomePageProvider>(context,
+                                    listen: false)
+                                .getPostsByTypeState('LOST');
+                        ;
                       },
                     ),
                     const SizedBox(width: 8),
@@ -206,8 +211,13 @@ class _MainWrapperState extends State<MainWrapper> {
                         setState(() {
                           _selectedIndex = 1;
                         });
-                        Provider.of<HomePageProvider>(context, listen: false)
-                            .getPostsByType('FOUND');
+                        !isRescue
+                            ? Provider.of<HomePageProvider>(context,
+                                    listen: false)
+                                .getPostsByType('FOUND')
+                            : Provider.of<HomePageProvider>(context,
+                                    listen: false)
+                                .getPostsByTypeState('FOUND');
                       },
                     ),
                     const SizedBox(width: 8),
@@ -218,8 +228,13 @@ class _MainWrapperState extends State<MainWrapper> {
                         setState(() {
                           _selectedIndex = 2;
                         });
-                        Provider.of<HomePageProvider>(context, listen: false)
-                            .getPostsByType('ADOPTION');
+                        !isRescue
+                            ? Provider.of<HomePageProvider>(context,
+                                    listen: false)
+                                .getPostsByType('ADOPTION')
+                            : Provider.of<HomePageProvider>(context,
+                                    listen: false)
+                                .getPostsByTypeState('ADOPTION');
 
                         // Navegar a la página HomePage con los nuevos datos
                         /* Navigator.push(
@@ -237,16 +252,6 @@ class _MainWrapperState extends State<MainWrapper> {
                 ),
         ),
       ),
-      /* actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => NotificationPage()));
-          },
-          icon: AppIcons.notificationIconFill,
-          color: AppColors.mainColor,
-        ),
-      ],*/
     );
   }
 
@@ -569,7 +574,16 @@ class _MainWrapperState extends State<MainWrapper> {
   // Body - MainWrapper Widget
   PageView _mainWrapperBody(BottomNavCubit bottomCubit) {
     return PageView(
-      onPageChanged: (int page) => bottomCubit.changeSelectedIndex(page),
+      onPageChanged: (int page) {
+        if (page == 0) {
+          Provider.of<HomePageProvider>(context, listen: false)
+              .getPostsByType('LOST');
+        } else if (page == 2) {
+          Provider.of<HomePageProvider>(context, listen: false)
+              .getPostsByTypeState('LOST');
+        }
+        bottomCubit.changeSelectedIndex(page);
+      },
       controller: pageController,
       children: pages,
     );
@@ -586,7 +600,6 @@ class _MainWrapperState extends State<MainWrapper> {
     return GestureDetector(
       onTap: () {
         BlocProvider.of<BottomNavCubit>(context).changeSelectedIndex(page);
-
         pageController.animateToPage(
           page,
           duration: const Duration(milliseconds: 10),

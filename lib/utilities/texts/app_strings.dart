@@ -73,6 +73,7 @@ class AppStrings {
   static const String formColor = 'Color';
   static const String formAge = 'Edad';
   static const String formGender = 'Género';
+  static const String formStatus = 'Estado';
   static const String formAdress = 'Dirección';
   static const String formLocation = 'Selecciona la ubicación en el mapa';
   static const String formLocationUser = 'Selecciona tu dirección en el mapa';

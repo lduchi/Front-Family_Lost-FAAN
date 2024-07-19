@@ -4,10 +4,10 @@ import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
+import 'package:familylost_faan/core/utils/parseTypePost.dart';
 import 'package:familylost_faan/pages/cubit/HeardBorder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../ServiciosApp/services/post_service.dart';
@@ -95,7 +95,7 @@ class _DetallesAnimalState extends State<DetallesAnimal> {
                     ),
                   ),
                   Text(
-                    widget.post.typePost,
+                    parseTypePost(widget.post.typePost),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

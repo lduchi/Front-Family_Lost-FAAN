@@ -40,4 +40,29 @@ class HomePageProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getPostsByTypeState(String postType) async {
+    String state = postType == 'ADOPTION' ? 'ADOPTED' : 'FOUND';
+    final String endPointUrl = baseUrl + '/post';
+    final String url = '$endPointUrl/type-state';
+    try {
+      final response = await _dio.get(
+        url,
+        queryParameters: {
+          'postType': postType,
+          'state': state,
+          'pageSize': 100,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final PageResponse pageResponse = PageResponse.fromJson(response.data);
+        result = pageResponse.content.map((e) => SavePost.fromJson(e)).toList();
+        notifyListeners();
+      } else {
+        throw Exception('Error al obtener las publicaciones');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

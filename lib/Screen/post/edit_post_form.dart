@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
+import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/dto/user_dto.dart';
 import 'package:familylost_faan/ServiciosApp/services/post_service.dart';
@@ -46,6 +48,7 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
   final _typeController = TextEditingController();
   final _raceController = TextEditingController();
   final _genderController = TextEditingController();
+  final _stateController = TextEditingController();
 
   @override
   void initState() {
@@ -62,7 +65,8 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
     _typeController.text = widget.post.animal.type;
     _raceController.text = widget.post.animal.race;
     _genderController.text = widget.post.animal.gender;
-    _additionalCommentController.text = widget.post.additionalComment??'';
+    _stateController.text = widget.post.state;
+    _additionalCommentController.text = widget.post.additionalComment ?? '';
     _currentCenterPosition = LatLng(
       widget.post.location.coordinates[1],
       widget.post.location.coordinates[0],
@@ -346,6 +350,45 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
                   },
                 ),
                 SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  value: _stateController.text.isNotEmpty
+                      ? _stateController.text
+                      : 'LOST',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppStrings.errorGender;
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: AppStrings.formStatus,
+                    border: InputBorder.none,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(right: 15),
+                      child: Icon(Icons.pets),
+                    ),
+                  ),
+                  items: [
+                    DropdownMenuItem<String>(
+                      value: 'LOST',
+                      child: Text('Perdido'),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: 'FOUND',
+                      child: Text('Encontrado'),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: 'ADOPTED',
+                      child: Text('Adoptado'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _stateController.text = value!;
+                    });
+                  },
+                ),
+                SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     _openMapScreen(context);
@@ -491,56 +534,53 @@ class _EditPostFormPageState extends State<EditPostFormPage> {
   }
 
   void _savePost() async {
-    // if (_imageFile == null) {
-    //   CustomMaterialDialog.successOrError(
-    //     context: context,
-    //     type: DialogType.error,
-    //     title: AppStrings.textErrorTitle,
-    //     message: 'Por favor selecciona una foto',
-    //   );
-    //   return;
-    // }
-    //
-    // if (!_formKey.currentState!.validate()) {
-    //   CustomMaterialDialog.successOrError(
-    //     context: context,
-    //     type: DialogType.error,
-    //     title: AppStrings.textErrorTitle,
-    //     message: AppStrings.textErrorMessage,
-    //   );
-    //   return;
-    // }
-    //
-    // double longitude = _currentCenterPosition!.longitude;
-    // double latitude = _currentCenterPosition!.latitude;
-    //
-    // GeoJson geoJsonLocation = GeoJson(
-    //   x: 2,
-    //   y: 3,
-    //   type: 'Point',
-    //   coordinates: [longitude, latitude],
-    // );
-    //
-    // SavePost savePostInstance = SavePost(
-    //   id: '',
-    //   title: _titleController.text,
-    //   additionalComment: _additionalCommentController.text,
-    //   typePost: typePost!.value, //Check is needed here
-    //   author: author,
-    //   animal: Animal(
-    //     name: _nameController.text,
-    //     type: _typeController.text,
-    //     race: _raceController.text,
-    //     gender: _genderController.text,
-    //     date: _selectedDate,
-    //   ),
-    //   location: geoJsonLocation,
-    //   state: statePost!.value, //Check is needed here
-    // );
-    //
-    // SavePost savePost =
-    //     await api.savePost(savePostInstance, _imageFile!, context);
-    //
-    // print('Publicacion guardada ${savePost.id}');
+    if (_imageFile == null) {
+      CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.error,
+        title: AppStrings.textErrorTitle,
+        message: 'Por favor selecciona una foto',
+      );
+      return;
+    }
+
+    if (!_formKey.currentState!.validate()) {
+      CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.error,
+        title: AppStrings.textErrorTitle,
+        message: AppStrings.textErrorMessage,
+      );
+      return;
+    }
+
+    double longitude = _currentCenterPosition!.longitude;
+    double latitude = _currentCenterPosition!.latitude;
+
+    GeoJson geoJsonLocation = GeoJson(
+      x: 2,
+      y: 3,
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    );
+
+    SavePost savePostInstance = SavePost(
+      id: widget.post.id,
+      title: _titleController.text,
+      additionalComment: _additionalCommentController.text,
+      typePost: widget.post.typePost,
+      //Check is needed here
+      author: widget.post.author,
+      animal: Animal(
+        name: _nameController.text,
+        type: _typeController.text,
+        race: _raceController.text,
+        gender: _genderController.text,
+      ),
+      location: geoJsonLocation,
+      state: _stateController.text, //Check is needed here
+    );
+
+    await api.updatePost(savePostInstance, context);
   }
 }
