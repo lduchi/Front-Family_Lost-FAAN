@@ -23,9 +23,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
-//tipo de p[ost en home lost, found,adoption y el estado lost
-// estaod de la publicacion found (rescatados)
-///revisar si adpodet se puede integrar en rescatos
 class MainWrapper extends StatefulWidget {
   final bool isLoggedIn;
 
@@ -100,7 +97,7 @@ class _MainWrapperState extends State<MainWrapper> {
       HomePage(
         isLogin: isLoggedIn,
       ),
-      SearchPage(),
+      SearchPage(Provider.of<HomePageProvider>(context)),
       HomePage(
         isLogin: isLoggedIn,
       ),
@@ -197,7 +194,7 @@ class _MainWrapperState extends State<MainWrapper> {
                           _selectedIndex = 0;
                         });
                         Provider.of<HomePageProvider>(context, listen: false)
-                            .getPostsByTypeLost('LOST');
+                            .getPostsByType('LOST');
                       },
                     ),
                     const SizedBox(width: 8),
@@ -209,7 +206,7 @@ class _MainWrapperState extends State<MainWrapper> {
                           _selectedIndex = 1;
                         });
                         Provider.of<HomePageProvider>(context, listen: false)
-                            .getPostsByTypeLost('FOUND');
+                            .getPostsByType('FOUND');
                       },
                     ),
                     const SizedBox(width: 8),
@@ -221,7 +218,7 @@ class _MainWrapperState extends State<MainWrapper> {
                           _selectedIndex = 2;
                         });
                         Provider.of<HomePageProvider>(context, listen: false)
-                            .getPostsByTypeLost('ADOPTION');
+                            .getPostsByType('ADOPTION');
 
                         // Navegar a la página HomePage con los nuevos datos
                         /* Navigator.push(

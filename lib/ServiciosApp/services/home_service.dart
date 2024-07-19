@@ -13,10 +13,10 @@ class HomePageProvider with ChangeNotifier {
 
   HomePageProvider(this.type) {
     _dio = DioClient().instance;
-    getPostsByTypeLost(type);
+    getPostsByType(type);
   }
 
-  Future<void> getPostsByTypeLost(String postType) async {
+  Future<void> getPostsByType(String postType) async {
     final String endPointUrl = baseUrl + '/post';
     final String url = '$endPointUrl/type';
     try {
@@ -39,4 +39,5 @@ class HomePageProvider with ChangeNotifier {
       rethrow;
     }
   }
+
 }

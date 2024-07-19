@@ -25,7 +25,6 @@ class _SearchBarState extends State<SearchBar> {
         Expanded(
           child: TextField(
             controller: _searchController,
-
             decoration: InputDecoration(
               hintText: 'Buscar...',
               contentPadding: EdgeInsets.all(5),
@@ -33,7 +32,7 @@ class _SearchBarState extends State<SearchBar> {
                 borderRadius: BorderRadius.circular(20),
                 borderSide: BorderSide(color: Colors.grey),
               ),
-         //     prefixIcon: Icon(Icons.search),
+              //     prefixIcon: Icon(Icons.search),
             ),
           ),
         ),
@@ -45,7 +44,6 @@ class _SearchBarState extends State<SearchBar> {
             searchProvider.setSearchTerm(_searchController.text);
             await searchProvider.performSearch();
           },
-
         ),
       ],
     );

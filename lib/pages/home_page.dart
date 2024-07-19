@@ -54,8 +54,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
-    return Consumer2<HomePageProvider, LikePostProvider?>(
-      builder: (context, provider, likeProvider, child) {
+    final provider =
+        Provider.of<HomePageProvider>(context); // Access posts from provider
+
+    return Consumer<LikePostProvider?>(
+      builder: (context, likeProvider, child) {
         return ListView.builder(
           itemCount: provider.result.length,
           physics: BouncingScrollPhysics(),
@@ -79,6 +82,7 @@ class _HomePageState extends State<HomePage> {
                       provider.result[index].animal,
                       provider.result[index].author,
                       provider.result[index],
+                      provider,
                     ),
                   ),
                   Padding(
@@ -106,6 +110,7 @@ class _HomePageState extends State<HomePage> {
                         author: provider.result[index].author,
                         isLogin: widget.isLogin,
                         post: provider.result[index],
+                        provider:provider,
                       ),
                       Row(
                         children: [
@@ -179,8 +184,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _cardList(String image, String description, String title, bool isLogin,
-      Animal animalData, Author author, SavePost post) {
+  Widget _cardList(
+      String image,
+      String description,
+      String title,
+      bool isLogin,
+      Animal animalData,
+      Author author,
+      SavePost post,
+      HomePageProvider provider) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -192,6 +204,7 @@ class _HomePageState extends State<HomePage> {
                     animalData: animalData,
                     author: author,
                     post: post,
+                    provider: provider,
                   )
                 : SignIn(),
           ),

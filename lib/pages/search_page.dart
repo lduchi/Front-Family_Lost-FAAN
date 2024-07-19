@@ -1,10 +1,12 @@
+import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/search_service.dart';
 import 'package:familylost_faan/pages/animal_item_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+  SearchPage(this.provider, {super.key});
+  HomePageProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class SearchPage extends StatelessWidget {
                     author: item.author,
                     isLogin: true,
                     post: item,
+                    provider: provider,
                   ),
                 ),
               );

@@ -2,6 +2,7 @@ import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
+import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
 import 'package:familylost_faan/pages/detalles_animal.dart';
 import 'package:familylost_faan/utilities/Colors/app_colors.dart';
 import 'package:familylost_faan/utilities/Fonts/app_fonts.dart';
@@ -17,6 +18,7 @@ class AnimalItemPage extends StatefulWidget {
     required this.author,
     required this.post,
     required this.isLogin,
+    required this.provider,
   });
 
   final String image;
@@ -24,6 +26,7 @@ class AnimalItemPage extends StatefulWidget {
   final Author author;
   final SavePost post;
   final bool isLogin;
+  final HomePageProvider provider;
 
   @override
   _AnimalItemPageState createState() => _AnimalItemPageState();
@@ -52,6 +55,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                     animalData: widget.animalData,
                     author: widget.author,
                     post: widget.post,
+                    provider: widget.provider,
                   )
                 : SignIn(),
           ),
@@ -87,8 +91,13 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
+                        widget.post.title,
+                        style: AppFonts.TitlePost,
+                        textAlign: TextAlign.right,
+                      ),
+                      Text(
                         widget.animalData.name,
-                        style: AppFonts.title,
+                        style: AppFonts.InputTitlePost,
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
