@@ -93,16 +93,7 @@ class _MainWrapperState extends State<MainWrapper> {
         }
       });
     }
-    pages = [
-      HomePage(
-        isLogin: isLoggedIn,
-      ),
-      SearchPage(Provider.of<HomePageProvider>(context)),
-      HomePage(
-        isLogin: isLoggedIn,
-      ),
-      ProfilePage(),
-    ];
+
   }
 
   @override
@@ -114,6 +105,16 @@ class _MainWrapperState extends State<MainWrapper> {
   @override
   Widget build(BuildContext context) {
     var bottomCubit = context.watch<BottomNavCubit>();
+    pages = [
+      HomePage(
+        isLogin: isLoggedIn,
+      ),
+      SearchPage(Provider.of<HomePageProvider>(context)),
+      HomePage(
+        isLogin: isLoggedIn,
+      ),
+      ProfilePage(),
+    ];
     return Scaffold(
       appBar: //isLoggedIn
           _appBarBuilder(bottomCubit.state),
