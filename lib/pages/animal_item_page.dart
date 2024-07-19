@@ -130,7 +130,7 @@ class _AnimalItemPageState extends State<AnimalItemPage> {
                           if (widget.isLogin) {
                             await launchUrl(
                               Uri.parse(
-                                "https://wa.me/${widget.author.phone}?text=Hola yo vi a ${widget.animalData.name}",
+                                "https://wa.me/+593${widget.author.phone}?text=Hola yo vi a ${widget.animalData.name}",
                               ),
                             );
                           }

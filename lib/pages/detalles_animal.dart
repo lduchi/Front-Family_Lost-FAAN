@@ -182,7 +182,7 @@ class _DetallesAnimalState extends State<DetallesAnimal> {
                   onPressed: () async {
                     await launchUrl(
                       Uri.parse(
-                        "https://wa.me/${widget.author.phone}?text=Hola yo vi a ${widget.animalData.name}",
+                        "https://wa.me/+593${widget.author.phone}?text=Hola yo vi a ${widget.animalData.name}",
                       ),
                     );
                   },
