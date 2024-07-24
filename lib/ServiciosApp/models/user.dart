@@ -5,7 +5,6 @@ class User {
   final String name;
   final String lastName;
   final String username;
-  final String imageUrl;
   final String role;
   final String phone;
   final String email;
@@ -17,7 +16,6 @@ class User {
     required this.name,
     required this.lastName,
     required this.username,
-    required this.imageUrl,
     required this.role,
     required this.phone,
     required this.email,
@@ -31,7 +29,6 @@ class User {
       name: json['name'] as String,
       lastName: json['lastname'] as String,
       username: json['username'] as String,
-      imageUrl: json['imageUrl'] as String,
       role: json['role'] as String,
       phone: json['phone'] as String,
       email: json['email'] as String,
@@ -46,7 +43,6 @@ class User {
       'name': name,
       'lastName': lastName,
       'username': username,
-      'imageUrl': imageUrl,
       'role': role,
       'phone': phone,
       'email': email,

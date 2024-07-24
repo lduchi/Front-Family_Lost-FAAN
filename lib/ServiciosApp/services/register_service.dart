@@ -57,13 +57,6 @@ class UsuariosService {
       final savedUser = User.fromJson(response.data as Map<String, dynamic>);
       await Store.setAccessToken(savedUser.jwt);
       if (response.statusCode != 201 || response.statusCode != 200) {
-        CustomMaterialDialog.successOrError(
-          context: context,
-          type: DialogType.error,
-          title: 'Error',
-          message: 'An error occurred while saving the user',
-          dismissAndPop: true,
-        );
         throw Exception('An error occurred while saving the user');
       } else {
         CustomMaterialDialog.successOrError(
