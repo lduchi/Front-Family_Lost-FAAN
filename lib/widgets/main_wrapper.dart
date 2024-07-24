@@ -181,7 +181,7 @@ class _MainWrapperState extends State<MainWrapper> {
         child: Container(
           padding: EdgeInsets.all(_deviceWidth * 0.04),
           child: isSearch
-              ? SearchBar()
+              ? MySearchBar()
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

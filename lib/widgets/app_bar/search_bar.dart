@@ -2,12 +2,12 @@ import 'package:familylost_faan/ServiciosApp/services/search_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SearchBar extends StatefulWidget {
+class MySearchBar extends StatefulWidget {
   @override
   _SearchBarState createState() => _SearchBarState();
 }
 
-class _SearchBarState extends State<SearchBar> {
+class _SearchBarState extends State<MySearchBar> {
   final _searchController = TextEditingController();
 
   @override
