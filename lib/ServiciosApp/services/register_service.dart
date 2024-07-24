@@ -54,30 +54,9 @@ class UsuariosService {
         ),
       );
 
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        CustomMaterialDialog.successOrError(
-          context: context,
-          type: DialogType.success,
-          title: 'User saved',
-          message: 'User has been saved successfully',
-          dismissAndPop: true,
-        );
-
-        final savedUser =
-            User.fromJson(response.data as Map<String, dynamic>);
-        await Store.setAccessToken(savedUser.jwt);
-        return savedUser;
-      } else if (response.statusCode == 500) {
-        CustomMaterialDialog.successOrError(
-          context: context,
-          type: DialogType.error,
-          title: 'Server Error',
-          message: 'An error occurred on the server while saving the user',
-          dismissAndPop: true,
-        );
-
-        throw Exception('Server Error');
-      } else {
+      final savedUser = User.fromJson(response.data as Map<String, dynamic>);
+      await Store.setAccessToken(savedUser.jwt);
+      if (response.statusCode != 201 || response.statusCode != 200) {
         CustomMaterialDialog.successOrError(
           context: context,
           type: DialogType.error,
@@ -85,10 +64,25 @@ class UsuariosService {
           message: 'An error occurred while saving the user',
           dismissAndPop: true,
         );
-
         throw Exception('An error occurred while saving the user');
+      } else {
+        CustomMaterialDialog.successOrError(
+          context: context,
+          type: DialogType.success,
+          title: 'User saved',
+          message: 'User has been saved successfully',
+          dismissAndPop: true,
+        );
+        return savedUser;
       }
     } catch (e) {
+      CustomMaterialDialog.successOrError(
+        context: context,
+        type: DialogType.error,
+        title: 'Error',
+        message: 'An error occurred while saving the user',
+        dismissAndPop: true,
+      );
       rethrow;
     }
   }
