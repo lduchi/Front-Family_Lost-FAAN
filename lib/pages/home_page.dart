@@ -118,12 +118,12 @@ class _HomePageState extends State<HomePage> {
                             future: Store.getAuthor(),
                             builder: (context, snapshot) {
                               if (snapshot.hasError || !snapshot.hasData) {
-                                return Icon(Icons.favorite, color: Colors.grey);
+                                return Container();//Icon(Icons.favorite, color: Colors.grey);
                               }
 
                               final currentAuthor = snapshot.data!;
 
-                              return AnimatedReactButton(
+                              return Container(); /* AnimatedReactButton(
                                 defaultColor: provider.result[index].likes
                                             ?.contains(
                                                 currentAuthor.username) ??
@@ -158,10 +158,10 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   }
                                 },
-                              );
+                              );*/
                             },
                           ),
-                          Text(
+                          /*Text(
                             '${provider.result[index].likes?.length ?? 0} ' +
                                 (provider.result[index].likes?.length == 1
                                     ? 'like'
@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ],

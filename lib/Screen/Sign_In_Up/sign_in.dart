@@ -118,6 +118,7 @@ class _SignInState extends State<SignIn> {
                     Icons.alternate_email,
                     null,
                     _usernameController,
+                    false,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return AppStrings.errorEmptyUsername;
@@ -130,6 +131,7 @@ class _SignInState extends State<SignIn> {
                     Icons.password,
                     Icons.visibility_off_outlined,
                     _passwordController,
+                    true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return AppStrings.errorEmptyPassword;
@@ -251,7 +253,9 @@ class _SignInState extends State<SignIn> {
     Color color,
     IconData icono1,
     IconData? icono2,
-    TextEditingController? controller, {
+    TextEditingController? controller,
+      bool obscureText,
+      {
     String? Function(String?)? validator,
   }) {
     return Container(
@@ -260,6 +264,7 @@ class _SignInState extends State<SignIn> {
         vertical: 15,
       ),
       child: TextFormField(
+        obscureText: obscureText,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,

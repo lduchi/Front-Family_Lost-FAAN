@@ -23,7 +23,7 @@ class _HeartButtonState extends State<HeartButton> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            /*Icon(
               Icons.favorite_border,
               color: Colors.red,
             ),
@@ -34,7 +34,7 @@ class _HeartButtonState extends State<HeartButton> {
                 color: const Color.fromARGB(255, 87, 86, 86),
                 fontWeight: FontWeight.bold,
               ),
-            ),
+            ),*/
           ],
         ),
       ),
