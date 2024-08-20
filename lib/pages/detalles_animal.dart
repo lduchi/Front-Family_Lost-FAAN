@@ -1,9 +1,11 @@
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
 import 'package:familylost_faan/ServiciosApp/dto/geo_json.dart';
+import 'package:familylost_faan/ServiciosApp/dto/liked_post.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
+import 'package:familylost_faan/ServiciosApp/services/liked_post_service.dart';
 import 'package:familylost_faan/core/utils/parseTypePost.dart';
 import 'package:familylost_faan/pages/cubit/HeardBorder.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class DetallesAnimal extends StatefulWidget {
   final Author author;
   final SavePost post;
   final HomePageProvider provider;
+  final LikePostProvider likeProvider;
 
   //final VoidCallback onHeartTap;
 
@@ -28,6 +31,7 @@ class DetallesAnimal extends StatefulWidget {
     required this.author,
     required this.post,
     required this.provider,
+    required this.likeProvider,
   });
 
   @override
@@ -50,6 +54,7 @@ class _DetallesAnimalState extends State<DetallesAnimal> {
   @override
   Widget build(BuildContext context) {
     var _deviceSize = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF009AB0),
@@ -109,9 +114,25 @@ class _DetallesAnimalState extends State<DetallesAnimal> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   HeartButton(
-                    onPressed: () {
-                      // Acción del botón de corazón
-                    },
+                    onPressed: () async {
+                      final likePost = LikedPost(
+                        postId: widget.post.id ?? '',
+                        author: await Store.getAuthor(),
+                      );
+
+                      try {
+                        final updatedLikes =
+                        await widget.likeProvider.likePost(likePost);
+                        widget.provider.updateLikes(
+                            likePost.postId, updatedLikes);
+
+                        setState(() {
+                          widget.likeProvider.isPostLiked(widget.post);
+                        });
+                      } catch (e) {
+                      }
+                    }, likes: widget.post.likes?.length ?? 0,
+                    isLikedIt: widget.likeProvider.isPostLiked(widget.post),
                   ),
                   Column(
                     children: [

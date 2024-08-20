@@ -104,6 +104,7 @@ class CustomMaterialDialog {
       msgStyle: TextStyle(color: AppColors.msgDialogColor),
       lottieBuilder: Lottie.asset(asset, repeat: false),
       context: context,
+      barrierDismissible: false,
       actions: [
         IconsButton(
           onPressed: () {

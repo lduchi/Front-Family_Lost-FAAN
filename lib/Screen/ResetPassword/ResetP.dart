@@ -1,5 +1,6 @@
 import 'package:familylost_faan/ServiciosApp/dto/reset_password_request.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
+import 'package:familylost_faan/ServiciosApp/services/liked_post_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/search_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/user_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
@@ -63,6 +64,7 @@ class ResetP extends StatelessWidget {
                       BlocProvider(create: (context) => BottomNavCubit()),
                       ChangeNotifierProvider(
                           create: (_) => HomePageProvider('LOST')),
+                      ChangeNotifierProvider(create: (_) => LikePostProvider()),
                       ChangeNotifierProvider(create: (_) => SearchService()),
                     ],
                     child: MainWrapper(isLoggedIn: false),
@@ -157,6 +159,7 @@ class ResetP extends StatelessWidget {
                                     create: (context) => BottomNavCubit()),
                                 ChangeNotifierProvider(
                                     create: (_) => HomePageProvider('LOST')),
+                                ChangeNotifierProvider(create: (_) => LikePostProvider()),
                                 ChangeNotifierProvider(create: (_) => SearchService()),
                               ],
                               child: MainWrapper(isLoggedIn: true),

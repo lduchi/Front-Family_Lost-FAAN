@@ -5,6 +5,7 @@ class Author {
   String phone;
   String imagePath;
   String imageUrl;
+  Map<String, Object?>? preferences;
 
   Author({
     required this.id,
@@ -13,6 +14,7 @@ class Author {
     required this.phone,
     this.imagePath = '',
     this.imageUrl = '',
+    this.preferences,
   });
 
   factory Author.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,9 @@ class Author {
       phone: json['phone'],
       imagePath: json['imagePath'] != null ? json['imagePath'] : '',
       imageUrl: json['imageUrl'] != null ? json['imageUrl'] : '',
+      preferences: json['preferences'] != null
+          ? Map<String, Object?>.from(json['preferences'])
+          : new Map<String, Object>(),
     );
   }
 

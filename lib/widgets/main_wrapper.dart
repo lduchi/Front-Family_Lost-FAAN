@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/RegisterPage.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/notification/notifications.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
 import 'package:familylost_faan/ServiciosApp/web_socket/web_socket.dart';
@@ -19,6 +20,8 @@ import 'package:familylost_faan/widgets/app_bar/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
@@ -555,20 +558,67 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  FloatingActionButton? _mainWrapperFab(BuildContext context, bool isLoggedIn) {
+  Widget? _mainWrapperFab(BuildContext context, bool isLoggedIn) {
     return isLoggedIn
-        ? FloatingActionButton(
-            onPressed: () => CustomMaterialDialog.postOptions(
-              context: context,
-              type: DialogType.postOptions,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
+        ? _buildSimpleOrGroupFloatButton()
+        : null;
+  }
+
+  Future<bool> _isAdmin() async {
+    return await Store.hasAdminRole();
+  }
+
+  Widget _buildSimpleOrGroupFloatButton() {
+    return FutureBuilder(
+      future: _isAdmin(),
+      builder: (context, AsyncSnapshot<bool> snapshot) {
+        final isAdmin = snapshot.data ?? false;
+
+        return isAdmin ?
+            SpeedDial(
+              overlayColor: Colors.black,
+              overlayOpacity: 0.4,
+              icon: Icons.add,
+              activeIcon: Icons.close,
+              backgroundColor: AppColors.mainColor,
+              spacing: 10,
+              children: [
+                SpeedDialChild(
+                  child: Icon(Icons.post_add),
+                  label: 'Publicar',
+                  backgroundColor: Colors.grey,
+                  onTap: () {
+                    CustomMaterialDialog.postOptions(
+                      context: context,
+                      type: DialogType.postOptions,
+                    );
+                  },
+                ),
+                SpeedDialChild(
+                  label: 'Sponsors',
+                  child: Icon(Icons.attach_money),
+                  backgroundColor: Colors.grey,
+                  onTap: () {
+                    Fluttertoast.showToast(msg: 'Aún no disponible');
+                  },
+                ),
+              ],
+            ) :
+          FloatingActionButton(
+            onPressed: () {
+              CustomMaterialDialog.postOptions(
+                context: context,
+                type: DialogType.postOptions,
+              );
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
             ),
             backgroundColor: AppColors.mainColor,
-            child: const Icon(Icons.add),
-          )
-        : null;
+          );
+    },
+    );
   }
 
   // Body - MainWrapper Widget

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:familylost_faan/ServiciosApp/dto/login_request.dart';
+import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/environment/environment.dart';
 import 'package:familylost_faan/pages/pages.dart';
 import 'package:familylost_faan/utilities/enum/dialog_type.dart';
@@ -15,14 +16,22 @@ class AuthService {
 
   String endPointUrl = baseUrl + '/auth';
 
-  Future<Map<String, dynamic>?> login(AuthenticationRequest loginRequest, BuildContext context) async {
+  Future<Map<String, dynamic>?> login(
+      AuthenticationRequest loginRequest, BuildContext context) async {
     var url = '$endPointUrl/authenticate';
+    String? lang = await Store.getLanguagePreference();
+
     try {
       final response = await _dio.post(
         url,
         data: loginRequest.toJson(),
         options: Options(
-          extra: {'context': context},
+          extra: {
+            'context': context,
+          },
+          headers: {
+            'Accept-Language': lang ?? 'en',
+          },
         ),
       );
 
@@ -60,6 +69,6 @@ class AuthService {
       debugPrint('Stack trace: $stackTrace');
       throw Exception('Failed to login: $e');
     }
-    return null;  // no aseguramos que retorne null
+    return null; // no aseguramos que retorne null
   }
 }

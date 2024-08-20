@@ -65,4 +65,10 @@ class HomePageProvider with ChangeNotifier {
       rethrow;
     }
   }
+
+  void updateLikes(String postId, List<String> likes) {
+    final index = result.indexWhere((element) => element.id == postId);
+    result[index].likes = likes;
+    notifyListeners();
+  }
 }

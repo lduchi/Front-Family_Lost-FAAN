@@ -1,14 +1,16 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:familylost_faan/Screen/onboarding/on_boarding_screen.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
+import 'package:familylost_faan/ServiciosApp/services/notification_service.dart';
 import 'package:familylost_faan/ServiciosApp/services/search_service.dart';
+import 'package:familylost_faan/ServiciosApp/services/sponsor_service.dart';
 import 'package:familylost_faan/pages/cubit/bottom_nav_cubit.dart';
 import 'package:familylost_faan/widgets/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import 'Screen/onboarding/splash_screen.dart';
 import 'ServiciosApp/services/liked_post_service.dart';
 
 void main() async {
@@ -42,6 +44,7 @@ void main() async {
         Provider<BottomNavCubit>(
           create: (_) => BottomNavCubit(),
         ),
+        ChangeNotifierProvider(create: (_) => NotificationPageProvider())
       ],
       child: LostFamilyApp(),
     ),
@@ -95,7 +98,10 @@ class _LostFamilyAppState extends State<LostFamilyApp> {
               ],
               child: MainWrapper(isLoggedIn: isLoggedIn!),
             )
-          : MySplashScreen(),
+          : ChangeNotifierProvider(
+              create: (_) => SponsorPageProvider(),
+              child: OnBoardingScreen(),
+            ),
     );
   }
 

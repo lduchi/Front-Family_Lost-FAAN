@@ -59,4 +59,19 @@ class AppColors {
    * Icon Color
    */
   static const Color icnColor = Color(0xFF000000);
+
+  /**
+   * Icon Color
+   */
+  static const Color icnColor2 = Color.fromRGBO(99, 75, 102, 1);
+
+  /**
+   * Icon Color
+   */
+  static const Color icnColor3 = Color.fromRGBO(250, 212, 192, 1);
+
+  /**
+   * Icon Color
+   */
+  static const Color icnColor4 = Color.fromRGBO(208, 255, 183, 1);
 }

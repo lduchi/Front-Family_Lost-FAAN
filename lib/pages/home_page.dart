@@ -1,8 +1,6 @@
-import 'package:animated_react_button/animated_react_button.dart';
 import 'package:familylost_faan/Screen/Sign_In_Up/sign_in.dart';
 import 'package:familylost_faan/ServiciosApp/dto/animal.dart';
 import 'package:familylost_faan/ServiciosApp/dto/author.dart';
-import 'package:familylost_faan/ServiciosApp/dto/liked_post.dart';
 import 'package:familylost_faan/ServiciosApp/dto/save_post.dart';
 import 'package:familylost_faan/ServiciosApp/interceptors/store.dart';
 import 'package:familylost_faan/ServiciosApp/services/home_service.dart';
@@ -56,130 +54,62 @@ class _HomePageState extends State<HomePage> {
     _deviceHeight = MediaQuery.of(context).size.height;
     final provider =
         Provider.of<HomePageProvider>(context); // Access posts from provider
+    final likeProvider = Provider.of<LikePostProvider>(context);
 
-    return Consumer<LikePostProvider?>(
-      builder: (context, likeProvider, child) {
-        return ListView.builder(
-          itemCount: provider.result.length,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              final String image = provider.result[index].imageUrl;
-              final String title =
-                  'Hola, soy ${provider.result[index].animal.name}!';
-              final String description =
-                  'Me perdi el día ${provider.result[index].date?.day}/${provider.result[index].date?.month}/${provider.result[index].date?.year} ¡Ayúdame a volver a casa!';
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: _cardList(
-                      image,
-                      description,
-                      title,
-                      widget.isLogin,
-                      provider.result[index].animal,
-                      provider.result[index].author,
-                      provider.result[index],
-                      provider,
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text(
-                      '!El regreso a casa comienza aqui!',
-                      style: AppFonts.primary.copyWith(fontSize: 19.0),
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Card(
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(),
-                  child: Column(
-                    children: [
-                      AnimalItemPage(
-                        image: provider.result[index].imageUrl,
-                        animalData: provider.result[index].animal,
-                        author: provider.result[index].author,
-                        isLogin: widget.isLogin,
-                        post: provider.result[index],
-                        provider:provider,
-                      ),
-                      Row(
-                        children: [
-                          FutureBuilder(
-                            future: Store.getAuthor(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError || !snapshot.hasData) {
-                                return Container();//Icon(Icons.favorite, color: Colors.grey);
-                              }
-
-                              final currentAuthor = snapshot.data!;
-
-                              return Container(); /* AnimatedReactButton(
-                                defaultColor: provider.result[index].likes
-                                            ?.contains(
-                                                currentAuthor.username) ??
-                                        false
-                                    ? Colors.red
-                                    : Colors.grey,
-                                reactColor: provider.result[index].likes
-                                            ?.contains(
-                                                currentAuthor.username) ??
-                                        false
-                                    ? Colors.grey
-                                    : Colors.red,
-                                onPressed: () async {
-                                  if (widget.isLogin) {
-                                    final likePost = LikedPost(
-                                      postId: provider.result[index].id ?? '',
-                                      author: currentAuthor,
-                                    );
-
-                                    final list =
-                                        await likeProvider!.likePost(likePost);
-
-                                    setState(() {
-                                      provider.result[index].likes = list;
-                                    });
-                                  } else {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SignIn(),
-                                      ),
-                                    );
-                                  }
-                                },
-                              );*/
-                            },
-                          ),
-                          /*Text(
-                            '${provider.result[index].likes?.length ?? 0} ' +
-                                (provider.result[index].likes?.length == 1
-                                    ? 'like'
-                                    : 'likes'),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),*/
-                        ],
-                      ),
-                    ],
-                  ),
+    return ListView.builder(
+      itemCount: provider.result.length,
+      physics: BouncingScrollPhysics(),
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          final String image = provider.result[index].imageUrl;
+          final String title =
+              'Hola, soy ${provider.result[index].animal.name}!';
+          final String description =
+              'Me perdi el día ${provider.result[index].date?.day}/${provider.result[index].date?.month}/${provider.result[index].date?.year} ¡Ayúdame a volver a casa!';
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _cardList(
+                  image,
+                  description,
+                  title,
+                  widget.isLogin,
+                  provider.result[index].animal,
+                  provider.result[index].author,
+                  provider.result[index],
+                  provider,
+                  likeProvider,
                 ),
-              );
-            }
-          },
-        );
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(
+                  '!El regreso a casa comienza aqui!',
+                  style: AppFonts.primary.copyWith(fontSize: 19.0),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(),
+              child: AnimalItemPage(
+                image: provider.result[index].imageUrl,
+                animalData: provider.result[index].animal,
+                author: provider.result[index].author,
+                isLogin: widget.isLogin,
+                post: provider.result[index],
+                provider: provider,
+              ),
+            ),
+          );
+        }
       },
     );
   }
@@ -192,7 +122,8 @@ class _HomePageState extends State<HomePage> {
       Animal animalData,
       Author author,
       SavePost post,
-      HomePageProvider provider) {
+      HomePageProvider provider,
+      LikePostProvider likeProvider) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -205,6 +136,7 @@ class _HomePageState extends State<HomePage> {
                     author: author,
                     post: post,
                     provider: provider,
+                    likeProvider: likeProvider,
                   )
                 : SignIn(),
           ),

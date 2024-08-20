@@ -26,6 +26,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  bool _isHidden = true;
   final _formKey = GlobalKey<FormState>();
   AuthenticationRequest? loginRequest;
   final _usernameController = TextEditingController();
@@ -72,6 +73,7 @@ class _SignInState extends State<SignIn> {
                       BlocProvider(create: (context) => BottomNavCubit()),
                       ChangeNotifierProvider(
                           create: (_) => HomePageProvider('LOST')),
+                      ChangeNotifierProvider(create: (_) => LikePostProvider()),
                       ChangeNotifierProvider(create: (_) => SearchService()),
                     ],
                     child: MainWrapper(isLoggedIn: false),
@@ -131,7 +133,7 @@ class _SignInState extends State<SignIn> {
                     Icons.password,
                     Icons.visibility_off_outlined,
                     _passwordController,
-                    true,
+                    _isHidden,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return AppStrings.errorEmptyPassword;
@@ -254,8 +256,7 @@ class _SignInState extends State<SignIn> {
     IconData icono1,
     IconData? icono2,
     TextEditingController? controller,
-      bool obscureText,
-      {
+      bool obscureText, {
     String? Function(String?)? validator,
   }) {
     return Container(
@@ -293,10 +294,7 @@ class _SignInState extends State<SignIn> {
           ),
           suffixIcon: Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: Icon(
-              icono2,
-              color: color,
-            ),
+            child: togglePassword(icono2),
           ),
         ),
         controller: controller,
@@ -309,8 +307,8 @@ class _SignInState extends State<SignIn> {
   Future<void> _login(loginRequest, BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       loginRequest = AuthenticationRequest(
-        username: _usernameController.text,
-        password: _passwordController.text,
+        username: _usernameController.text.trim(),
+        password: _passwordController.text.trim(),
       );
 
       final response = await AuthService().login(loginRequest, context);
@@ -322,20 +320,18 @@ class _SignInState extends State<SignIn> {
         Store.setTokens(accessToken, refreshToken);
         Store.setLogged(true);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MultiProvider(
-              providers: [
-                BlocProvider(create: (context) => BottomNavCubit()),
-                ChangeNotifierProvider(create: (_) => HomePageProvider('LOST')),
-                ChangeNotifierProvider(create: (_) => LikePostProvider()),
-                ChangeNotifierProvider(create: (_) => SearchService()),
-              ],
-              child: MainWrapper(isLoggedIn: true),
-            ),
-          ),
-        );
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(
+              builder: (context) => MultiProvider(
+                providers: [
+                  BlocProvider(create: (context) => BottomNavCubit()),
+                  ChangeNotifierProvider(create: (_) => HomePageProvider('LOST')),
+                  ChangeNotifierProvider(create: (_) => LikePostProvider()),
+                  ChangeNotifierProvider(create: (_) => SearchService()),
+                ],
+                child: MainWrapper(isLoggedIn: true),
+              ),
+            ), (route) => false);
       } else {
         // Mostrar mensaje de error si la autenticación falla
         ScaffoldMessenger.of(context).showSnackBar(
@@ -351,6 +347,31 @@ class _SignInState extends State<SignIn> {
           content: Text('Por favor complete todos los campos'),
         ),
       );
+    }
+  }
+
+  Widget togglePassword(IconData? icon) {
+    return IconButton(
+      onPressed: () {
+        setState(() {
+          if (icon != null) {
+            _isHidden = !_isHidden;
+          }
+        });
+      },
+      icon: _buildIcon(icon),
+    );
+  }
+
+  Widget _buildIcon(IconData? icon) {
+    if (icon == null) {
+      return Icon(null);
+    }
+
+    if (_isHidden) {
+      return Icon(icon);
+    } else {
+      return Icon(Icons.visibility_outlined);
     }
   }
 }

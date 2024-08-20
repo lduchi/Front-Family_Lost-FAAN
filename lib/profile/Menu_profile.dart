@@ -224,11 +224,12 @@ class _MenuProfileState extends State<MenuProfile> {
               ),
             ),
             onTap: () {
-              Navigator.push(
+              _logout(context);
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => SignIn()),
+                    (Route<dynamic> route) => false,
               );
-              _logout(context);
             },
           ),
         ],

@@ -170,4 +170,14 @@ print(preferences.getString(_tokenAccessKey));
     }
     return null;
   }
+
+  static Future<void> saveLanguagePreference(String selectedLanguage) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedLanguage', selectedLanguage);
+  }
+
+  static Future<String?> getLanguagePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('selectedLanguage');
+  }
 }
